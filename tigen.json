@@ -1,0 +1,669 @@
+[
+    {
+        "pk": 1,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "permission",
+            "name": "permission",
+            "app_label": "auth"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "group",
+            "name": "group",
+            "app_label": "auth"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "user",
+            "name": "user",
+            "app_label": "auth"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "contenttype",
+            "name": "content type",
+            "app_label": "contenttypes"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "session",
+            "name": "session",
+            "app_label": "sessions"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "site",
+            "name": "site",
+            "app_label": "sites"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "logentry",
+            "name": "log entry",
+            "app_label": "admin"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "settings",
+            "name": "settings",
+            "app_label": "time_engine"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "plan",
+            "name": "plan",
+            "app_label": "time_engine"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "planresult",
+            "name": "plan result",
+            "app_label": "time_engine"
+        }
+    },
+    {
+        "pk": "1vexadmv3vqhfn7ah6dsb2iy9nz0gp7q",
+        "model": "sessions.session",
+        "fields": {
+            "expire_date": "2014-12-09T02:29:46.158Z",
+            "session_data": "YjU2ZmUxNzU5ZTIwYjM5MWZiMTZiNTY1ZjJjNGU4YjMzNzU1ZjQ2ZDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+        }
+    },
+    {
+        "pk": "e3fv97kfhdfoh134jjwcjyma2jmfcrso",
+        "model": "sessions.session",
+        "fields": {
+            "expire_date": "2014-12-06T02:32:59.169Z",
+            "session_data": "YjU2ZmUxNzU5ZTIwYjM5MWZiMTZiNTY1ZjJjNGU4YjMzNzU1ZjQ2ZDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+        }
+    },
+    {
+        "pk": 1,
+        "model": "sites.site",
+        "fields": {
+            "domain": "example.com",
+            "name": "example.com"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "time_engine.planresult",
+        "fields": {
+            "lesson_no": 1,
+            "lesson_date": "2014-12-17",
+            "plan": 3
+        }
+    },
+    {
+        "pk": 2,
+        "model": "time_engine.planresult",
+        "fields": {
+            "lesson_no": 2,
+            "lesson_date": "2014-12-25",
+            "plan": 3
+        }
+    },
+    {
+        "pk": 3,
+        "model": "time_engine.planresult",
+        "fields": {
+            "lesson_no": 3,
+            "lesson_date": "2014-12-30",
+            "plan": 3
+        }
+    },
+    {
+        "pk": 4,
+        "model": "time_engine.planresult",
+        "fields": {
+            "lesson_no": 4,
+            "lesson_date": "2015-01-01",
+            "plan": 3
+        }
+    },
+    {
+        "pk": 1,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_permission",
+            "name": "Can add permission",
+            "content_type": 1
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_permission",
+            "name": "Can change permission",
+            "content_type": 1
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_permission",
+            "name": "Can delete permission",
+            "content_type": 1
+        }
+    },
+    {
+        "pk": 4,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_group",
+            "name": "Can add group",
+            "content_type": 2
+        }
+    },
+    {
+        "pk": 5,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_group",
+            "name": "Can change group",
+            "content_type": 2
+        }
+    },
+    {
+        "pk": 6,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_group",
+            "name": "Can delete group",
+            "content_type": 2
+        }
+    },
+    {
+        "pk": 7,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_user",
+            "name": "Can add user",
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 8,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_user",
+            "name": "Can change user",
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 9,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_user",
+            "name": "Can delete user",
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 10,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_contenttype",
+            "name": "Can add content type",
+            "content_type": 4
+        }
+    },
+    {
+        "pk": 11,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_contenttype",
+            "name": "Can change content type",
+            "content_type": 4
+        }
+    },
+    {
+        "pk": 12,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_contenttype",
+            "name": "Can delete content type",
+            "content_type": 4
+        }
+    },
+    {
+        "pk": 13,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_session",
+            "name": "Can add session",
+            "content_type": 5
+        }
+    },
+    {
+        "pk": 14,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_session",
+            "name": "Can change session",
+            "content_type": 5
+        }
+    },
+    {
+        "pk": 15,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_session",
+            "name": "Can delete session",
+            "content_type": 5
+        }
+    },
+    {
+        "pk": 16,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_site",
+            "name": "Can add site",
+            "content_type": 6
+        }
+    },
+    {
+        "pk": 17,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_site",
+            "name": "Can change site",
+            "content_type": 6
+        }
+    },
+    {
+        "pk": 18,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_site",
+            "name": "Can delete site",
+            "content_type": 6
+        }
+    },
+    {
+        "pk": 19,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_logentry",
+            "name": "Can add log entry",
+            "content_type": 7
+        }
+    },
+    {
+        "pk": 20,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_logentry",
+            "name": "Can change log entry",
+            "content_type": 7
+        }
+    },
+    {
+        "pk": 21,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_logentry",
+            "name": "Can delete log entry",
+            "content_type": 7
+        }
+    },
+    {
+        "pk": 22,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_settings",
+            "name": "Can add settings",
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 23,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_settings",
+            "name": "Can change settings",
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 24,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_settings",
+            "name": "Can delete settings",
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 25,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_plan",
+            "name": "Can add plan",
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 26,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_plan",
+            "name": "Can change plan",
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 27,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_plan",
+            "name": "Can delete plan",
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 31,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_planresult",
+            "name": "Can add plan result",
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 32,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_planresult",
+            "name": "Can change plan result",
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 33,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_planresult",
+            "name": "Can delete plan result",
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "jonell",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2014-11-25T02:29:46.140Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$d6fnQy5JpGBl$lhjK1i7neTcMXb8engqHt0kgfbIIEmhFSlEACHLDtBU=",
+            "email": "jonellalvi@gmail.com",
+            "date_joined": "2014-11-22T02:31:31.342Z"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.user",
+        "fields": {
+            "username": "Slothy",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2014-11-22T04:05:17.391Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$9VLyIFBvhNFR$qowYnZhuK1d9aV7u9/IQL9tWmOwaQxbQe4LJ9sisTkA=",
+            "email": "",
+            "date_joined": "2014-11-22T04:05:17.391Z"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.user",
+        "fields": {
+            "username": "RockStar",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2014-11-22T04:07:41.534Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$W22Str5cQgG4$+JT6dzdBnyXhmxOcNuzryfuZ0yE+0XFPUgJF48ve9Hs=",
+            "email": "",
+            "date_joined": "2014-11-22T04:07:41.534Z"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2014-11-22T04:05:17.597Z",
+            "object_repr": "Slothy",
+            "object_id": "2",
+            "change_message": "",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 2,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2014-11-22T04:07:18.158Z",
+            "object_repr": "Test Plan One",
+            "object_id": "1",
+            "change_message": "",
+            "user": 1,
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 3,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2014-11-22T04:07:41.691Z",
+            "object_repr": "RockStar",
+            "object_id": "3",
+            "change_message": "",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 4,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2014-11-22T04:08:13.085Z",
+            "object_repr": "Test Plan Two",
+            "object_id": "2",
+            "change_message": "",
+            "user": 1,
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 5,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2014-11-22T04:09:02.080Z",
+            "object_repr": "Test Plan Three",
+            "object_id": "3",
+            "change_message": "",
+            "user": 1,
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 6,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2014-11-22T04:09:52.556Z",
+            "object_repr": "PlanResult object",
+            "object_id": "1",
+            "change_message": "",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 7,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2014-11-22T04:10:09.977Z",
+            "object_repr": "PlanResult object",
+            "object_id": "2",
+            "change_message": "",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 8,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2014-11-22T04:10:26.975Z",
+            "object_repr": "PlanResult object",
+            "object_id": "3",
+            "change_message": "",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 9,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2014-11-22T04:10:40.227Z",
+            "object_repr": "PlanResult object",
+            "object_id": "4",
+            "change_message": "",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 1,
+        "model": "time_engine.plan",
+        "fields": {
+            "has_thursday": true,
+            "name": "Test Plan One",
+            "end_date": null,
+            "has_tuesday": true,
+            "has_saturday": false,
+            "creation_date": "2014-11-21",
+            "has_wednesday": true,
+            "lesson_count": 25,
+            "user": 2,
+            "has_sunday": false,
+            "has_monday": true,
+            "has_friday": true,
+            "start_date": "2014-12-31"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "time_engine.plan",
+        "fields": {
+            "has_thursday": false,
+            "name": "Test Plan Two",
+            "end_date": null,
+            "has_tuesday": false,
+            "has_saturday": false,
+            "creation_date": "2014-11-21",
+            "has_wednesday": true,
+            "lesson_count": 30,
+            "user": 3,
+            "has_sunday": false,
+            "has_monday": true,
+            "has_friday": true,
+            "start_date": "2015-01-20"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "time_engine.plan",
+        "fields": {
+            "has_thursday": true,
+            "name": "Test Plan Three",
+            "end_date": null,
+            "has_tuesday": true,
+            "has_saturday": false,
+            "creation_date": "2014-11-21",
+            "has_wednesday": false,
+            "lesson_count": 9,
+            "user": 1,
+            "has_sunday": false,
+            "has_monday": false,
+            "has_friday": false,
+            "start_date": "2014-12-17"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "time_engine.plan",
+        "fields": {
+            "has_thursday": true,
+            "name": "Test Plan Three FUN!",
+            "end_date": null,
+            "has_tuesday": true,
+            "has_saturday": false,
+            "creation_date": "2014-11-21",
+            "has_wednesday": false,
+            "lesson_count": 9,
+            "user": 1,
+            "has_sunday": false,
+            "has_monday": false,
+            "has_friday": false,
+            "start_date": "2014-12-17"
+        }
+    }
+]

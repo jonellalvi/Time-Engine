@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        var request = new XMLHttpRequest();
+
+
+        function simple_draw(data) {
+            var list = document.getElementById("list");
+            data.forEach(function (item) {
+                list.innerHTML += item["name"];
+            });
+        }
+
+        function element_draw(data) {
+            var list = document.getElementById("list");
+            data.forEach(function (item) {
+                var li = document.createElement("li");
+                li.innerHTML = item["name"] + ", " + item["number"];
+                list.appendChild(li);
+            });
+        }
+
+        function classic_for_element_draw(data) {
+            var list = document.getElementById("list");
+            for (var index = 0; index < data.length; index++) {
+                var item = data[index];
+                var li = document.createElement("li");
+                li.innerHTML = item["name"] + ", " + item["number"];
+                list.appendChild(li);
+            }
+        }
+
+
+        function draw(data) {
+            var list = document.getElementById("list");
+            var template = document.getElementById("template");
+            var output = [];
+            data.forEach(function (item) {
+                console.log(item);
+                var text = template.innerHTML;
+                for (var p in item) {
+                    if (item.hasOwnProperty(p)) {
+                        text = text.replace("{{phone." + p + "}}", item[p]);
+                    }
+                }
+                output.push(text)
+            });
+            list.innerHTML = "<li>" + output.join("</li><li>") + "</li>";
+        }
+
+        function onRequestChange() {
+            console.log(request.readyState, request.status);
+            if ((request.readyState === 4) && (request.status === 200)) {
+                var data = JSON.parse(request.responseText);
+                //draw(data);
+                //simple_draw(data);
+                //element_draw(data);
+                classic_for_element_draw(data);
+            }
+        }
+
+        function fetch() {
+            request.onreadystatechange = onRequestChange;
+            request.open("GET", "data.json", true);
+            request.send();
+        }
+        function load() {
+            fetch();
+        }
+        window.addEventListener("load", load);
+    </script>
+    <style>
+        .template {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<ul id="list">
+    <li id="template" class="template">
+        <span>
+           Name: {{phone.name}}
+        </span>
+        <br>
+        <span>
+           Number: {{phone.number}}
+        </span>
+        <br>
+        <br>
+    </li>
+</ul>
+</body>
+</html>

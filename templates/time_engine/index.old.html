@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Time Engine</title>
+
+    </head>
+
+    <body>
+        <h1>Time Engine says...</h1>
+        hello world! <strong>{{ boldmessage }}</strong><br />
+        <a href="/time_engine/options/">Options</a><br />
+
+           {% if allplans %}
+            <ul id="list">
+                {% for plan in allplans %}
+                    <li>Name: {{ plan.name }}</li>
+                    <li>User: {{ plan.user }}</li>
+                    <li>Date Created: {{ plan.creation_date }}</li>
+                    <li>Plan Start Date: {{ plan.start_date }}</li>
+                    <li>Number of Lessons: {{ plan.lesson_count }}</li>
+                {% endfor %}
+            </ul>
+       {% else %}
+            <strong>There are no Plans present.</strong>
+       {% endif %}
+
+
+
+
+    </body>
+
+</html>

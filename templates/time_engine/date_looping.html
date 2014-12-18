@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+    var app = {
+        availableDays: [
+            true,
+            false,
+            false,
+            true,
+            false,
+            false,
+            true
+        ],
+        unitsPerDay: 3,
+        project: {
+            startDate: new Date(),
+            totalUnits: 50,
+            unitsComplete: 0,
+            complete: false,
+            estimatedCompletionDate: undefined
+        },
+        schedule: [],
+        isAvailable: function (date) {
+            var index = date.getDay();
+            return this.availableDays[index];
+        },
+        getSchedule: function () {
+            var date = this.project.startDate;
+            //ROund to midnight
+            date = new Date(date.getFullYear(),date.getMonth(),date.getDate());
+            while (!this.complete) {
+                //INCREMENT DATE BY ONE DAY
+                if (this.isAvailable(date)) {
+                    this.project.unitsComplete += this.unitsPerDay;
+                    this.schedule.push(date.toString());
+                }
+
+                if (this.project.unitsComplete >= this.project.totalUnits) {
+                    this.complete = true;
+                }
+                date.setDate(date.getDate() + 1);
+
+            }
+            return this.schedule;
+        }
+    };
+
+    var schedule = app.getSchedule();
+    document.write(schedule.join("<br>"));
+</script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        var request = new XMLHttpRequest();
+
+
+        function simple_draw(data) {
+            var list = document.getElementById("list");
+            data.forEach(function (item) {
+                list.innerHTML += item["name"];
+            });
+        }
+
+        function element_draw(data) {
+            var list = document.getElementById("list");
+            data.forEach(function (item) {
+                var li = document.createElement("li");
+                li.innerHTML = item["name"] + ", " + item["number"];
+                list.appendChild(li);
+            });
+        }
+
+        function classic_for_element_draw(data) {
+            var list = document.getElementById("list");
+            for (var index = 0; index < data.length; index++) {
+                var item = data[index];
+                var li = document.createElement("li");
+                li.innerHTML = item["user"] + ", " + item["name"] + ", " + item["creation_date"] + ", " + item["lesson_count"];
+                list.appendChild(li);
+            }
+        }
+
+
+        function draw(data) {
+            var list = document.getElementById("list");
+            var template = document.getElementById("template");
+            var output = [];
+            data.forEach(function (item) {
+                console.log(item);
+                var text = template.innerHTML;
+                for (var p in item) {
+                    if (item.hasOwnProperty(p)) {
+                        text = text.replace("{fields." + p + "}", item[p]);
+                    }
+                }
+                output.push(text)
+            });
+            list.innerHTML = "<li>" + output.join("</li><li>") + "</li>";
+        }
+
+        function onRequestChange() {
+            console.log(request.readyState, request.status);
+            if ((request.readyState === 4) && (request.status === 200)) {
+                var data = JSON.parse(request.responseText);
+                draw(data);
+                //simple_draw(data);
+                //element_draw(data);
+                //classic_for_element_draw(data);
+            }
+        }
+
+        function fetch() {
+            request.onload = undefined;
+            request.onreadystatechange = onRequestChange;
+            request.open("GET", "/time_engine/ajax/", true);
+            request.send();
+        }
+        function load() {
+            fetch();
+        }
+        window.addEventListener("load", load);
+
+        function saveData(formData){
+            request.open("POST","/time_engine/ajax/", true);
+            request.onload = fetch;
+            request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            request.send(formData);
+        }
+
+        function captureSubmit(){
+            //Get inputs inside form and iterate overthem.
+            var elementList = document.getElementById("f1").children;
+            formDataList=[];
+            for(var i=0; i < elementList.length; i++){
+                var element = elementList[i];
+                formDataList.push(
+                        encodeURIComponent(element.name)
+                        + "=" +
+                        encodeURIComponent(element.value)
+                );
+                console.log(element.name);
+            }
+            saveData(formDataList.join("&"));
+            //CANCEL FORM SUBMISSION; must be returned in onsubmit below
+            return false;
+        }
+
+    </script>
+    <style>
+    .template {
+        display: none;
+    }
+    </style>
+</head>
+<body>
+<form id="f1" action="/time_engine/ajax/" method="post" onsubmit="return captureSubmit()">
+    {%  csrf_token %}
+    <p>Plan Name:</p><input name="name"><br />
+    <p>User Name:</p><input name="user"><br />
+    <p>Date:</p><input name="creation_date">
+    <p># of lessons:</p><input name="lesson_count"><br /><br />
+    <input type="submit" value="submit">
+    <hr />
+</form>
+<ul id="list">
+
+</ul>
+
+<ul class="template">
+    <li id="template" class="template">
+        <span>
+           Name: {fields.name}
+        </span>
+        <br>
+        <span>
+           User: {fields.user}
+        </span>
+        <span>
+           Creation Date: {fields.creation_date}
+        </span>
+        <span>
+            Number of Lessons: {fields.lesson_count}
+        </span>
+        <br>
+        <br>
+    </li>
+</ul>
+</body>
+</html>
