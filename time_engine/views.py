@@ -3,12 +3,38 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.shortcuts import render
-from time_engine.models import Plan
+from time_engine.models import TimeTable
 from django.contrib.auth.models import User
+from django.contrib import auth
+from django.shortcuts import redirect
 from datetime import date
 from json import dumps
 
 from django.views.decorators.csrf import csrf_exempt
+
+# User registration
+
+def register(request):
+    if request.method == "POST":
+        User.objects.create_user(request.POST['username'], None, request.POST['password'])
+    return render(request, 'time_engine/register.html')
+
+def login(request):
+    if request.method == "POST":
+        user = auth.authenticate(username=request.POST['username'], password=request.POST['password'])
+
+        if user is not None:
+            #the password verified for the user
+            if user.is_active:
+                print("User is valid, active and authenticated")
+                return redirect("index")
+            else:
+                print("The password is valid, but the account has been disabled!")
+
+        else:
+            print("The username and password were incorrect.")
+    return render(request, 'time_engine/login.html')
+
 
 # Each view is it's own function.
 # Each view takes at least one arg: HttpRequest object
@@ -32,8 +58,8 @@ def index(request):
 
     # Construct a dictionary to pass to the template engine as its context.
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
-    plan_list = Plan.objects.all()
-    context_dict = {'allplans': plan_list}
+    timetable_list = TimeTable.objects.all()
+    context_dict = {'alltimetables': timetable_list}
 
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
@@ -44,19 +70,19 @@ def index(request):
 @csrf_exempt
 def ajax(request):
     if request.method == "POST":
-        plan = Plan()
+        timetable = TimeTable()
         user = User()
         user.username = request.POST["user"]
         user.save()
-        plan.user = user
-        plan.start_date = date.today()
-        plan.name = request.POST["name"]
-        plan.lesson_count = request.POST["lesson_count"]
-        plan.save()
+        timetable.user = user
+        timetable.start_date = date.today()
+        timetable.name = request.POST["name"]
+        timetable.lesson_count = request.POST["lesson_count"]
+        timetable.save()
 
-    plan_list = list(Plan.objects.all())
+    timetable_list = list(TimeTable.objects.all())
     ajax_list = []
-    for thing in plan_list:
+    for thing in timetable_list:
         ajax_list.append({
             "name": thing.name,
             "user": str(thing.user),

@@ -17,6 +17,9 @@
     <!-- Custom CSS -->
     <link href="{% static 'css/shop-item.css' %}" rel="stylesheet">
     <link href="{% static 'css/index.css' %}" rel="stylesheet">
+    <link href="{% static 'css/panels.css' %}" rel="stylesheet">
+    <!-- Custom js -->
+    <script src="{% static 'js/panels.js' %}"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -39,6 +42,8 @@
    });
 
    </script>
+
+
 </head>
 
 <body>
@@ -81,22 +86,25 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="thumbnail">
-                    <div class="row">
+                    <div class="row"> <!-- CALENDAR ROW -->
                         <div  id="calendarContainer">
 
                         </div>
-                    </div> <!--Calendar row -->
-                    <div class="row">
+                    </div> <!-- END Calendar row -->
+                    <div class="row"> <!--  INSTRUCTIONS ROW -->
                         <div class="caption-full">
+                            <p>Click +New to create a new timetable.</p>
                             <div class="text-right">
-                                    <a class="btn btn-success">+New</a>
+                                <!--<a class="btn btn-success" onclick="CC.ItemList.append();">+New</a>-->
+                                <a class="btn btn-success" data-toggle="modal" data-target="#myModal">+New</a>
                             </div>
                         </div>
-                    </div> <!--caption row-->
+                    </div> <!-- END Instructions row -->
 
-                    <div class="row">
-                         <div class="col-md-3">
-                            <div class="panel panel-default">
+                    <div class="row"><!-- FANCY PANELS ROW -->
+                         <!--<div class="col-md-3">-->
+
+                            <!--<div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4><i class="fa fa-fw fa-check"></i> Bootstrap v3.2.0</h4>
                                 </div>
@@ -104,27 +112,35 @@
                                     <p>Lorem ipsum dolor </p>
                                     <a href="#" class="btn btn-default">Learn More</a>
                                 </div>
-                            </div>
-                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4><i class="fa fa-fw fa-check"></i> Bootstrap v3.2.0</h4>
+                            </div>-->
+
+                            <!--Kevin's fancy panels -->
+                             <div id="list" class="list">
+
+                                <div id="item-template" class="item template col-sm-3 ">
+                                    <span class="name" contenteditable="true">Item Template</span>
+                                    <span class="remove">[ X ]</span>
+                                    <span class="insert">[ + ]</span>
                                 </div>
-                                <div class="panel-body">
-                                    <p>Lorem ipsum dolor </p>
-                                    <a href="#" class="btn btn-default">Learn More</a>
-                                </div>
-                            </div>
-                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4><i class="fa fa-fw fa-check"></i> Bootstrap v3.2.0</h4>
-                                </div>
-                                <div class="panel-body">
-                                    <p>Lorem ipsum dolor </p>
-                                    <a href="#" class="btn btn-default">Learn More</a>
-                                </div>
-                            </div>
+
+                                <!--<div class="item add" onclick="CC.ItemList.append();">
+                                    <span class="name">Add Item</span>
+                                </div>-->
+
+                            </div> <!-- end Kevin's fancy boxes -->
+
+
+
+
+
+
+
+
+
+
+
                          </div>
-                     </div>
+                     </div> <!-- END fancy panels row -->
                 </div>
             </div>
         </div>
@@ -152,6 +168,8 @@
 
     <!-- Bootstrap Core JavaScript
     <script src="js/bootstrap.min.js"></script>-->
+
+
 
 </body>
 

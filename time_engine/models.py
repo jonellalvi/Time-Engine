@@ -7,8 +7,9 @@ from django.db import models
 class Settings(models.Model):
     ical_url = models.URLField(max_length=400)
 
-class Plan(models.Model):
+class TimeTable(models.Model):
     name = models.CharField(max_length=200)
+    color = models.CharField(max_length=6, default='000000')
     creation_date = models.DateField(auto_now_add=True)
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
@@ -26,7 +27,7 @@ class Plan(models.Model):
         return self.name
 
 
-class PlanResult(models.Model):
-    lesson_no = models.IntegerField()
+class Result(models.Model):
+    lesson_num = models.IntegerField()
     lesson_date = models.DateField()
-    plan = models.ForeignKey(Plan)
+    timetable = models.ForeignKey(TimeTable)
