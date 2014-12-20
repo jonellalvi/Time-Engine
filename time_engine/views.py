@@ -19,6 +19,9 @@ def register(request):
         User.objects.create_user(request.POST['username'], None, request.POST['password'])
     return render(request, 'time_engine/register.html')
 
+
+#in settings add: settings.LOGIN_URL ='login'
+#@login_required
 def login(request):
     if request.method == "POST":
         user = auth.authenticate(username=request.POST['username'], password=request.POST['password'])
