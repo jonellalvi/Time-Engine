@@ -86,7 +86,7 @@
     <!-- Page Content -->
     <div class="container">
 
-        <div class="row">
+        <!--<div class="row">-->
             <div class="col-md-12">
                 <div class="thumbnail">
                     <div class="row"> <!-- CALENDAR ROW -->
@@ -100,30 +100,20 @@
                             <div class="text-right">
                                 <!--<a class="btn btn-success" onclick="CC.ItemList.append();">+New</a>-->
                                 <a class="btn btn-primary" data-toggle="modal" data-target="#myModal">+New</a>
+
                             </div>
                         </div>
                     </div> <!-- END Instructions row -->
-
-                    <div class="row"><!-- FANCY PANELS ROW -->
-                        <!--This is where the timetable results will show.
-
-                        <!--<div class="col-md-3">-->
-
-                            <!--<div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4><i class="fa fa-fw fa-check"></i> Bootstrap v3.2.0</h4>
-                                </div>
-                                <div class="panel-body">
-                                    <p>Lorem ipsum dolor </p>
-                                    <a href="#" class="btn btn-default">Learn More</a>
-                                </div>
-                            </div>-->
+                    <!--<div class="row">
+                        Info tiles for each time table go here once the first
+                        timetable is made.
+                    </div>-->
 
 
-                     </div> <!-- END fancy panels row -->
-                </div>
-            </div>
-        </div>
+
+                </div> <!-- END Thumbnail -->
+            </div> <!-- END columns md 12 -->
+        <!--</div>-->
     </div>
     <!-- /.container -->
 
@@ -135,7 +125,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
+                    <p>Copyright &copy; Jonell Alvi 2014</p>
                 </div>
             </div>
         </footer>
@@ -162,23 +152,53 @@
       <div class="modal-body">
 
         <form role="form">
-          <div class="row">
-              <div class="form-group col-xs-6">
+          <div class="row"> <!-- Name and color -->
+              <div class="form-group col-xs-6"><!-- Name and color -->
                 <!--<label for="exampleInputEmail1">New TimeTable:</label>-->
                 <label>New TimeTable:</label>
                 <input type="text" class="form-control" placeholder="Enter a name">
-              </div>
+              </div> <!-- END TimeTable name-->
               <div class="form-group col-xs-4">
                 <!--<label for="exampleInputEmail1">New TimeTable:</label>-->
                 <label>Pick a color:</label>
-                <input class="form-control color" value="66ff00">
+                <!--<input class="form-control color" value="66ff00">-->
+                <input type="color" id="colorpicker" name="color" value="#038d66">
+              </div><!-- END color pick-->
+          </div> <!-- END Name and color ROW -->
+          <div class="row"> <!-- Start date and number of lessons -->
+              <div class="form-group">
+                  <!-- start date widget goes here -->
+                  <input type="date">
+                  <!-- number of lessons widget goes here -->
               </div>
+          </div><!-- END Start date and number of lessons ROW -->
+          <div class="row"> <!-- Available dates -->
+              <div class="form-group">
+                <label>Available Days:</label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="sunday" value="option1"> S
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="monday" value="option2"> M
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="tuesday" value="option3"> T
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="wednesday" value="option1"> W
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="thursday" value="option2"> T
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="friday" value="option3"> F
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="saturday" value="option3"> S
+                </label>
+              </div>
+          </div> <!-- END Available Dates ROW -->
 
-          </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-          </div>
           <div class="form-group">
             <label for="exampleInputFile">File input</label>
             <input type="file" id="exampleInputFile">

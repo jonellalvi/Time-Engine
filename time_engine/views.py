@@ -59,16 +59,23 @@ def index(request):
     # The context contains information such as the client's machine details, for example.
     context = RequestContext(request)
 
-    # Construct a dictionary to pass to the template engine as its context.
-    # Note the key boldmessage is the same as {{ boldmessage }} in the template!
-    timetable_list = TimeTable.objects.all()
-    context_dict = {'alltimetables': timetable_list}
+    if request.method == "POST":
+        # User is saving / updating a timetable
+        print "POST method called"
+        return HttpResponse("post was called")
 
-    # Return a rendered response to send to the client.
-    # We make use of the shortcut function to make our lives easier.
-    # Note that the first parameter is the template we wish to use.
-    return render_to_response('time_engine/index.html', context_dict, context)
-    #return HttpResponse("Hello World! You're at the Time Engine Index! Woot!")
+    else:
+
+        # Construct a dictionary to pass to the template engine as its context.
+        # Note the key boldmessage is the same as {{ boldmessage }} in the template!
+        timetable_list = TimeTable.objects.all()
+        context_dict = {'alltimetables': timetable_list}
+
+        # Return a rendered response to send to the client.
+        # We make use of the shortcut function to make our lives easier.
+        # Note that the first parameter is the template we wish to use.
+        return render_to_response('time_engine/index.html', context_dict, context)
+        #return HttpResponse("Hello World! You're at the Time Engine Index! Woot!")
 
 @csrf_exempt
 def ajax(request):
