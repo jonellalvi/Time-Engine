@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<input class="inputTime">
+<input class="inputTime">
+<input class="inputTime">
+<script>
+    /**
+     * THE TASK AT HAND IS TO PROGRAMATICALLY ADD type="time" attribute to all inputs having the class inputTime.
+
+    /***
+     * RAW FIRST DRAFT - GET 'ER DONE, ALL IN ONE
+     */
+
+    var element_list = document.getElementsByClassName("inputTime");
+    for (var i = 0; i < element_list.length; i++) {
+        var element = element_list[i];
+        element.setAttribute("type", "time");
+    }
+
+
+    /***
+     * OPTIMIZED FOR BREVITY ALA JQUERY - BUT WHAT DOES IT DO? WHAT IF THERE IS A BUG, OR A NON-GENIUS READER!
+     */
+
+    [].map.call(document.getElementsByClassName("inputTime"), function (el) { el.setAttribute("type", "time"); return el; });
+
+
+    /***
+     * NOW REFACTOR FOR CODE REUSE AND CLARITY
+     */
+
+    /**
+     * Set Value of Any Attribute for every item in Element List. REUSABLE
+     */
+    function setAttributeOnList(element_list, attributeName, attributeValue) {
+        for (var i = 0; i < element_list.length; i++) {
+            var element = element_list[i];
+            element.setAttribute(attributeName, attributeValue);
+        }
+    }
+
+    /**
+     * Set Attribute Value On Elements Having a given Class in their class list. REUSABLE
+     */
+    function setAttributeByClass(className, attributeName, attributeValue) {
+        var element_list = document.getElementsByClassName(className);
+        return setAttributeOnList(element_list, attributeName, attributeValue);
+    }
+
+    /**
+     *     Wrapper simply avoids needing a comment by creating a function named for what it does in english.
+     */
+    function applyTimeType() {
+        setAttributeByClass("inputTime", "type", "time");
+    }
+
+    /**
+     * Finally call the darn function
+     */
+    applyTimeType();
+
+</script>
+</body>
+</html>

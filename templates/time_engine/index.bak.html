@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+{% load static %}
 <html lang="en">
 
 <head>
@@ -13,15 +13,15 @@
     <title>Time Engine</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="{% static 'time_engine/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="{% static 'time_engine/css/shop-item.css' %}" rel="stylesheet">
-    <link href="{% static 'time_engine/css/index.css' %}" rel="stylesheet">
-    <link href="{% static 'time_engine/css/panels.css' %}" rel="stylesheet">
+    <link href="{% static 'css/shop-item.css' %}" rel="stylesheet">
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
+    <link href="{% static 'css/panels.css' %}" rel="stylesheet">
     <!-- Custom js -->
-    <script src="{% static 'time_engine/js/panels.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/panels.js' %}" type="text/javascript"></script>
     <!-- jscolor color picker from http://jscolor.com/ -->
-    <script src="{% static 'time_engine/js/jscolor.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jscolor.js' %}" type="text/javascript"></script>
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -37,25 +37,12 @@
    <script src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js'></script>
    <script src='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.3/fullcalendar.min.js'></script>
 
-   <script src="{% static 'time_engine/js/bootstrap.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
    <script>
    $(document).ready(function() {
        $('#calendarContainer').fullCalendar({});
-       $('#save_timetable').click(function(e) {
-           var name = $('#name').val();
-           console.log(name);
-           $.ajax({
-               type: 'POST',
-               url: '/time_engine/ajax/',
-               data: {
-                   'name': name
-               }
-           })
-       });
    });
-
-
 
    </script>
 
@@ -117,10 +104,10 @@
                             </div>
                         </div>
                     </div> <!-- END Instructions row -->
-                    <div class="row">
-                        {{ form.as_p }}
-                        <button type="button" id="save_tt" class="btn btn-primary">Save changes</button>
-                    </div>
+                    <!--<div class="row">
+                        Info tiles for each time table go here once the first
+                        timetable is made.
+                    </div>-->
 
 
 
@@ -164,22 +151,72 @@
 
       <div class="modal-body">
 
-        <form role="form" action="/timetable/" method="post">
-
+        <form role="form">
           <div class="row"> <!-- Name and color -->
-            <label for="name">TimeTable name: </label>
-            <input id="name" type="text" name="name" value="{{ name }}">
+              <div class="form-group col-xs-6"><!-- Name and color -->
+                <!--<label for="exampleInputEmail1">New TimeTable:</label>-->
+                <label>New TimeTable:</label>
+                <input type="text" class="form-control" placeholder="Enter a name">
+              </div> <!-- END TimeTable name-->
+              <div class="form-group col-xs-4">
+                <!--<label for="exampleInputEmail1">New TimeTable:</label>-->
+                <label>Pick a color:</label>
+                <!--<input class="form-control color" value="66ff00">-->
+                <input type="color" id="colorpicker" name="color" value="#038d66">
+              </div><!-- END color pick-->
+          </div> <!-- END Name and color ROW -->
+          <div class="row"> <!-- Start date and number of lessons -->
+              <div class="form-group">
+                  <!-- start date widget goes here -->
+                  <input type="date">
+                  <!-- number of lessons widget goes here -->
+              </div>
+          </div><!-- END Start date and number of lessons ROW -->
+          <div class="row"> <!-- Available dates -->
+              <div class="form-group">
+                <label>Available Days:</label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="sunday" value="option1"> S
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="monday" value="option2"> M
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="tuesday" value="option3"> T
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="wednesday" value="option1"> W
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="thursday" value="option2"> T
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="friday" value="option3"> F
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="saturday" value="option3"> S
+                </label>
+              </div>
+          </div> <!-- END Available Dates ROW -->
 
-            <!--<input type="submit" value="OK">-->
+          <div class="form-group">
+            <label for="exampleInputFile">File input</label>
+            <input type="file" id="exampleInputFile">
+            <p class="help-block">Example block-level help text here.</p>
           </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> Check me out
+            </label>
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>
 
-          <!--<button type="submit" class="btn btn-default">Submit</button>-->
-        <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" id="save_timetable" class="btn btn-primary">Save changes</button>
-           </form>
       </div>
-     </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
     </div>
   </div>
 </div>

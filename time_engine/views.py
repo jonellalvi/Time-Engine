@@ -11,6 +11,7 @@ from datetime import date
 from json import dumps
 
 from django.views.decorators.csrf import csrf_exempt
+from .forms import TimeTableForm
 
 # User registration
 
@@ -59,6 +60,8 @@ def index(request):
     # The context contains information such as the client's machine details, for example.
     context = RequestContext(request)
 
+    form = TimeTableForm()
+
     if request.method == "POST":
         # User is saving / updating a timetable
         print "POST method called"
@@ -69,7 +72,10 @@ def index(request):
         # Construct a dictionary to pass to the template engine as its context.
         # Note the key boldmessage is the same as {{ boldmessage }} in the template!
         timetable_list = TimeTable.objects.all()
-        context_dict = {'alltimetables': timetable_list}
+        context_dict = {
+            'alltimetables': timetable_list,
+            'form': form
+        }
 
         # Return a rendered response to send to the client.
         # We make use of the shortcut function to make our lives easier.
@@ -81,13 +87,14 @@ def index(request):
 def ajax(request):
     if request.method == "POST":
         timetable = TimeTable()
-        user = User()
-        user.username = request.POST["user"]
-        user.save()
+        user = User.objects.all()[0]
+        #user.username = request.POST["user"]
+        #user.save()
         timetable.user = user
         timetable.start_date = date.today()
+        timetable.start_time = date.today().time()
         timetable.name = request.POST["name"]
-        timetable.lesson_count = request.POST["lesson_count"]
+        #timetable.lesson_count = request.POST["lesson_count"]
         timetable.save()
 
     timetable_list = list(TimeTable.objects.all())

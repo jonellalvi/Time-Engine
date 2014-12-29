@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.forms import ModelForm
 
 # Create your models here.
 # Questions: nullable date field, how to reference the built-in User model
@@ -8,10 +9,11 @@ class Settings(models.Model):
     ical_url = models.URLField(max_length=400)
 
 class TimeTable(models.Model):
-    name = models.CharField(max_length=200)
-    color = models.CharField(max_length=6, default='000000')
+    name = models.CharField(max_length=100)
+    color = models.CharField(max_length=6, default='009900')
     creation_date = models.DateField(auto_now_add=True)
-    start_date = models.DateField()
+    start_date = models.DateField(auto_now_add=True)
+    start_time = models.TimeField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
     user = models.ForeignKey(User)
     lesson_count = models.IntegerField(default=0)
@@ -26,8 +28,11 @@ class TimeTable(models.Model):
     def __unicode__(self):
         return self.name
 
+    # Add a method to calculate the TimeTable
+
 
 class Result(models.Model):
     lesson_num = models.IntegerField()
     lesson_date = models.DateField()
     timetable = models.ForeignKey(TimeTable)
+
