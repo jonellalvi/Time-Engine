@@ -4,7 +4,8 @@ from time_engine import views
 urlpatterns = patterns('',
 
         url(r'^register/', views.register, name='register'),
-        url(r'^login/', views.login, name='login'),
+        url(r'^login/', views.user_login, name='login'),
+        url(r'^logout', views.user_login, name='logout'),
         url(r'^$', views.index, name='index'),
         url(r'^ajax/', views.ajax, name='ajax'),
         # /options/

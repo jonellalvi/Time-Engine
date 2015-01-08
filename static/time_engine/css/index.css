@@ -7,3 +7,22 @@
 .thumbnail {
     padding: 1.5em 2.25em;
 }
+
+/**** Styles for the form ***/
+
+
+/* name field */
+#tt_name {
+
+}
+
+#id_color {
+    list-style: none;
+}
+
+
+/* individual radios */
+.color_choice {
+
+
+}

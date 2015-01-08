@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-<form method="post">
-    {% csrf_token %}
-    <input name="username" placeholder="username">
-    <input name="password" placeholder="password" type="password">
-    <input type="submit" value="Register">
-</form>
-</body>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Time Engine</title>
+    </head>
+    <body>
+        <h1>Register for the Time Engine</h1>
+
+        {% if registered %}
+        Time Engine says <strong>Thanks for registering!</strong>
+        <a href="/time_engine/">Return to the Time Engine</a><br />
+        {% else %}
+        Time Engine says <strong>Register Here!</strong><br />
+
+        <form id="user_form" method="post" action="/time_engine/register/" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Display each form-->
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+            <!-- Provide a button to click to submit the form -->
+            <input type="submit" name="submit" value="Register" />
+         </form>
+        {% endif %}
+    </body>
 </html>

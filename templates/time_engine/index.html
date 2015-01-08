@@ -87,7 +87,13 @@
                         <a href="#">Help</a>
                     </li>
                     <li>
-                        <a href="#">Login</a>
+                        {% if registered %}
+                        <a href="/time_engine/register">Login</a>
+                        {% else %}
+                       <a href="/time_engine/register">Register</a>
+                        {% endif %}
+
+
                     </li>
                 </ul>
             </div>
@@ -103,6 +109,19 @@
             <div class="col-md-12">
                 <div class="thumbnail">
                     <div class="row"> <!-- CALENDAR ROW -->
+                        <div>
+                            {% if user.is_authenticated %}
+                            <p>Time Engine says... hello {{ user.username }}!</p>
+                            <a href="/time_engine/logout/">Logout</a><br />
+                            {% else %}
+                            <p>Time Engine says... hello world!</p>
+                            {% endif %}
+                            {% if registered %}
+                            <a href="/time_engine/login">Login</a>
+                            {% else %}
+                            <a href="/time_engine/register">Register</a>
+                            {% endif %}
+                        </div>
                         <div  id="calendarContainer">
 
                         </div>
@@ -118,8 +137,15 @@
                         </div>
                     </div> <!-- END Instructions row -->
                     <div class="row">
-                        {{ form.as_p }}
-                        <button type="button" id="save_tt" class="btn btn-primary">Save changes</button>
+                        <!--{{ form.as_p }}<!-- model forms -->
+                        <!--<button type="button" id="save_tt" class="btn btn-primary">Save changes</button>-->
+                        <!-- Basic form-->
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {{ form }}
+                            <input type="submit" value="Submit" />
+                        </form>
+
                     </div>
 
 

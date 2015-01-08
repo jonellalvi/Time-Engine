@@ -1,5 +1,5 @@
 from django.contrib import admin
-from time_engine.models import TimeTable, Result
+from time_engine.models import TimeTable, Result, UserProfile
 
 class ChoiceInline(admin.StackedInline):
     model = Result
@@ -22,5 +22,6 @@ class TimeTableAdmin(admin.ModelAdmin):
 #     ]
 #     list_display = ('plan', 'lesson_no', 'lesson_date')
 
+admin.site.register(UserProfile)
 admin.site.register(TimeTable, TimeTableAdmin)
 #admin.site.register(PlanResult)
