@@ -1,0 +1,69 @@
+###########################
+
+Time Engine ToDo list
+
+##########################
+
+TOC:
+1. Forms/Database stuff
+2. Time_Engine algorithm
+3. User Authentication
+4. Interface
+5. Calendar Display
+6. Docs
+7. Completed
+
+**************************
+1. Forms/Database
+**************************
+
+1. Figure out how forms submit the data 
+	- what does it look like when submitted
+	- AJAX tutorial? Duckett book or Treehouse?
+
+**************************
+2. Time_Engine algorithm
+**************************
+
+1. Decide if it's better to do the calc in JavaScript or Python (or both?)
+2. Review Kevin's JavaScript version
+3. Write a psuedo code version in Python
+4. Create sample data
+5. Code it
+
+**************************
+3. User Authentication
+**************************
+
+1. Arange url patterns so it user isn't logged in, the registration page
+becomes the landing page.
+2. Make them prettier
+3. Add login/logout and user info to top right menu
+
+**************************
+4. Interface
+**************************
+
+1. work more with bootstrap
+2. learn some HTML5 -- find a tutorial and do it
+3. make it look nice!
+
+**************************
+5. Calendar Display
+**************************
+
+1. Add the timeline display
+2. Add the ability to make colorful
+
+**************************
+6. Docs
+**************************
+
+1. Make a nice site on github
+
+**************************
+7. Misc
+**************************
+
+1. study jquery
+2. study json/AJAX
