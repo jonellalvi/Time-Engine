@@ -176,6 +176,38 @@ def index(request):
         # check if it's vaild:
         if form.is_valid():
             #process the data in form.cleaned_data as required
+            # IS THIS WHERE THE CALCULATION WOULD GO FOR MY TIMETABLE?
+            # See example at https://docs.djangoproject.com/en/1.7/topics/forms/
+            name = form.cleaned_data['name']
+            color = form.cleaned_data['color']
+            start_date = form.cleaned_data['start_date']
+            start_time = form.cleaned_data['start_time']
+            lesson_count = form.cleaned_data['lesson_count']
+            has_saturday = form.cleaned_data['has_saturday']
+            has_monday = form.cleaned_data['has_monday']
+            has_tuesday = form.cleaned_data['has_tuesday']
+            has_wednesday = form.cleaned_data['has_wednesday']
+            has_thursday = form.cleaned_data['has_thursday']
+            has_friday = form.cleaned_data['has_friday']
+            has_sunday = form.cleaned_data['has_sunday']
+            print form.cleaned_data
+            print form
+            # https://docs.djangoproject.com/en/1.7/ref/forms/api/#accessing-clean-data
+            # now I have a dictionary of the values.
+            # here's a sample:
+            # {
+            #   'has_thursday': False,
+            #   'name': u'Spam',
+            #   'color': u'yellow',
+            #   'start_time': datetime.time(4, 20),
+            #   'has_tuesday': False,
+            #   'has_saturday': False,
+            #   'has_wednesday': True,
+            #   'lesson_count': 14,
+            #   'has_monday': True,
+            #   'has_friday': True,
+            #   'start_date': datetime.date(2000, 3, 25)
+            # }
 
             print "the form is valid"
             return HttpResponseRedirect("")
