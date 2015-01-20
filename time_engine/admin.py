@@ -8,7 +8,7 @@ class ChoiceInline(admin.StackedInline):
 class TimeTableAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Basic information', {'fields': ['name', 'user', 'lesson_count'],'classes': ['collapse']}),
-        ('Date information', {'fields': ['start_date', 'end_date'],'classes': ['collapse']}),
+        ('Date information', {'fields': ['start_date', 'start_time', 'end_date'],'classes': ['collapse']}),
         ('Available days',   {'fields': ['has_saturday', 'has_monday', 'has_tuesday', 'has_wednesday', 'has_thursday', 'has_friday', 'has_sunday'], 'classes': ['collapse']})
     ]
     inlines = [ChoiceInline]

@@ -84,7 +84,6 @@ def register(request):
                   {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 
-
 # User login
 # This is based on http://www.tangowithdjango.com/book17/chapters/login.html
 def user_login(request):
@@ -194,7 +193,7 @@ def index(request):
             print form
             # https://docs.djangoproject.com/en/1.7/ref/forms/api/#accessing-clean-data
             # now I have a dictionary of the values.
-            # here's a sample:
+            # here's a sample of what form.cleaned_data returns:
             # {
             #   'has_thursday': False,
             #   'name': u'Spam',
