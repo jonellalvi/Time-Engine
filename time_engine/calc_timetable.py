@@ -59,50 +59,28 @@ has_friday = form_data.get('has_friday')
 has_saturday = form_data.get('has_saturday')
 has_sunday = form_data.get('has_sunday')
 
-print has_monday
-print has_tuesday
-print has_wednesday
-print has_thursday
-print has_friday
-print has_saturday
-print has_sunday
-
-# now make them the indexes for the week:
-
 
 # figure out what day of the week start_date is:
 start_day = start_date.weekday()
 print start_day
-# print start_date.strftime('%A')
+print start_date.strftime('%A')
 # create a function to convert the available days into the index numbers:
 
 # This is blowing my head off! trying to make a list of monday through Sunday of the available days. argh.
 # i need help
 
 def is_available():
-    days_of_week = []
-    for key, value in form_data.iteritems():
-        print  key, value
-        # make a list of the available days
+    available_days = []
+    available_days.append(True if form_data.get('has_monday') else False)
+    available_days.append(True if form_data.get('has_tuesday') else False)
+    available_days.append(True if form_data.get('has_wednesday') else False)
+    available_days.append(True if form_data.get('has_thursday') else False)
+    available_days.append(True if form_data.get('has_friday') else False)
+    available_days.append(True if form_data.get('has_saturday') else False)
+    available_days.append(True if form_data.get('has_sunday') else False)
 
-        if 'has' in key:
-            if 'monday' in key:
-                days_of_week.insert(0, value)
-            if 'tuesday' in key:
-                days_of_week.insert(1, value)
-            if 'wednesday' in key:
-                days_of_week.insert(2, value)
-            if 'thursday' in key:
-                days_of_week.insert(3, value)
-            if 'friday' in key:
-                days_of_week.insert(4, value)
-            if 'saturday' in key:
-                days_of_week.insert(5, value)
-            if 'sunday' in key:
-                days_of_week.insert(6, value)
-
-    print days_of_week
-
+    return available_days
+# [True, False, True, False, True, False, False]
 is_available()
 
 
@@ -111,8 +89,31 @@ is_available()
 # if it is, add the date to the list
 # if not, go to the next day.
 
+# starting at start_date, create the list of lessons
+
+def get_timetable(lesson_count, start_date):
+    dayDelta = datetime.timedelta(days=1)
+    current_date = start_date
+    # goal is to make a list of dates for the lessons
+    timetable = []
+    timetable.append(start_date)
+    while lesson_count > 0:
+        # need to start at startdate and loop through subsequent dates
+        # if the date is avaialbe, add it to the list of dates
+        # and decriment lesson_count
+        # if the date is not available, jsut loop to the next one.
+        available = is_available()
+        if available[current_date.weekday()]:
+            timetable.append(current_date)
+            start_date += dayDelta
+            lesson_count -= 1
+
+    print timetable
+
+get_timetable(lesson_count, start_date)
+
 # I need to write something to get the available days. hmmm
-
-
+# ---------------------------------------------------------------------
+ 
 
 
