@@ -1,27 +1,9 @@
+import calendar
 import datetime
 from datetime import timedelta
-import calendar
-# User inputs data on the form in TimeTableForm
-# Take that input and process it here to figure out the dates
-# Problem -- what format is the data?
-# {
-# 'has_thursday': False,
-#   'name': u'Spam',
-#   'color': u'yellow',
-#   'start_time': datetime.time(4, 20),
-#   'has_tuesday': False,
-#   'has_saturday': False,
-#   'has_wednesday': True,
-#   'lesson_count': 14,
-#   'has_monday': True,
-#   'has_friday': True,
-#   'start_date': datetime.date(2000, 3, 25)
-# }
-# Problem --> what output do I want to create?
-# probably a list of dates and times?
+
 
 # set some sample data:
-
 form_data = {
     'has_thursday': False,
     'name': u'Test',
@@ -37,7 +19,7 @@ form_data = {
     'start_date': datetime.date(2015, 2, 4)
 }
 
-#create an empty list that will hold the dates
+# create an empty list that will hold the dates
 # that comprise the timetable:
 time_table = []
 
@@ -50,7 +32,6 @@ print start_date, start_time
 lesson_count = form_data.get('lesson_count')
 
 # get the available days:
-# i think this is an index?
 has_monday = form_data.get('has_monday')
 has_tuesday = form_data.get('has_tuesday')
 has_wednesday = form_data.get('has_wednesday')
@@ -59,16 +40,17 @@ has_friday = form_data.get('has_friday')
 has_saturday = form_data.get('has_saturday')
 has_sunday = form_data.get('has_sunday')
 
-
 # figure out what day of the week start_date is:
 start_day = start_date.weekday()
 print start_day
 print start_date.strftime('%A')
 # create a function to convert the available days into the index numbers:
 
-# This is blowing my head off! trying to make a list of monday through Sunday of the available days. argh.
-# i need help
-
+# Make a list of booleans that represent which days of the week are
+# available for lessons/events
+# index 0 is monday and index 6 is sunday
+# so if avail on Mon. Wed. Fri.
+# return: [True, False, True, False, True, False, False]
 def is_available():
     available_days = []
     available_days.append(True if form_data.get('has_monday') else False)
@@ -81,49 +63,54 @@ def is_available():
 
     return available_days
 
-# [True, False, True, False, True, False, False]
-is_available()
-
 
 # loop through the number of events (i.e. 20)
 # test if the date is available or not
 # if it is, add the date to the list
 # if not, go to the next day.
 
-# starting at start_date, create the list of lessons
-
 def get_timetable(lesson_count, start_date):
-    dayDelta = datetime.timedelta(days=1)
+    # set up some stuff:
 
-    # goal is to make a list of dates for the lessons
+    # gets the next day
+    a_day = datetime.timedelta(days=1)
+
+    # set an empty list that will become the timetable
     timetable = []
+
+    # get the list of available days from is_available()
     available = is_available()
+
     # figure out the first valid date:
     if available[start_date.weekday()]:
-        # if avail, add to list
+        # if avail, add to the timetable
         timetable.append(start_date)
-    # get the next date
-    next_date = start_date + datetime.timedelta(days=1)
 
-    print "The next day should be: ", start_date + datetime.timedelta(days=1)
+    # get the next date
+    next_date = start_date + a_day
+
+    print "The next day should be: ", start_date + a_day
+
+    # if there's still lessons/event to assign, keep going
     while lesson_count > 0:
-        # need to start at startdate and loop through subsequent dates
-        # if the date is avaialbe, add it to the list of dates
-        # and decriment lesson_count
-        # if the date is not available, jsut loop to the next one.
-        #available = is_available()
+        # check if the date is available
         if available[next_date.weekday()]:
+            # add it to the timetable
             timetable.append(next_date)
-            next_date += datetime.timedelta(days=1)
+            # increment the date
+            next_date += a_day
+            # decrement the number of lessons/events
             lesson_count -= 1
         else:
-            #get the next date
-            next_date += datetime.timedelta(days=1)
+            #if the date isn't available,
+            # just increment the date
+            next_date += a_day
+
     print timetable
     date_strings = [dt.strftime("%A %B %d, %Y") for dt in timetable]
     print date_strings
 
-
+# create the timetable
 get_timetable(lesson_count, start_date)
 
 
