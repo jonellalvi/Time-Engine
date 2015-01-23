@@ -39,7 +39,7 @@ COLOR_CHOICES = (('blue', 'blue'),
 class TimeTableForm(forms.Form):
     name = forms.CharField(
         label='Name Your TimeTable',
-        widget=forms.TextInput(attrs={'id': 'tt_name'}),
+        widget=forms.TextInput(attrs={'id': 'tt_name', 'class': 'red'}),
         max_length=100
     )
     color = forms.ChoiceField(
@@ -61,7 +61,7 @@ class TimeTableForm(forms.Form):
         label='Number of lessons',
         widget=NumberInput(attrs={'class': 'lesson_count'})
     )
-    # might want to use CheckboxSleectMultple widget for all of these guys
+    # might want to use CheckboxSelectMultple widget for all of these guys
     # https://docs.djangoproject.com/en/1.7/ref/forms/widgets/#radioselect
     has_saturday = forms.BooleanField(
         label='Sat',

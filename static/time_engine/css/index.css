@@ -10,6 +10,10 @@
 
 /**** Styles for the form ***/
 
+/** cancel the default error messages **/
+ul.errorlist {
+    display:none;
+}
 
 /* name field */
 #tt_name {
