@@ -3,15 +3,16 @@ from django.contrib.auth.models import User
 from time_engine.models import TimeTable, UserProfile
 from django.forms.extras.widgets import SelectDateWidget
 from django.forms import widgets
-from datetime import date
-from django.forms.widgets import DateInput, TimeInput, NumberInput, CheckboxInput
+from datetime import datetime
+from django.forms.widgets import DateInput, TimeInput, NumberInput, CheckboxInput, CheckboxSelectMultiple
+from django.forms.extras.widgets import SelectDateWidget
 #
 # class PlanForm(forms.ModelForm):
 # name = forms.CharField(max_length=200, help_text="Enter a Plan name.")
 #
 # Using ModelForms:
 # class TimeTableForm(forms.ModelForm):
-#     class Meta:
+# class Meta:
 #         model = TimeTable
 
 # User Registration stuff
@@ -35,6 +36,9 @@ COLOR_CHOICES = (('blue', 'blue'),
                  ('red', 'red'),
                  ('yellow', 'yellow'))
 
+# Hard coded for now; refactor later
+YEAR_CHOICES = ('2015', '2016', '2017', '2018', '2019', '2020')
+
 
 class TimeTableForm(forms.Form):
     name = forms.CharField(
@@ -49,9 +53,11 @@ class TimeTableForm(forms.Form):
         choices=COLOR_CHOICES
     )
     start_date = forms.DateField(
-        label='Start Date (dd/mm/yyyy)',
-        widget=DateInput(format="%d/%m/%Y", attrs={'class': 'start_date'}),
-        input_formats=["%m/%d/%Y"]
+        label='Start Date',
+        # widget=DateInput(format="%d/%m/%Y", attrs={'class': 'start_date'}),
+        widget=SelectDateWidget(None, YEAR_CHOICES),
+        initial=datetime.now()
+        #input_formats=["%m/%d/%Y"]
     )
     start_time = forms.TimeField(
         label='Start Time (HH:MM)',
@@ -61,8 +67,16 @@ class TimeTableForm(forms.Form):
         label='Number of lessons',
         widget=NumberInput(attrs={'class': 'lesson_count'})
     )
-    # might want to use CheckboxSelectMultple widget for all of these guys
+    # might want to use CheckboxSelectMultiple widget for all of these guys
     # https://docs.djangoproject.com/en/1.7/ref/forms/widgets/#radioselect
+
+    # avail_days = forms.MultipleChoiceField(
+    #     label='Choose Available Days:',
+    #     required=False,
+    #     widget=CheckboxSelectMultiple(),
+    #     choices=DAY_CHOICES
+    # )
+
     has_saturday = forms.BooleanField(
         label='Sat',
         required=False,

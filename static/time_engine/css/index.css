@@ -15,6 +15,11 @@ ul.errorlist {
     display:none;
 }
 
+/* for error messages */
+.red {
+    color: red;
+}
+
 /* name field */
 #tt_name {
 

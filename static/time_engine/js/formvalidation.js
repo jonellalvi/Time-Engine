@@ -30,6 +30,46 @@ function validateForm() {
     );
 }
 
+// return true if the input value is not empty
+function isNotEmpty(inputId, errorMsg) {
+    var inputElement = document.getElementById(inputId);
+    var errorElement = document.getElementById(inputId + "Error");
+    var inputValue = inputElement.value.trim();
+    var isValid = (inputValue.length !== 0); // boolean
+    showMessage(isValid, inputElement, errorMsg, errorElement);
+    return isValid;
+}
+
+/* If isValid is false, print the errorMsg;
+else, reset to normal display.
+show via an alert for now.
+Later make it work on an element.
+ */
+function showMessage(isValid, inputElement, errorMsg, errorElement){
+    if (!isValid){
+        //display error message:
+        if (errorElement !== null) {
+            errorElement.innerHTML = errorMsg;
+        } else {
+            alert(errorMsg);
+        }
+        //change class of inputElemtn so css displays differently
+        if (inputElement !== null) {
+            inputElement.className = "error";
+            inputElement.focus();
+        }
+    } else {
+        //reset to normal display
+        if (errorElement !== null) {
+            errorElement.innerHTML = "";
+        }
+        if (inputElement !== null) {
+            errorElement.className = "";
+        }
+    }
+}
+
+
 // clear the fields when "reset" is clicked
 function clearDisplay() {
     //get all the form elements
@@ -37,10 +77,10 @@ function clearDisplay() {
     console.log("the elements are ", els);
     // loop over the elements and remove the errors:
     for (var i=0; i < els.length; i++){
-        if ((els[i].className).match(/errorlist$/)) {
-            elms[i].innerHTML = "";
+        if ((els[i].id).match(/Error$/)) {
+            els[i].innerHTML = "";
         }
-        if (els[i].className === "errorlist") {
+        if (els[i].className === "error") {
             els[i].className = "";
         }
     }

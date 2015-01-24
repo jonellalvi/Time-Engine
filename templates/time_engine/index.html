@@ -114,8 +114,11 @@
                         <div class="fieldWrapper">
                             {# uncomment to display field errors #}
                             {# {{field.errors }} #}
-
-                            {{ field.label_tag }} {{ field }}
+                            <tr>
+                                <td>{{ field.label_tag }}<span class="red">*</span></td>
+                                <td>{{ field }}</td>
+                                <td id="{{ field.id_for_label }}Error" class="red">&nbsp;</td>
+                            </tr>
                         </div>
                     {% endfor %}
                     <button id="reset">Reset</button>

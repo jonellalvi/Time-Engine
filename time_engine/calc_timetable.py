@@ -4,20 +4,22 @@ from datetime import timedelta
 
 
 # set some sample data:
-form_data = {
-    'has_thursday': False,
-    'name': u'Test',
-    'color': u'green',
-    'start_time': datetime.time(4, 20),
-    'has_tuesday': False,
-    'has_saturday': False,
-    'has_wednesday': True,
-    'lesson_count': 20,
-    'has_sunday': False,
-    'has_monday': False,
-    'has_friday': True,
-    'start_date': datetime.date(2015, 2, 4)
-}
+# form_data = {
+#     'has_thursday': False,
+#     'name': u'Test',
+#     'color': u'green',
+#     'start_time': datetime.time(4, 20),
+#     'has_tuesday': False,
+#     'has_saturday': False,
+#     'has_wednesday': True,
+#     'lesson_count': 20,
+#     'has_sunday': False,
+#     'has_monday': False,
+#     'has_friday': True,
+#     'start_date': datetime.date(2015, 2, 4)
+# }
+
+form_data = {'has_thursday': False, 'name': u'new_date', 'color': u'green', 'start_time': datetime.time(4, 20), 'has_tuesday': True, 'has_saturday': False, 'has_wednesday': True, 'lesson_count': 13, 'has_sunday': False, 'has_monday': True, 'has_friday': False, 'start_date': datetime.date(2015, 2, 6)}
 
 # create an empty list that will hold the dates
 # that comprise the timetable:
