@@ -10,7 +10,20 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
+# django is looking here:
+# Django tried loading these templates, in this order:
+#
+#     Using loader django.template.loaders.filesystem.Loader:
+#         C:\Jonell\Projects\apps\djangotest\tigen_project\templates\time_engine\index.html (File does not exist)
+# Actual: C:\Jonell\Projects\apps\djangotest\tigen_project\templates\time_engine\index.html
+#     Using loader django.template.loaders.app_directories.Loader:
+#         C:\Jonell\Projects\apps\djangotest\venv\lib\site-packages\django\contrib\admin\templates\time_engine\index.html (File does not exist)
+#         C:\Jonell\Projects\apps\djangotest\venv\lib\site-packages\django\contrib\auth\templates\time_engine\index.html (File does not exist)
+#
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+print BASE_DIR
 
 PROJECT_PATH = os.path.join(BASE_DIR, os.pardir)
 #PROJECT_PATH = os.path.join(PROJECT_PATH)
@@ -101,7 +114,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = ''
 
-STATIC_PATH = '/home/student/capstone/tigen_project/static/' #os.path.join(PROJECT_PATH, 'static')
+STATIC_PATH = 'c:/Jonell/Projects/apps/djangotest/tigen_project/static' #os.path.join(PROJECT_PATH, 'static')
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.

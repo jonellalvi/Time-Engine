@@ -61,7 +61,7 @@ class TimeTableForm(forms.Form):
     )
     start_time = forms.TimeField(
         label='Start Time (HH:MM)',
-        widget=TimeInput(format="%H:%M", attrs={'class': 'start_time'})
+        widget=forms.TimeInput(format='%H:%M', attrs={'class': 'start_time'})
     )
     lesson_count = forms.IntegerField(
         label='Number of lessons',

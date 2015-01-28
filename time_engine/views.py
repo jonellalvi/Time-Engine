@@ -11,6 +11,7 @@ from datetime import date
 from json import dumps
 from time_engine.forms import TimeTableForm, UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
+from calc_timetable import get_timetable
 
 
 from django.views.decorators.csrf import csrf_exempt
@@ -209,7 +210,13 @@ def index(request):
             # }
 
             print "the form is valid"
+            # okay now we need to send this to the server to run calc_dates.py
+            # no we actually import the class from calc_timetable.py
+            #
+            ajax_data = form.cleaned_data
+            #result = get_timetable(form.cleaned_data)
             return HttpResponseRedirect("")
+
     else:
         form = TimeTableForm()
     return render(request, 'time_engine/index.html', {'form': form})
