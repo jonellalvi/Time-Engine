@@ -1,7 +1,7 @@
 import datetime
 
 
-class Timetable(object):
+class EventList(object):
     '''
     Makes a timetable, which is a list of dates,
     based on data from the form (form_data)
@@ -37,7 +37,7 @@ class Timetable(object):
             self.available_days.append(True if form_data.get('has_sunday') else False)
 
     # create the timetable
-    def get_timetable(self):
+    def get_eventlist(self):
         # set an empty list that will become the timetable
         timetable = []
 
@@ -67,14 +67,14 @@ class Timetable(object):
 
             # increment the date
             next_date += a_day
-
-        print timetable
         date_strings = [dt.strftime("%A %B %d, %Y") for dt in timetable]
-        return date_strings
+        print date_strings
+        return timetable
+        # date_strings = [dt.strftime("%A %B %d, %Y") for dt in timetable]
+        # return date_strings
 
     # create the timetable
 
-form_data = {'has_thursday': False, 'name': u'new_date', 'color': u'green', 'start_time': datetime.time(4, 20), 'has_tuesday': True, 'has_saturday': False, 'has_wednesday': True, 'lesson_count': 13, 'has_sunday': False, 'has_monday': True, 'has_friday': False, 'start_date': datetime.date(2015, 2, 6)}
+#form_data = {'has_thursday': False, 'name': u'new_date', 'color': u'green', 'start_time': datetime.time(4, 20), 'has_tuesday': True, 'has_saturday': False, 'has_wednesday': True, 'lesson_count': 13, 'has_sunday': False, 'has_monday': True, 'has_friday': False, 'start_date': datetime.date(2015, 2, 6)}
 
-tt = Timetable(form_data)
-print tt.get_timetable()
+

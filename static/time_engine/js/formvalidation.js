@@ -11,29 +11,58 @@ window.onload = init;
 
 function init(){
     // validateForm function is the onsubmit handler
-    document.getElementById("theForm").onsubmit = validateForm;
+    //document.getElementById("theForm").onsubmit = validateForm;
     // onclick handler attached to "reset" button calls clearDisplay function
     document.getElementById("reset").onclick = clearDisplay;
     // set focus to the name field -- investigate HTML5 autofocus!
-    document.getElementById("tt_name").focus();
+    document.getElementById("name").focus();
 }
+
+function onData() {
+    //this gets data when it arrives
+    var data = JSON.parse(request.responseText);
+    console.log(data); //send to calendar like example shows
+     $('#calendarContainer').fullCalendar(data);
+}
+
+var request = new XMLHttpRequest();
+
+function loadData() {
+    var form_data = [];
+    form_data.push('name=' + document.getElementById('name').value);
+
+
+    request.onreadystatechange = onData;
+    request.open('POST', '/time_engine/', true);
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.send(form_data.join('&'));
+
+}
+
+
 
 /* validateForm() is the handler to validate input fields */
 
 function validateForm() {
-    return (isNotEmpty ("tt_name", "Please enter a name.")
-        && isChecked("color", "Please choose a color.")
-        && isDate("id_start_date", "Enter a date as dd/mm/yyyy")
-        && isStartTime("id_start_time", "Enter a start time as HH:MM")
-        && isNumeric("id_lesson_count", "Enter the number of events in the series.")
-        && isChecked("checkbox", "Please check at least one day")
-    );
+    var result = true;
+    //(isNotEmpty ("name", "Please enter a name.")
+    //    && isChecked("color", "Please choose a color.")
+    //    && isDate("id_start_date", "Enter a date as dd/mm/yyyy")
+    //    && isStartTime("id_start_time", "Enter a start time as HH:MM")
+    //    && isNumeric("id_lesson_count", "Enter the number of events in the series.")
+    //    && isChecked("checkbox", "Please check at least one day")
+    //);
+    if (result){
+        loadData();
+    }
 }
 
 // return true if the input value is not empty
 function isNotEmpty(inputId, errorMsg) {
-    var inputElement = document.getElementById(inputId);
-    var errorElement = document.getElementById(inputId + "Error");
+    console.log("Input id = ");
+    console.log(inputId);
+    var inputElement = document.getElementById("id_" + inputId);
+    var errorElement = document.getElementById("id_" + inputId + "Error");
     var inputValue = inputElement.value.trim();
     var isValid = (inputValue.length !== 0); // boolean
     showMessage(isValid, inputElement, errorMsg, errorElement);
@@ -85,9 +114,11 @@ function clearDisplay() {
         }
     }
     //set initial focus again:
-    document.getElementById("tt_name").focus();
+    document.getElementById("name").focus();
 }
 
 var runButton = document.getElementById("run");
 console.log(runButton);
-runButton.addEventListener("click", validateForm);
+//runButton.addEventListener("click", validateForm);
+
+//if validates make the request.

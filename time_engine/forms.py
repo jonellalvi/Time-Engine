@@ -4,7 +4,7 @@ from time_engine.models import TimeTable, UserProfile
 from django.forms.extras.widgets import SelectDateWidget
 from django.forms import widgets
 from datetime import datetime
-from django.forms.widgets import DateInput, TimeInput, NumberInput, CheckboxInput, CheckboxSelectMultiple
+from django.forms.widgets import DateInput, TimeInput, NumberInput, CheckboxInput, CheckboxSelectMultiple, HiddenInput
 from django.forms.extras.widgets import SelectDateWidget
 #
 # class PlanForm(forms.ModelForm):
@@ -43,7 +43,7 @@ YEAR_CHOICES = ('2015', '2016', '2017', '2018', '2019', '2020')
 class TimeTableForm(forms.Form):
     name = forms.CharField(
         label='Name Your TimeTable',
-        widget=forms.TextInput(attrs={'id': 'tt_name', 'class': 'red'}),
+        widget=forms.TextInput(attrs={'id': 'name', 'class': 'red'}),
         max_length=100
     )
     color = forms.ChoiceField(
@@ -63,7 +63,7 @@ class TimeTableForm(forms.Form):
         label='Start Time (HH:MM)',
         widget=forms.TimeInput(format='%H:%M', attrs={'class': 'start_time'})
     )
-    lesson_count = forms.IntegerField(
+    event_count = forms.IntegerField(
         label='Number of lessons',
         widget=NumberInput(attrs={'class': 'lesson_count'})
     )
@@ -111,4 +111,8 @@ class TimeTableForm(forms.Form):
         label='Sun',
         required=False,
         widget=CheckboxInput(attrs={'class': 'has_sunday'})
+    )
+    save = forms.CharField(
+        required=False,
+        widget=HiddenInput(attrs={'class': 'save'})
     )

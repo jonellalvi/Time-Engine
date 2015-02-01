@@ -11,7 +11,7 @@ from datetime import date
 from json import dumps
 from time_engine.forms import TimeTableForm, UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
-from calc_timetable import get_timetable
+from calc_eventlist import EventList
 
 
 from django.views.decorators.csrf import csrf_exempt
@@ -167,12 +167,15 @@ def index(request):
     # form = TimeTableForm()
 
     # if this is a POST request we need to process the form data:
+    # this is an ajax request:
     if request.method == "POST":
+        print request.POST['name']
         # User is saving / updating a timetable
         print "POST method called"
         # create a form instance and populate it with data from the request:
         # This is called binding the data to the form
         form = TimeTableForm(request.POST)
+
         # check if it's vaild:
         if form.is_valid():
             #process the data in form.cleaned_data as required
@@ -182,7 +185,7 @@ def index(request):
             color = form.cleaned_data['color']
             start_date = form.cleaned_data['start_date']
             start_time = form.cleaned_data['start_time']
-            lesson_count = form.cleaned_data['lesson_count']
+            event_count = form.cleaned_data['event_count']
             has_saturday = form.cleaned_data['has_saturday']
             has_monday = form.cleaned_data['has_monday']
             has_tuesday = form.cleaned_data['has_tuesday']
@@ -190,8 +193,9 @@ def index(request):
             has_thursday = form.cleaned_data['has_thursday']
             has_friday = form.cleaned_data['has_friday']
             has_sunday = form.cleaned_data['has_sunday']
-            print form.cleaned_data
-            print form
+            save_option = form.cleaned_data['save']
+            form_data = form.cleaned_data
+            print form_data
             # https://docs.djangoproject.com/en/1.7/ref/forms/api/#accessing-clean-data
             # now I have a dictionary of the values.
             # here's a sample of what form.cleaned_data returns:
@@ -208,14 +212,51 @@ def index(request):
             #   'has_friday': True,
             #   'start_date': datetime.date(2000, 3, 25)
             # }
+            eventlist = EventList(form_data)
+            result = eventlist.get_eventlist()
 
-            print "the form is valid"
-            # okay now we need to send this to the server to run calc_dates.py
-            # no we actually import the class from calc_timetable.py
-            #
-            ajax_data = form.cleaned_data
-            #result = get_timetable(form.cleaned_data)
-            return HttpResponseRedirect("")
+            events = []
+
+            for index, r in enumerate(result):
+                evt = {'title': 'event: ' + str(index + 1),
+                       'start': r.isoformat(),
+                       'allDay': False
+                }
+                events.append(evt)
+
+            # format a dictionary that looks like test_events but with my data:
+            test_events = { 'events': [
+                {
+                    'title':  'event1',
+                    'start': '2015-01-09T12:30:00',
+                    'allDay': False
+                },
+                {
+                    'title'  : 'woot2',
+                   'start'  : '2015-01-10T12:30:00',
+                    'allDay' : False
+                },
+                {
+                    'title'  : 'event3',
+                   'start' : '2015-01-11T12:30:00',
+                    'allDay' : False
+                }
+            ]
+            }
+
+            # if it's save, save to database
+            if save_option == "true":
+                timetable_id = save_timetable(form_data, request.user)
+
+            
+            date_strings = test_events#[dt.strftime("%A %B %d, %Y") for dt in result]
+            #print date_strings
+            # now format the data to be passed to FullCalendar
+            #return HttpResponseRedirect("")
+            return HttpResponse(dumps({'events': events}), content_type="application/json")
+        else:
+            return HttpResponse('{"status": "invalid form!"}', content_type="application/json")
+
 
     else:
         form = TimeTableForm()
@@ -237,6 +278,27 @@ def index(request):
     #     # Note that the first parameter is the template we wish to use.
     #     return render_to_response('time_engine/index.html', context_dict, context)
     #     #return HttpResponse("Hello World! You're at the Time Engine Index! Woot!")
+
+# only save if logged in.
+def save_timetable(form_data, user):
+    # take form_data and massage it and save to model.
+    print "save to model !!!", form_data
+    tt = TimeTable()
+    tt.name = form_data['name']
+    tt.color = form_data['color']
+    tt.start_date = form_data['start_date']
+    tt.start_time = form_data['start_time']
+    tt.event_count = form_data['event_count']
+    tt.has_saturday = form_data['has_saturday']
+    tt.has_monday = form_data['has_monday']
+    tt.has_tuesday = form_data['has_tuesday']
+    tt.has_wednesday = form_data['has_wednesday']
+    tt.has_thursday = form_data['has_thursday']
+    tt.has_friday = form_data['has_friday']
+    tt.has_sunday = form_data['has_sunday']
+    tt.user = user
+    tt.save()
+    return tt.id
 
 @csrf_exempt
 def ajax(request):
