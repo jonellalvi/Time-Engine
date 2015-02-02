@@ -12,7 +12,7 @@
 
 /** cancel the default error messages **/
 ul.errorlist {
-    display:none;
+    display: none;
 }
 
 /* for error messages */
@@ -20,9 +20,19 @@ ul.errorlist {
     color: red;
 }
 
-/* name field */
-#name {
+/* hide the save */
+.save {
+    display: none;
+}
 
+/* checkboxes! */
+
+input#id_has_sunday.checkbox {
+
+}
+
+div.checkboxes {
+    display: inline-block;
 }
 
 #id_color {

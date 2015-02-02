@@ -65,7 +65,7 @@ class TimeTableForm(forms.Form):
     )
     event_count = forms.IntegerField(
         label='Number of lessons',
-        widget=NumberInput(attrs={'class': 'lesson_count'})
+        widget=NumberInput(attrs={'class': 'event_count'})
     )
     # might want to use CheckboxSelectMultiple widget for all of these guys
     # https://docs.djangoproject.com/en/1.7/ref/forms/widgets/#radioselect
@@ -76,43 +76,49 @@ class TimeTableForm(forms.Form):
     #     widget=CheckboxSelectMultiple(),
     #     choices=DAY_CHOICES
     # )
-
-    has_saturday = forms.BooleanField(
-        label='Sat',
-        required=False,
-        widget=CheckboxInput(attrs={'class': 'has_saturday'})
-    )
-    has_monday = forms.BooleanField(
-        label='Mon',
-        required=False,
-        widget=CheckboxInput(attrs={'class': 'has_monday'})
-    )
-    has_tuesday = forms.BooleanField(
-        label='Tue',
-        required=False,
-        widget=CheckboxInput(attrs={'class': 'has_tuesday'})
-    )
-    has_wednesday = forms.BooleanField(
-        label='Wed',
-        required=False,
-        widget=CheckboxInput(attrs={'class': 'has_wednesday'})
-    )
-    has_thursday = forms.BooleanField(
-        label='Thu',
-        required=False,
-        widget=CheckboxInput(attrs={'class': 'has_thursday'})
-    )
-    has_friday = forms.BooleanField(
-        label='Fri',
-        required=False,
-        widget=CheckboxInput(attrs={'class': 'has_friday'})
-    )
-    has_sunday = forms.BooleanField(
-        label='Sun',
-        required=False,
-        widget=CheckboxInput(attrs={'class': 'has_sunday'})
-    )
     save = forms.CharField(
         required=False,
         widget=HiddenInput(attrs={'class': 'save'})
+    )
+
+    has_sunday = forms.BooleanField(
+    label='S',
+    required=False,
+    widget=CheckboxInput(attrs={'class': 'cbox'})
+)
+
+    has_monday = forms.BooleanField(
+        label='M',
+        required=False,
+        widget=CheckboxInput(attrs={'class': 'cbox'})
+    )
+
+    has_tuesday = forms.BooleanField(
+        label='T',
+        required=False,
+        widget=CheckboxInput(attrs={'class': 'cbox'})
+    )
+
+    has_wednesday = forms.BooleanField(
+        label='W',
+        required=False,
+        widget=CheckboxInput(attrs={'class': 'cbox'})
+    )
+
+    has_thursday = forms.BooleanField(
+        label='T',
+        required=False,
+        widget=CheckboxInput(attrs={'class': 'cbox'})
+    )
+
+    has_friday = forms.BooleanField(
+        label='F',
+        required=False,
+        widget=CheckboxInput(attrs={'class': 'cbox'})
+    )
+
+    has_saturday = forms.BooleanField(
+        label='S',
+        required=False,
+        widget=CheckboxInput(attrs={'class': 'cbox'})
     )

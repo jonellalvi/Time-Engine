@@ -28,7 +28,7 @@ from django.contrib.auth.decorators import login_required
 # User registration
 # This is based on http://www.tangowithdjango.com/book17/chapters/login.html
 def register(request):
-    # A boolean value for telling the template whether the resistration was successful.
+    # A boolean value for telling the template whether the registration was successful.
     # Set to False initially. Code changes value to True when registration succeeds.
     registered = False
     # If it's a HTTP POST, we're interested in processing form data.
@@ -195,7 +195,7 @@ def index(request):
             has_sunday = form.cleaned_data['has_sunday']
             save_option = form.cleaned_data['save']
             form_data = form.cleaned_data
-            print form_data
+            print "this is form_data: ", form_data
             # https://docs.djangoproject.com/en/1.7/ref/forms/api/#accessing-clean-data
             # now I have a dictionary of the values.
             # here's a sample of what form.cleaned_data returns:
@@ -214,14 +214,21 @@ def index(request):
             # }
             eventlist = EventList(form_data)
             result = eventlist.get_eventlist()
+            print "this is result: ", result
+
+            event_time = form_data['start_time']
+
+            print "this is the event_time: ", event_time
+
 
             events = []
 
-            for index, r in enumerate(result):
-                evt = {'title': 'event: ' + str(index + 1),
-                       'start': r.isoformat(),
+            for i, r in enumerate(result):
+                evt = {'title': 'event: ' + str(i + 1),
+                       'start': r.isoformat() + 'T' + str(event_time),
                        'allDay': False
                 }
+                print r
                 events.append(evt)
 
             # format a dictionary that looks like test_events but with my data:
@@ -248,7 +255,7 @@ def index(request):
             if save_option == "true":
                 timetable_id = save_timetable(form_data, request.user)
 
-            
+
             date_strings = test_events#[dt.strftime("%A %B %d, %Y") for dt in result]
             #print date_strings
             # now format the data to be passed to FullCalendar

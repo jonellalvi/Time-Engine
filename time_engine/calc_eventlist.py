@@ -18,7 +18,7 @@ class EventList(object):
             self.display_color = form_data.get('color')
 
             # number of events/lessons:
-            self.lesson_count = form_data.get('lesson_count')
+            self.lesson_count = form_data.get('event_count')
 
             # datetime.time
             self.start_time = form_data.get('start_time')
@@ -53,6 +53,7 @@ class EventList(object):
         next_date = self.start_date + a_day
 
         print "The next day should be: ", self.start_date + a_day
+        print "This is timetable: ", timetable
 
         # if there's still lessons/event to assign, keep going
         while self.lesson_count > 0:
@@ -68,7 +69,7 @@ class EventList(object):
             # increment the date
             next_date += a_day
         date_strings = [dt.strftime("%A %B %d, %Y") for dt in timetable]
-        print date_strings
+        print "this is date_strings: ", date_strings
         return timetable
         # date_strings = [dt.strftime("%A %B %d, %Y") for dt in timetable]
         # return date_strings
