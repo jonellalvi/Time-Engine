@@ -216,11 +216,22 @@ def index(request):
             result = eventlist.get_eventlist()
             print "this is result: ", result
 
+            # get the event time:
             event_time = form_data['start_time']
-
             print "this is the event_time: ", event_time
 
+            # get and format the end date:
 
+            # get the last date from the event list:
+            last_item = result[-1]
+            print "This is the LAST DATE datetime: ", last_item
+            # now format it as a string:
+            end_date = last_item.strftime("%A %B %d, %Y")
+            end_date_label = "End Date:"
+            print "This is the LAST DATE formated", end_date, type(end_date)
+
+            # now format the datetimes to send to full Calendar
+            # and package up to send
             events = []
 
             for i, r in enumerate(result):
@@ -233,14 +244,14 @@ def index(request):
 
             #now append the options:
             # color:
-            print "the color is: ", form_data['color']
             event_color = form_data['color']
             options = 'color: ' + form_data['color']
             print "these are the options: ", options
-            #events_with_options = events + options
-            #print "This is events which go to the calendar: ", events
 
-            print "these are the events with options: ", events
+            # package it up to send:
+            cal_data = {'cal_events': {'events': events, 'color': event_color},
+                        'end_event': {'end_date_label': end_date_label, 'end_date': end_date}
+                        }
 
             # format a dictionary that looks like test_events but with my data:
             test_events = { 'events': [
@@ -273,7 +284,8 @@ def index(request):
             #print date_strings
             # now format the data to be passed to FullCalendar
             #return HttpResponseRedirect("")
-            return HttpResponse(dumps({'events': events, 'color': event_color}), content_type="application/json")
+            # return HttpResponse(dumps({'events': events, 'color': event_color}), content_type="application/json")
+            return HttpResponse(dumps(cal_data), content_type="application/json")
         else:
             return HttpResponse('{"status": "invalid form!"}', content_type="application/json")
 

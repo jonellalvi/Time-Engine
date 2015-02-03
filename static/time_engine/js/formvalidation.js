@@ -13,7 +13,7 @@ function init(){
     // validateForm function is the onsubmit handler
     //document.getElementById("theForm").onsubmit = validateForm;
     // onclick handler attached to "reset" button calls clearDisplay function
-    document.getElementById("reset").onclick = clearDisplay;
+    //document.getElementById("reset").onclick = clearDisplay;
     // set focus to the name field -- investigate HTML5 autofocus!
     document.getElementById("name").focus();
 }

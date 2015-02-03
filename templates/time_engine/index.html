@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-{% load staticfiles %}
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +11,7 @@
 
     <!-- FullCalendar stylesheet -->
     <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.3/fullcalendar.min.css'/>
-
+    {% load staticfiles %}
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'time_engine/css/bootstrap.min.css' %}" rel="stylesheet">
 
@@ -321,6 +318,14 @@
                                     </label>
                                 </div>
                             </div><!--end Available Days form group-->
+                            <!-- report back the end date here -->
+                            <div class="form-group">
+                                <label id="end_date_label" class="control-label col-xs-3" for="end_date"></label>
+                                <div class="col-xs-9" id="end_date_div">
+
+                                    <span id="end_date"></span>
+                                </div>
+                            </div>
 
                             <br>
                             <!--form buttons-->
@@ -328,11 +333,14 @@
                                 <hr>
                                 <div class="col-xs-offset-3 col-xs-9 ">
 
-                                    <input type="reset" class="btn btn-default" id='reset' value="Reset">
+                                    <input type="reset" class="btn btn-default" id='reset2' value="Reset">
                                     <input type="submit" class="btn btn-primary" id='run' value="Run">
                                     <input type="submit" class="btn btn-primary" id='save' value="Save">
                                 </div>
                             </div>
+
+
+
                         </form>
 
 
@@ -405,7 +413,7 @@
         });
 
         //setting up the event handler for form submission
-        $('#run, #save').on('click', function(e) {
+        $('#run, #save').on('click', function (e) {
             var form_stuff = $("#newForm").serialize();
             //console.log(form_stuff);
             if (e.target.id == 'run') {
@@ -416,21 +424,28 @@
             //return false;
 
 
-            $.post("/time_engine/", form_stuff, function(data) {
+            $.post("/time_engine/", form_stuff, function (data) {
                 console.log(data);
+
                 //clear fullCalendar of existing events.
                 var cal = $('#calendarContainer');
                 cal.fullCalendar('removeEvents');
-                cal.fullCalendar('addEventSource', data);
+                cal.fullCalendar('addEventSource', data['cal_events']);
+                //update the form with the end date:
+                //console.log(data['end_event']['end_date_label']);
+                $("#end_date_label").html(data['end_event']['end_date_label']);
+                $("#end_date").html(data['end_event']['end_date'])
             });
             return false;
-        });
+        }); //end event handler for form submission
 
         // handle the reset button:
-        $('#reset').on('click', function(e) {
+        $('#reset2').on('click', function (e) {
             var cal = $('#calendarContainer');
             cal.fullCalendar('removeEvents');
         });
+
+    }); // end document ready
 
 
 </script><!-- jquery Full Calendar -->
