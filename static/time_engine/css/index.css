@@ -19,6 +19,11 @@ ul.errorlist {
 .red {
     color: red;
 }
+/* form title */
+
+h2.page-header {
+    margin-top: 10px;
+}
 
 /* hide the save */
 .save {

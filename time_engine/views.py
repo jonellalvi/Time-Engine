@@ -231,6 +231,17 @@ def index(request):
                 print r
                 events.append(evt)
 
+            #now append the options:
+            # color:
+            print "the color is: ", form_data['color']
+            event_color = form_data['color']
+            options = 'color: ' + form_data['color']
+            print "these are the options: ", options
+            #events_with_options = events + options
+            #print "This is events which go to the calendar: ", events
+
+            print "these are the events with options: ", events
+
             # format a dictionary that looks like test_events but with my data:
             test_events = { 'events': [
                 {
@@ -249,7 +260,9 @@ def index(request):
                     'allDay' : False
                 }
             ]
-            }
+            # color: 'black',     # an option!
+            # textColor: 'yellow' # an option!
+             }
 
             # if it's save, save to database
             if save_option == "true":
@@ -260,7 +273,7 @@ def index(request):
             #print date_strings
             # now format the data to be passed to FullCalendar
             #return HttpResponseRedirect("")
-            return HttpResponse(dumps({'events': events}), content_type="application/json")
+            return HttpResponse(dumps({'events': events, 'color': event_color}), content_type="application/json")
         else:
             return HttpResponse('{"status": "invalid form!"}', content_type="application/json")
 

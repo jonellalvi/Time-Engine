@@ -34,7 +34,7 @@ class UserProfileForm(forms.ModelForm):
 COLOR_CHOICES = (('blue', 'blue'),
                  ('green', 'green'),
                  ('red', 'red'),
-                 ('yellow', 'yellow'))
+                 ('purple', 'purple'))
 
 # Hard coded for now; refactor later
 YEAR_CHOICES = ('2015', '2016', '2017', '2018', '2019', '2020')
