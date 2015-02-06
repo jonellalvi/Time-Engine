@@ -45,20 +45,82 @@
                     <a href="#">About</a>
                 </li>
                 <li>
-                    <a href="#">Help</a>
+                    <!--<a href="#">Help</a>-->
+                    <!-- Help Modal -->
+                    <!-- Large modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal-help">Help</button>
+
+                    <div class="modal fade modal-help" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title" id="myLargeModalLabel">Welcome to Time Engine Help!</h4>
+                                </div><!--modal-header-->
+                                <div class="modal-body">
+                                    <p>Here is a discussion of Time Engine</p>
+                                </div><!--modal-body-->
+                            </div><!--modal-content-->
+                        </div><!--modal-dialog-->
+                    </div>
                 </li>
                 <li>
-                    {% if registered %}
-                        <a href="/time_engine/register">Login</a>
+                     <!-- Sign In Modal -->
+                    <!-- IF USER IS NOT AUTHENTICATED, DISPLAY THE LOGIN BUTTON. -->
+                    {% if not user.is_authenticated %}
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal-signin">Sign In</button>
+                    <div class="modal fade modal-signin" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                              <!--  <div class="modal-header">
+
+                                    <!-- Form Name -->
+                                    <!--<legend>Sign In To the Time Engine</legend>
+                                </div><!--modal-header-->
+                                <div class="modal-body">
+                                    <!--found this form at https://gist.github.com/bMinaise/7329874-->
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-md-5 center-block">
+
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h1 class="text-center login-title">Sign in to the Time Engine</h1>
+                                                <div class="account-wall">
+                                                    <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="">
+                                                    <form class="form-signin" method="post" autocomplete="off" action="/time_engine/login/">
+                                                        {% csrf_token %}
+                                                        <input type="text" class="form-control" name="username" placeholder="Email"  required autofocus>
+                                                        <input type="password" class="form-control" name="password" placeholder="Password" required>
+                                                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                                                        <label class="checkbox pull-left">
+                                                            <input class="remember-me" type="checkbox" value="remember-me">
+                                                            Remember me
+                                                        </label>
+                                                        <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
+                                                        </form>
+                                                </div>
+                                                <a href="/time_engine/register/" class="text-center new-account">Create an account </a>
+                                            </div>
+                                        </div>
+                                    </div><!--.row-->
+                                </div><!--modal-body-->
+
+                            </div><!--modal-content-->
+                        </div><!--modal-dialog-->
+                    </div>
                     {% else %}
-                        <a href="/time_engine/register">Register</a>
+                        <!-- IF USER IS AUTHENTICATED-->
+                        <p>Time Engine says... hello {{ user.username }}!</p>
+                        <a href="/time_engine/logout/">Logout</a><br/>
                     {% endif %}
-
-
                 </li>
             </ul>
         </div>
-        <!-- /.navbar-collapse -->
+    <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
 </nav>
@@ -71,19 +133,23 @@
         <div class="thumbnail">
             <div class="row"> <!-- CALENDAR ROW -->
                 <div>
+                {{ user.is_authenticated }}
                     {% if user.is_authenticated %}
+                        {{ user.is_authenticated }}
                         <p>Time Engine says... hello {{ user.username }}!</p>
                         <a href="/time_engine/logout/">Logout</a><br/>
                     {% else %}
                         <p>Time Engine says... hello world!</p>
-                    {% endif %}
-                    {% if registered %}
-                        <a href="/time_engine/login">Login</a>
-                    {% comment %}
+                         <a href="/time_engine/login/">Login</a>
+                     {% endif %}
+
+
+                        {% comment %}
                     {% else %}
                         <a href="/time_engine/register">Register</a>
                     {% endcomment %}
-                    {% endif %}
+
+
                 </div>
                 <div id="calendarContainer">
 
@@ -92,36 +158,40 @@
             <!-- END Calendar row -->
             <div class="row"> <!--  INSTRUCTIONS ROW -->
                 <div class="caption-full">
-
-
                     <div class="text-left">
                         <!--<a class="btn btn-success" onclick="CC.ItemList.append();">+New</a>-->
                         <!--<a class="btn btn-primary" data-toggle="modal" data-target="#myModal">+New</a>-->
-                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">New Timetable</button>
+                        <button class="btn btn-primary" type="button" data-toggle="collapse"
+                                data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">New
+                            Timetable
+                        </button>
                     </div>
                 </div>
             </div>
             <!-- END Instructions row -->
             <div class="row">
 
-               <div class="collapse" id="collapseExample">
+                <div class="collapse" id="collapseExample">
                     <div class="well">
                         <!--FORM-->
                         <form id="newForm" class="form-horizontal">
                             {% csrf_token %}
                             <h2 class="page-header">Create a new Timetable</h2>
                             <!--hidden input for indicating a save to db-->
-                            <input class="save" id="id_save" name="save" type="hidden" />
+                            <input class="save" id="id_save" name="save" type="hidden"/>
                             <!--Timetable Name field-->
                             <div class="form-group">
                                 <label class="control-label col-xs-3" for="name">Name:</label>
+
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="name" placeholder="Time table name" maxlength="100" name="name">
+                                    <input type="text" class="form-control" id="name" placeholder="Time table name"
+                                           maxlength="100" name="name">
                                 </div>
                             </div>
                             <!--color choice radios-->
                             <div class="form-group">
                                 <label class="control-label col-xs-3">Color:</label>
+
                                 <div class="col-xs-2">
                                     <label class="radio-inline">
                                         <input type="radio" name="color" value="blue"> Blue
@@ -143,7 +213,8 @@
                                     </label>
                                 </div>
 
-                            </div><!--color choice form group-->
+                            </div>
+                            <!--color choice form group-->
                             <!--Start date form group widgets-->
                             <div class="form-group">
                                 <label class="control-label col-xs-3">Start Date:</label>
@@ -214,92 +285,98 @@
                                         <option value="2020">2020</option>
                                     </select>
                                 </div>
-                            </div><!--end start date form group-->
+                            </div>
+                            <!--end start date form group-->
                             <!--Start time field-->
                             <div class="form-group">
                                 <label class="control-label col-xs-3">Start Time:</label>
-                                    <div class="col-xs-3">
-                                        <select class="form-control" name="start_time">
-                                            <option selected="selected">Time</option>
-                                            <option value="12:00">12:00am</option>
-                                            <option value="12:30">12:30am</option>
-                                            <option value="1:00">1:00am</option>
-                                            <option value="1:30">1:30am</option>
-                                            <option value="2:00">2:00am</option>
-                                            <option value="2:30">2:30am</option>
-                                            <option value="3:00">3:00am</option>
-                                            <option value="3:30">3:30am</option>
-                                            <option value="4:00">4:00am</option>
-                                            <option value="4:30">4:30am</option>
-                                            <option value="5:00">5:00am</option>
-                                            <option value="5:30">5:30am</option>
-                                            <option value="6:00">6:00am</option>
-                                            <option value="6:30">6:30am</option>
-                                            <option value="7:00">7:00am</option>
-                                            <option value="7:30">7:30am</option>
-                                            <option value="8:00">8:00am</option>
-                                            <option value="8:30">8:30am</option>
-                                            <option value="9:00">9:00am</option>
-                                            <option value="9:30">9:30am</option>
-                                            <option value="10:00">10:00am</option>
-                                            <option value="10:30">10:30am</option>
-                                            <option value="11:00">11:00am</option>
-                                            <option value="11:30">11:30am</option>
-                                            <option value="12:00">12:00pm</option>
-                                            <option value="12:30">12:30pm</option>
-                                            <option value="13:00">1:00pm</option>
-                                            <option value="13:30">1:30pm</option>
-                                            <option value="14:00">2:00pm</option>
-                                            <option value="14:30">2:30pm</option>
-                                            <option value="15:00">3:00pm</option>
-                                            <option value="15:30">3:30pm</option>
-                                            <option value="16:00">4:00pm</option>
-                                            <option value="16:30">4:30pm</option>
-                                            <option value="17:00">5:00pm</option>
-                                            <option value="17:30">5:30pm</option>
-                                            <option value="18:00">6:00pm</option>
-                                            <option value="18:30">6:30pm</option>
-                                            <option value="19:00">7:00pm</option>
-                                            <option value="19:30">7:30pm</option>
-                                            <option value="20:00">8:00pm</option>
-                                            <option value="20:30">8:30pm</option>
-                                            <option value="21:00">9:00pm</option>
-                                            <option value="21:30">9:30pm</option>
-                                            <option value="22:00">10:00pm</option>
-                                            <option value="22:30">10:30pm</option>
-                                            <option value="23:00">11:00pm</option>
-                                            <option value="23:30">11:30pm</option>
-                                        </select>
-                                    </div>
-                            </div><!--end start time-->
+
+                                <div class="col-xs-3">
+                                    <select class="form-control" name="start_time">
+                                        <option selected="selected">Time</option>
+                                        <option value="12:00">12:00am</option>
+                                        <option value="12:30">12:30am</option>
+                                        <option value="1:00">1:00am</option>
+                                        <option value="1:30">1:30am</option>
+                                        <option value="2:00">2:00am</option>
+                                        <option value="2:30">2:30am</option>
+                                        <option value="3:00">3:00am</option>
+                                        <option value="3:30">3:30am</option>
+                                        <option value="4:00">4:00am</option>
+                                        <option value="4:30">4:30am</option>
+                                        <option value="5:00">5:00am</option>
+                                        <option value="5:30">5:30am</option>
+                                        <option value="6:00">6:00am</option>
+                                        <option value="6:30">6:30am</option>
+                                        <option value="7:00">7:00am</option>
+                                        <option value="7:30">7:30am</option>
+                                        <option value="8:00">8:00am</option>
+                                        <option value="8:30">8:30am</option>
+                                        <option value="9:00">9:00am</option>
+                                        <option value="9:30">9:30am</option>
+                                        <option value="10:00">10:00am</option>
+                                        <option value="10:30">10:30am</option>
+                                        <option value="11:00">11:00am</option>
+                                        <option value="11:30">11:30am</option>
+                                        <option value="12:00">12:00pm</option>
+                                        <option value="12:30">12:30pm</option>
+                                        <option value="13:00">1:00pm</option>
+                                        <option value="13:30">1:30pm</option>
+                                        <option value="14:00">2:00pm</option>
+                                        <option value="14:30">2:30pm</option>
+                                        <option value="15:00">3:00pm</option>
+                                        <option value="15:30">3:30pm</option>
+                                        <option value="16:00">4:00pm</option>
+                                        <option value="16:30">4:30pm</option>
+                                        <option value="17:00">5:00pm</option>
+                                        <option value="17:30">5:30pm</option>
+                                        <option value="18:00">6:00pm</option>
+                                        <option value="18:30">6:30pm</option>
+                                        <option value="19:00">7:00pm</option>
+                                        <option value="19:30">7:30pm</option>
+                                        <option value="20:00">8:00pm</option>
+                                        <option value="20:30">8:30pm</option>
+                                        <option value="21:00">9:00pm</option>
+                                        <option value="21:30">9:30pm</option>
+                                        <option value="22:00">10:00pm</option>
+                                        <option value="22:30">10:30pm</option>
+                                        <option value="23:00">11:00pm</option>
+                                        <option value="23:30">11:30pm</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--end start time-->
                             <!--Total events field-->
                             <div class="form-group">
                                 <label class="control-label col-xs-3" for="event_count">Total events:</label>
+
                                 <div class="col-xs-3">
-                                    <input name="event_count" type="number" class="form-control" id="event_count" placeholder="Enter a number...">
+                                    <input name="event_count" type="number" class="form-control" id="event_count"
+                                           placeholder="Enter a number...">
                                 </div>
                             </div>
                             <!--Available days form group-->
                             <div class="form-group">
                                 <label class="control-label col-xs-3">Available Days:</label>
+
                                 <div class="col-xs-1">
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="has_sunday" > Sun
+                                        <input type="checkbox" name="has_sunday"> Sun
                                     </label>
                                 </div>
                                 <div class="col-xs-1">
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="has_monday" > Mon
+                                        <input type="checkbox" name="has_monday"> Mon
                                     </label>
                                 </div>
                                 <div class="col-xs-1">
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="has_tuesday" > Tues
+                                        <input type="checkbox" name="has_tuesday"> Tues
                                     </label>
                                 </div>
                                 <div class="col-xs-1">
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="has_wednesday" > Wed
+                                        <input type="checkbox" name="has_wednesday"> Wed
                                     </label>
                                 </div>
                                 <div class="col-xs-1">
@@ -314,13 +391,15 @@
                                 </div>
                                 <div class="col-xs-1">
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="has_saturday" > Sat
+                                        <input type="checkbox" name="has_saturday"> Sat
                                     </label>
                                 </div>
-                            </div><!--end Available Days form group-->
+                            </div>
+                            <!--end Available Days form group-->
                             <!-- report back the end date here -->
                             <div class="form-group">
                                 <label id="end_date_label" class="control-label col-xs-3" for="end_date"></label>
+
                                 <div class="col-xs-9" id="end_date_div">
 
                                     <span id="end_date"></span>
@@ -340,15 +419,15 @@
                             </div>
 
 
-
                         </form>
 
 
-
-
-                    </div><!--.well-->
-                </div><!--.collapse-->
-            </div><!--row-->
+                    </div>
+                    <!--.well-->
+                </div>
+                <!--.collapse-->
+            </div>
+            <!--row-->
             <div class="row" id="msg">
                 <!--messages go here-->
 
@@ -381,7 +460,8 @@
         </div>
     </footer>
 
-</div><!-- /.container -->
+</div>
+<!-- /.container -->
 
 <!-- JavaScript stuff -->
 <!--my js-->
@@ -416,6 +496,8 @@
         $('#run, #save').on('click', function (e) {
             var form_stuff = $("#newForm").serialize();
             //console.log(form_stuff);
+            // check whether it is a run or a save
+            // and set a toggle to handle in the view.
             if (e.target.id == 'run') {
                 form_stuff += '&save=false';
             } else {
@@ -448,7 +530,8 @@
     }); // end document ready
 
 
-</script><!-- jquery Full Calendar -->
+</script>
+
 
 </body>
 

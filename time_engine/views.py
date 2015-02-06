@@ -289,7 +289,6 @@ def index(request):
         else:
             return HttpResponse('{"status": "invalid form!"}', content_type="application/json")
 
-
     else:
         form = TimeTableForm()
     return render(request, 'time_engine/index.html', {'form': form})
