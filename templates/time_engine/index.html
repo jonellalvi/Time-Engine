@@ -79,35 +79,164 @@
                                     <!-- Form Name -->
                                     <!--<legend>Sign In To the Time Engine</legend>
                                 </div><!--modal-header-->
-                                <div class="modal-body">
-                                    <!--found this form at https://gist.github.com/bMinaise/7329874-->
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-sm-6 col-md-5 center-block">
+                                <!-- modal for sign in-->
+                                <div class="modal-body" id="modal-signin">
 
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                <h1 class="text-center login-title">Sign in to the Time Engine</h1>
-                                                <div class="account-wall">
-                                                    <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="">
-                                                    <form class="form-signin" method="post" autocomplete="off" action="/time_engine/login/">
-                                                        {% csrf_token %}
-                                                        <input type="text" class="form-control" name="username" placeholder="Email"  required autofocus>
-                                                        <input type="password" class="form-control" name="password" placeholder="Password" required>
-                                                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                                                        <label class="checkbox pull-left">
-                                                            <input class="remember-me" type="checkbox" value="remember-me">
-                                                            Remember me
-                                                        </label>
-                                                        <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
-                                                        </form>
+
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h1 class="text-center login-title">Sign in to the Time Engine</h1>
+                                    <hr>
+                                    <!--<div class="account-wall">-->
+
+                                        <form class="form-horizontal" method="post" action="/time_engine/login/">
+                                            {% csrf_token %}
+                                            <fieldset>
+
+                                                <!-- Text input-->
+                                                <div class="form-group">
+                                                  <label class="col-md-4 control-label" for="username">Username:</label>
+                                                  <div class="col-md-5">
+                                                    <input id="username" name="username" type="text" placeholder="Enter your Username" class="form-control input-md" required="">
+                                                  </div>
                                                 </div>
-                                                <a href="/time_engine/register/" class="text-center new-account">Create an account </a>
-                                            </div>
-                                        </div>
-                                    </div><!--.row-->
+
+                                                <!-- Text input-->
+                                                <div class="form-group">
+                                                  <label class="col-md-4 control-label" for="email">Email:</label>
+                                                  <div class="col-md-5">
+                                                  <input id="email" name="email" type="text" placeholder="Enter your Email" class="form-control input-md" required="">
+
+                                                  </div>
+                                                </div>
+
+                                                <!-- Password input-->
+                                                <div class="form-group">
+                                                  <label class="col-md-4 control-label" for="password">Password:</label>
+                                                  <div class="col-md-5">
+                                                    <input id="password" name="password" type="password" placeholder="Enter your Password" class="form-control input-md" required="">
+
+                                                  </div>
+                                                </div>
+
+                                                <!-- Button -->
+                                                <div class="form-group">
+                                                  <label class="col-md-4 control-label" for="login"></label>
+                                                  <div class="col-md-4">
+                                                    <button id="login" name="login" class="btn btn-primary">Sign In</button>
+                                                  </div>
+                                                </div>
+                                                <hr>
+                                                <!-- Register Link-->
+                                                <div class="form-group">
+                                                    <div class="col-md-12 text-center">
+                                                        <!--<a id="register-link" href="/time_engine/register/">Create an account </a>-->
+                                                        <a href="#" id="register-link">Create an account </a>
+                                                    </div>
+                                                </div>
+
+                                            </fieldset>
+                                        </form>
+
+
+                                       <!-- <form class="form-signin" method="post"  action="/time_engine/login/">
+
+                                            <input type="text" class="form-control" name="username" placeholder="Email"  required autofocus>
+                                            <input type="password" class="form-control" name="password" placeholder="Password" required>
+                                            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                                            <label class="checkbox pull-left">
+                                                <input class="remember-me" type="checkbox" value="remember-me">
+                                                Remember me
+                                            </label>
+                                            <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
+                                            </form>-->
+
+                                    <!--</div><!--account-wall-->
                                 </div><!--modal-body-->
+
+
+
+                                <!--modal for Registering-->
+                                <div class="modal-body" id="modal-register">
+
+
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h1 class="text-center login-title">Sign in to the Time Engine</h1>
+                                    <hr>
+                                    <!--<div class="account-wall">-->
+
+                                        <form class="form-horizontal" method="post" action="/time_engine/login/">
+                                            {% csrf_token %}
+                                            <fieldset>
+
+                                                <!-- Text input-->
+                                                <div class="form-group">
+                                                  <label class="col-md-4 control-label" for="username">Username:</label>
+                                                  <div class="col-md-5">
+                                                    <input id="username" name="username" type="text" placeholder="Enter your Username" class="form-control input-md" required="">
+                                                  </div>
+                                                </div>
+
+                                                <!-- Text input-->
+                                                <div class="form-group">
+                                                  <label class="col-md-4 control-label" for="email">Email:</label>
+                                                  <div class="col-md-5">
+                                                  <input id="email" name="email" type="text" placeholder="Enter your Email" class="form-control input-md" required="">
+
+                                                  </div>
+                                                </div>
+
+                                                <!-- Password input-->
+                                                <div class="form-group">
+                                                  <label class="col-md-4 control-label" for="password">Password:</label>
+                                                  <div class="col-md-5">
+                                                    <input id="password" name="password" type="password" placeholder="Enter your Password" class="form-control input-md" required="">
+
+                                                  </div>
+                                                </div>
+
+                                                <!-- Button -->
+                                                <div class="form-group">
+                                                  <label class="col-md-4 control-label" for="login"></label>
+                                                  <div class="col-md-5">
+                                                    <button id="register-button" name="register" class="btn btn-danger">Register</button>
+                                                    <a href="#" class="pull-right" id="signin-link">Back To Sign In </a>
+                                                  </div>
+                                                </div>
+
+
+
+
+
+                                            </fieldset>
+                                        </form>
+
+
+                                       <!-- <form class="form-signin" method="post"  action="/time_engine/login/">
+
+                                            <input type="text" class="form-control" name="username" placeholder="Email"  required autofocus>
+                                            <input type="password" class="form-control" name="password" placeholder="Password" required>
+                                            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                                            <label class="checkbox pull-left">
+                                                <input class="remember-me" type="checkbox" value="remember-me">
+                                                Remember me
+                                            </label>
+                                            <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
+                                            </form>-->
+
+                                    <!--</div><!--account-wall-->
+                                </div><!--modal-body-->
+
+
+
+
+
+
+
+
 
                             </div><!--modal-content-->
                         </div><!--modal-dialog-->
@@ -525,7 +654,43 @@
         $('#reset2').on('click', function (e) {
             var cal = $('#calendarContainer');
             cal.fullCalendar('removeEvents');
-        });
+        }); //end handler reset
+
+        // stuff to make the register modal appear
+        //first get the element:
+
+        // function to display the register form
+        function regForm(){
+            //show the registration form
+            //add class modal-register to modal-register div
+            var regDiv = document.getElementById('modal-register');
+            console.log('getting the reg form div!');
+            regDiv.classList.add('modal-register');
+            //hide the signin
+            var signinDiv = document.getElementById('modal-signin');
+            signinDiv.classList.add('modal-register');
+        }
+
+        //function to display the signin form
+        function signinForm(){
+            //show the signin
+            var signinDiv = document.getElementById('modal-signin');
+            console.log('getting the signin form div!');
+            signinDiv.classList.remove('modal-register');
+            //hide the register form
+            var regDiv = document.getElementById('modal-register');
+            regDiv.classList.remove('modal-register');
+            return false;
+        }
+
+
+
+        var elRegLink = document.getElementById('register-link');
+        elRegLink.addEventListener('click', regForm, false);
+        var elSigninLink = document.getElementById('signin-link');
+        elSigninLink.addEventListener('click', signinForm, false);
+
+
 
     }); // end document ready
 

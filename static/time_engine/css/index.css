@@ -51,7 +51,7 @@ div.checkboxes {
 }
 
 /* Styles for the login modal */
-
+/*
 legend {
     border-bottom: none;
 }
@@ -143,3 +143,34 @@ legend {
 .remember-me {
 
 }
+
+
+.new-account
+{
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+*/
+
+/* styles for the register modal form */
+
+#modal-register.modal-register {
+    display: block;
+}
+
+#modal-register {
+    display: none;
+}
+
+#modal-signin.modal-register {
+    display: none;
+}
+
+#signin-link {
+    margin-top: 5px;
+
+}
+

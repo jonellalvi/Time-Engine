@@ -1,0 +1,28 @@
+ <!--found this form at https://gist.github.com/bMinaise/7329874-->
+
+<div class="container">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-md-5 center-block">
+
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h1 class="text-center login-title">Sign in to the Time Engine</h1>
+                                                <div class="account-wall">
+                                                    <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="">
+                                                    <form class="form-signin" method="post" audtocomplete="off" action="/time_engine/login/">
+                                                        {% csrf_token %}
+                                                        <input type="text" class="form-control" name="username" placeholder="Email"  required autofocus>
+                                                        <input type="password" class="form-control" name="password" placeholder="Password" required>
+                                                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                                                        <label class="checkbox pull-left">
+                                                            <input class="remember-me" type="checkbox" value="remember-me">
+                                                            Remember me
+                                                        </label>
+                                                        <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
+                                                        </form>
+                                                </div>
+                                                <a href="/time_engine/register/" class="text-center new-account">Create an account </a>
+                                            </div>
+                                        </div>
+                                    </div><!--.row-->
