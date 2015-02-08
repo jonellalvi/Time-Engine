@@ -1,5 +1,5 @@
 # Create your views here.
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.shortcuts import render
@@ -12,6 +12,7 @@ from json import dumps
 from time_engine.forms import TimeTableForm, UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
 from calc_eventlist import EventList
+from django.core.exceptions import ObjectDoesNotExist
 
 
 from django.views.decorators.csrf import csrf_exempt
@@ -27,21 +28,54 @@ from django.contrib.auth.decorators import login_required
 
 # User registration
 # This is based on http://www.tangowithdjango.com/book17/chapters/login.html
+@csrf_exempt
 def register(request):
     # A boolean value for telling the template whether the registration was successful.
     # Set to False initially. Code changes value to True when registration succeeds.
     registered = False
+
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == "POST":
         # Attempt to grab info from the raw from information.
         # Note that we make use of both UserForm and UserProfileForm.
-        user_form = UserForm(data=request.POST)
-        profile_form = UserProfileForm(data=request.POST)
+        #user_form = UserForm(data=request.POST)
+
+        print "the keys are: ", request.POST.keys()
+        #print request.POST['username']
+
+        # Get form fields
+        try:
+            email = request.POST['username']
+            password = request.POST['password']
+        except KeyError:
+            # Invalid form data
+            return HttpResponseBadRequest('Malformed form')
+
+        # Look up user
+        try:
+            User.objects.get(username=email)
+        except ObjectDoesNotExist:
+            # Create new user with this name & password
+            User.objects.create_user(email, email, password)
+            return HttpResponse(dumps({'result': True}), content_type="application/json")
+        else:
+            print "User already exists"
+            return HttpResponse(dumps({'result': False, 'msg':'User already exists'}), content_type="application/json")
+
+
+
+        #print "This is the user_form: ", user_form
+
+        # profile_form = UserProfileForm(data=request.POST)
         # This was the old one:
         #User.objects.create_user(request.POST['username'], None, request.POST['password'])
 
         # if the two forms are valid...
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid(): # and profile_form.is_valid():
+            # check if user exists
+            exists = User.objects.get(username=user_form.cleaned_data['username'])
+            print "This is the exists value: ", exists
+
             # Save the user's form data to the database.
             user = user_form.save()
 
@@ -50,39 +84,23 @@ def register(request):
             user.set_password(user.password)
             user.save()
 
-            # Now sort out the UserProfile instance.
-            # Since we need to set the user attribute ourselves, we set commit=False.
-            # This delays saving the model until we're ready to avoid integrity problems
-            profile = profile_form.save(commit=False)
-            profile.user = user
+            return HttpResponse(dumps({'result': True}), content_type="application/json")
 
-            # Did the user provide a profile picture?
-            # If so, we need to get it from the input form and put it in the UserProfile
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
-
-            #Now we save the UserProfile model instance.
-            profile.save()
-
-            # Update our variable to tell the template registration was successful.
-            registered = True
-
-        # Invalid form or forms - mistakes or something else?
-        # Print problems to the terminal.
-        # They'll also be shown to the user.
         else:
-            print user_form.errors, profile_form.errors
+            print "form is invalid ", user_form.errors
+            return HttpResponse(dumps({'result': False, 'msg': "this is the message"}), content_type="application/json")
+            #return render(request, 'time_engine/index.html', {'user_form': user_form.errors}) #, profile_form.errors
 
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
-        profile_form = UserProfileForm()
+        #profile_form = UserProfileForm()
 
     # Render the template depending on the context
-    return render(request,
-                  'time_engine/register.html',
-                  {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+    # return render(request,
+    #               'time_engine/index.html',
+    #               {'user_form': user_form, 'registered': registered})
 
 
 # User login

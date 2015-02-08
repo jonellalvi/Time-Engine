@@ -94,19 +94,11 @@
                                             {% csrf_token %}
                                             <fieldset>
 
-                                                <!-- Text input-->
-                                                <div class="form-group">
-                                                  <label class="col-md-4 control-label" for="username">Username:</label>
-                                                  <div class="col-md-5">
-                                                    <input id="username" name="username" type="text" placeholder="Enter your Username" class="form-control input-md" required="">
-                                                  </div>
-                                                </div>
-
-                                                <!-- Text input-->
+                                                <!-- Username Email input-->
                                                 <div class="form-group">
                                                   <label class="col-md-4 control-label" for="email">Email:</label>
                                                   <div class="col-md-5">
-                                                  <input id="email" name="email" type="text" placeholder="Enter your Email" class="form-control input-md" required="">
+                                                  <input id="username" name="username" type="text" placeholder="Enter your Email" class="form-control input-md" required="">
 
                                                   </div>
                                                 </div>
@@ -164,27 +156,19 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <h1 class="text-center login-title">Sign in to the Time Engine</h1>
+                                    <h1 class="text-center login-title">Register for the Time Engine</h1>
                                     <hr>
                                     <!--<div class="account-wall">-->
 
-                                        <form class="form-horizontal" method="post" action="/time_engine/login/">
+                                        <form id="register-form" class="form-horizontal" method="post" action="/time_engine/register/">
                                             {% csrf_token %}
                                             <fieldset>
 
-                                                <!-- Text input-->
-                                                <div class="form-group">
-                                                  <label class="col-md-4 control-label" for="username">Username:</label>
-                                                  <div class="col-md-5">
-                                                    <input id="username" name="username" type="text" placeholder="Enter your Username" class="form-control input-md" required="">
-                                                  </div>
-                                                </div>
-
-                                                <!-- Text input-->
+                                                <!-- Username Email input-->
                                                 <div class="form-group">
                                                   <label class="col-md-4 control-label" for="email">Email:</label>
                                                   <div class="col-md-5">
-                                                  <input id="email" name="email" type="text" placeholder="Enter your Email" class="form-control input-md" required="">
+                                                  <input id="reg_username" name="username" type="text" placeholder="Enter your Email" class="form-control input-md" required="">
 
                                                   </div>
                                                 </div>
@@ -193,7 +177,7 @@
                                                 <div class="form-group">
                                                   <label class="col-md-4 control-label" for="password">Password:</label>
                                                   <div class="col-md-5">
-                                                    <input id="password" name="password" type="password" placeholder="Enter your Password" class="form-control input-md" required="">
+                                                    <input id="reg_password" name="password" type="password" placeholder="Enter your Password" class="form-control input-md" required="">
 
                                                   </div>
                                                 </div>
@@ -229,12 +213,6 @@
 
                                     <!--</div><!--account-wall-->
                                 </div><!--modal-body-->
-
-
-
-
-
-
 
 
 
@@ -617,11 +595,12 @@
 <!-- the jquery Full Calendar -->
 <script>
     $(document).ready(function () {
+        // Initialize calendar
         $('#calendarContainer').fullCalendar({
             //options for fullCalendar go here.
         });
 
-        //setting up the event handler for form submission
+        //setting up the event handler for time engine form submission
         $('#run, #save').on('click', function (e) {
             var form_stuff = $("#newForm").serialize();
             //console.log(form_stuff);
@@ -632,8 +611,6 @@
             } else {
                 form_stuff += '&save=true';
             }
-            //return false;
-
 
             $.post("/time_engine/", form_stuff, function (data) {
                 console.log(data);
@@ -647,8 +624,25 @@
                 $("#end_date_label").html(data['end_event']['end_date_label']);
                 $("#end_date").html(data['end_event']['end_date'])
             });
+
+        });
+
+        // setting up the event handler for registration form submission
+        $('#register-button').on('click', function (e) {
+            $.post("/time_engine/register/", $('#register-form').serialize(), function (data) {
+                console.log(data);
+                if(!data.result) {
+                    alert("Sorry: " + data.msg);
+                    document.getElementById("reg_username").value = "";
+                } else {
+                    alert("you are now registered");
+                    signinForm();
+                }
+
+            });
             return false;
-        }); //end event handler for form submission
+        });
+
 
         // handle the reset button:
         $('#reset2').on('click', function (e) {
@@ -684,11 +678,12 @@
         }
 
 
-
-        var elRegLink = document.getElementById('register-link');
-        elRegLink.addEventListener('click', regForm, false);
-        var elSigninLink = document.getElementById('signin-link');
-        elSigninLink.addEventListener('click', signinForm, false);
+        {% if not user.is_authenticated %}
+            var elRegLink = document.getElementById('register-link');
+            elRegLink.addEventListener('click', regForm, false);
+            var elSigninLink = document.getElementById('signin-link');
+            elSigninLink.addEventListener('click', signinForm, false);
+        {% endif %}
 
 
 
