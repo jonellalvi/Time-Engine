@@ -76,7 +76,7 @@
                     <!-- Sign In Modal -->
                     <!-- IF USER IS NOT AUTHENTICATED, DISPLAY THE LOGIN BUTTON. -->
                     {% if not user.is_authenticated %}
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal-signin">
+                        <button type="button" class="btn btn-primary navbar-btn" data-toggle="modal" data-target=".modal-signin">
                             Sign In
                         </button>
                         <div class="modal fade modal-signin" tabindex="-1" role="dialog"
@@ -307,6 +307,19 @@
                         </button>
                     </div>
                 </div>
+
+
+
+
+                <!--this is the timetable list -->
+                <div>
+                    {% for tt in timetables %}
+                        {{ tt.name }} <br>
+                    {% endfor %}
+                </div>
+
+
+
             </div>
             <!-- END Instructions row -->
             <div class="row">
@@ -554,7 +567,11 @@
 
                                     <input type="reset" class="btn btn-default" id='reset2' value="Reset">
                                     <input type="submit" class="btn btn-primary" id='run' value="Run">
-                                    <input type="submit" class="btn btn-primary" id='save' value="Save">
+                                    {% if not user.is_authenticated %}
+                                        <input type="submit" class="btn btn-primary" title="Sign In to Save" disabled id='save'  value="Save">
+                                    {% else %}
+                                        <input type="submit" class="btn btn-primary" id='save' value="Save">
+                                    {% endif %}
                                 </div>
                             </div>
 
@@ -659,7 +676,7 @@
                 
             });
 
-            //return false;
+            return false;
         });
 
         // setting up the event handler for registration form submission

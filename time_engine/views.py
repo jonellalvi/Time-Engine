@@ -310,8 +310,18 @@ def index(request):
             return HttpResponse('{"status": "invalid form!"}', content_type="application/json")
 
     else:
+        # if you're logged in, get a list of the saved timetables for that user
+        # get the username request.user
+        # then use that to look up the saved
+        if request.user.is_authenticated():
+            timetable_list = TimeTable.objects.filter(user_id=request.user.id)
+            #print timetable_list
+        else:
+            timetable_list = []
+
+
         form = TimeTableForm()
-    return render(request, 'time_engine/index.html', {'form': form})
+        return render(request, 'time_engine/index.html', {'timetables': timetable_list})
 
     # else:
     #
@@ -332,6 +342,8 @@ def index(request):
 
 
 # only save if logged in.
+# add decorator for this?
+@login_required
 def save_timetable(form_data, user):
     # take form_data and massage it and save to model.
     print "save to model !!!", form_data
