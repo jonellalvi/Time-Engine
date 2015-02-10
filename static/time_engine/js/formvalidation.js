@@ -117,8 +117,8 @@ function clearDisplay() {
     document.getElementById("name").focus();
 }
 
-var runButton = document.getElementById("run");
-console.log(runButton);
+//var runButton = document.getElementById("run");
+//console.log(runButton);
 //runButton.addEventListener("click", validateForm);
 
 //if validates make the request.

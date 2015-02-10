@@ -12,12 +12,12 @@ from json import dumps
 from time_engine.forms import TimeTableForm, UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
 from calc_eventlist import EventList
+from utilities import getGravatarImage
 from django.core.exceptions import ObjectDoesNotExist
-
 
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-#from .forms import TimeTableForm
+# from .forms import TimeTableForm
 
 # Each view is it's own function.
 # Each view takes at least one arg: HttpRequest object
@@ -60,7 +60,7 @@ def register(request):
             return HttpResponse(dumps({'result': True}), content_type="application/json")
         else:
             print "User already exists"
-            return HttpResponse(dumps({'result': False, 'msg':'User already exists'}), content_type="application/json")
+            return HttpResponse(dumps({'result': False, 'msg': 'User already exists'}), content_type="application/json")
 
 
 
@@ -71,7 +71,7 @@ def register(request):
         #User.objects.create_user(request.POST['username'], None, request.POST['password'])
 
         # if the two forms are valid...
-        if user_form.is_valid(): # and profile_form.is_valid():
+        if user_form.is_valid():  # and profile_form.is_valid():
             # check if user exists
             exists = User.objects.get(username=user_form.cleaned_data['username'])
             print "This is the exists value: ", exists
@@ -97,16 +97,15 @@ def register(request):
         user_form = UserForm()
         #profile_form = UserProfileForm()
 
-    # Render the template depending on the context
-    # return render(request,
-    #               'time_engine/index.html',
-    #               {'user_form': user_form, 'registered': registered})
+        # Render the template depending on the context
+        # return render(request,
+        #               'time_engine/index.html',
+        #               {'user_form': user_form, 'registered': registered})
 
 
 # User login
 # This is based on http://www.tangowithdjango.com/book17/chapters/login.html
 def user_login(request):
-
     #If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == "POST":
         # Gather the username and password provided by the user.
@@ -127,6 +126,9 @@ def user_login(request):
                 # If the account is valid and active, we can log the user in.
                 # WE'll send the user back to the homepage.
                 login(request, user)
+                # check for a gravatar image and return it with the request:
+                # gravImg = getGravatarImage(username)
+                # print gravImg
                 return HttpResponseRedirect('/time_engine/')
             else:
                 # An inactive account was used - no logging in!
@@ -153,7 +155,6 @@ def user_logout(request):
 
     # Take the user back to the homepage.
     return HttpResponseRedirect('/time_engine/')
-
 
 
 #in settings add: settings.LOGIN_URL ='login'
@@ -269,36 +270,37 @@ def index(request):
             # package it up to send:
             cal_data = {'cal_events': {'events': events, 'color': event_color},
                         'end_event': {'end_date_label': end_date_label, 'end_date': end_date}
-                        }
+            }
 
             # format a dictionary that looks like test_events but with my data:
-            test_events = { 'events': [
+            test_events = {'events': [
                 {
-                    'title':  'event1',
+                    'title': 'event1',
                     'start': '2015-01-09T12:30:00',
                     'allDay': False
                 },
                 {
-                    'title'  : 'woot2',
-                   'start'  : '2015-01-10T12:30:00',
-                    'allDay' : False
+                    'title': 'woot2',
+                    'start': '2015-01-10T12:30:00',
+                    'allDay': False
                 },
                 {
-                    'title'  : 'event3',
-                   'start' : '2015-01-11T12:30:00',
-                    'allDay' : False
+                    'title': 'event3',
+                    'start': '2015-01-11T12:30:00',
+                    'allDay': False
                 }
             ]
-            # color: 'black',     # an option!
-            # textColor: 'yellow' # an option!
-             }
+                           # color: 'black',     # an option!
+                           # textColor: 'yellow' # an option!
+            }
 
             # if it's save, save to database
             if save_option == "true":
                 timetable_id = save_timetable(form_data, request.user)
 
+            print "This is cal_data", cal_data
 
-            date_strings = test_events#[dt.strftime("%A %B %d, %Y") for dt in result]
+            date_strings = test_events  #[dt.strftime("%A %B %d, %Y") for dt in result]
             #print date_strings
             # now format the data to be passed to FullCalendar
             #return HttpResponseRedirect("")
@@ -328,6 +330,7 @@ def index(request):
     #     return render_to_response('time_engine/index.html', context_dict, context)
     #     #return HttpResponse("Hello World! You're at the Time Engine Index! Woot!")
 
+
 # only save if logged in.
 def save_timetable(form_data, user):
     # take form_data and massage it and save to model.
@@ -348,6 +351,7 @@ def save_timetable(form_data, user):
     tt.user = user
     tt.save()
     return tt.id
+
 
 @csrf_exempt
 def ajax(request):
@@ -374,13 +378,16 @@ def ajax(request):
         })
     return HttpResponse(dumps(ajax_list, indent=4), content_type="application/json")
 
+
 def dom(request):
     if request.method == "POST":
         print request.POST
     return render(request, 'time_engine/dom.html')
 
+
 def jsexample(request):
-     return render(request, 'time_engine/jsexample.html')
+    return render(request, 'time_engine/jsexample.html')
+
 
 # a simple view that doesn't involve any data being passed along
 # for example an about page
@@ -390,11 +397,14 @@ def jsexample(request):
 def options(request):
     return HttpResponse("This is the Preferences page.")
 
+
 def engine(request):
     return HttpResponse("This is the Engine!")
 
+
 def results(request):
     return HttpResponse("This is the results page.")
+
 
 def date_looping(request):
     return render(request, 'time_engine/date_looping.html')
