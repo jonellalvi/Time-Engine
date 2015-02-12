@@ -1,47 +1,38 @@
-# Create your views here.
+from datetime import date
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.template import RequestContext
-from django.shortcuts import render_to_response
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from json import dumps
+
+from calc_eventlist import EventList
+from time_engine.forms import TimeTableForm, UserForm, UserProfileForm
 from time_engine.models import TimeTable
-from django.contrib.auth.models import User
+
+from django.shortcuts import render_to_response
 from django.contrib import auth
 from django.shortcuts import redirect
-from datetime import date
-from json import dumps
-from time_engine.forms import TimeTableForm, UserForm, UserProfileForm
-from django.contrib.auth import authenticate, login, logout
-from calc_eventlist import EventList
 from utilities import getGravatarImage
-from django.core.exceptions import ObjectDoesNotExist
-
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
-# from .forms import TimeTableForm
 
 # Each view is it's own function.
 # Each view takes at least one arg: HttpRequest object
 # Each view must return a HttpResponse object
-# the HttpResponse object takes a string parameter which is the content
+# The HttpResponse object takes a string parameter which is the content
 # of the page we're sending to the client requesting the view
+
 
 
 # User registration
 # This is based on http://www.tangowithdjango.com/book17/chapters/login.html
 @csrf_exempt
 def register(request):
-    # A boolean value for telling the template whether the registration was successful.
-    # Set to False initially. Code changes value to True when registration succeeds.
-    registered = False
 
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == "POST":
-        # Attempt to grab info from the raw from information.
-        # Note that we make use of both UserForm and UserProfileForm.
-        #user_form = UserForm(data=request.POST)
-
-        print "the keys are: ", request.POST.keys()
-        #print request.POST['username']
 
         # Get form fields
         try:
@@ -62,51 +53,18 @@ def register(request):
             print "User already exists"
             return HttpResponse(dumps({'result': False, 'msg': 'User already exists'}), content_type="application/json")
 
-
-
-        #print "This is the user_form: ", user_form
-
-        # profile_form = UserProfileForm(data=request.POST)
-        # This was the old one:
-        #User.objects.create_user(request.POST['username'], None, request.POST['password'])
-
-        # if the two forms are valid...
-        if user_form.is_valid():  # and profile_form.is_valid():
-            # check if user exists
-            exists = User.objects.get(username=user_form.cleaned_data['username'])
-            print "This is the exists value: ", exists
-
-            # Save the user's form data to the database.
-            user = user_form.save()
-
-            # Now we hash the password with the set_password method.
-            # Once hashed, we can update the user object.
-            user.set_password(user.password)
-            user.save()
-
-            return HttpResponse(dumps({'result': True}), content_type="application/json")
-
-        else:
-            print "form is invalid ", user_form.errors
-            return HttpResponse(dumps({'result': False, 'msg': "this is the message"}), content_type="application/json")
-            #return render(request, 'time_engine/index.html', {'user_form': user_form.errors}) #, profile_form.errors
-
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
         #profile_form = UserProfileForm()
 
-        # Render the template depending on the context
-        # return render(request,
-        #               'time_engine/index.html',
-        #               {'user_form': user_form, 'registered': registered})
-
 
 # User login
 # This is based on http://www.tangowithdjango.com/book17/chapters/login.html
 def user_login(request):
-    #If the request is a HTTP POST, try to pull out the relevant information.
+
+    # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == "POST":
         # Gather the username and password provided by the user.
         # This information is obtained from the login form.
@@ -118,17 +76,14 @@ def user_login(request):
         user = authenticate(username=username, password=password)
 
         # If we have a User object, the details are correct.
-        # If Non (Python's way of representing the absence of a value), no user
+        # If None (Python's way of representing the absence of a value), no user
         # with matching credentials was found.
         if user:
             # Is the account active? It could have been disabled.
             if user.is_active:
                 # If the account is valid and active, we can log the user in.
-                # WE'll send the user back to the homepage.
                 login(request, user)
-                # check for a gravatar image and return it with the request:
-                # gravImg = getGravatarImage(username)
-                # print gravImg
+                # Then send the user back to the homepage.
                 return HttpResponseRedirect('/time_engine/')
             else:
                 # An inactive account was used - no logging in!
@@ -152,38 +107,14 @@ def user_login(request):
 def user_logout(request):
     # Since we know the user is logged in, we can now just log them out.
     logout(request)
-
     # Take the user back to the homepage.
     return HttpResponseRedirect('/time_engine/')
-
-
-#in settings add: settings.LOGIN_URL ='login'
-#@login_required
-# def login(request):
-#     if request.method == "POST":
-#         user = auth.authenticate(username=request.POST['username'], password=request.POST['password'])
-#
-#         if user is not None:
-#             #the password verified for the user
-#             if user.is_active:
-#                 print("User is valid, active and authenticated")
-#                 return redirect("index")
-#             else:
-#                 print("The password is valid, but the account has been disabled!")
-#
-#         else:
-#             print("The username and password were incorrect.")
-#     return render(request, 'time_engine/login.html')
-
 
 
 def index(request):
     # Request the context of the request.
     # The context contains information such as the client's machine details, for example.
     context = RequestContext(request)
-
-    # This is for ModelForms:
-    # form = TimeTableForm()
 
     # if this is a POST request we need to process the form data:
     # this is an ajax request:
@@ -197,41 +128,13 @@ def index(request):
 
         # check if it's vaild:
         if form.is_valid():
-            #process the data in form.cleaned_data as required
-            # IS THIS WHERE THE CALCULATION WOULD GO FOR MY TIMETABLE?
-            # See example at https://docs.djangoproject.com/en/1.7/topics/forms/
-            name = form.cleaned_data['name']
-            color = form.cleaned_data['color']
-            start_date = form.cleaned_data['start_date']
-            start_time = form.cleaned_data['start_time']
-            event_count = form.cleaned_data['event_count']
-            has_saturday = form.cleaned_data['has_saturday']
-            has_monday = form.cleaned_data['has_monday']
-            has_tuesday = form.cleaned_data['has_tuesday']
-            has_wednesday = form.cleaned_data['has_wednesday']
-            has_thursday = form.cleaned_data['has_thursday']
-            has_friday = form.cleaned_data['has_friday']
-            has_sunday = form.cleaned_data['has_sunday']
-            save_option = form.cleaned_data['save']
+
+            # extract the cleaned data from the form
             form_data = form.cleaned_data
-            print "this is form_data: ", form_data
-            # https://docs.djangoproject.com/en/1.7/ref/forms/api/#accessing-clean-data
-            # now I have a dictionary of the values.
-            # here's a sample of what form.cleaned_data returns:
-            # {
-            #   'has_thursday': False,
-            #   'name': u'Spam',
-            #   'color': u'yellow',
-            #   'start_time': datetime.time(4, 20),
-            #   'has_tuesday': False,
-            #   'has_saturday': False,
-            #   'has_wednesday': True,
-            #   'lesson_count': 14,
-            #   'has_monday': True,
-            #   'has_friday': True,
-            #   'start_date': datetime.date(2000, 3, 25)
-            # }
+
+            # Create the EventList object
             eventlist = EventList(form_data)
+            # Get the list of events
             result = eventlist.get_eventlist()
             print "this is result: ", result
 
@@ -239,11 +142,10 @@ def index(request):
             event_time = form_data['start_time']
             print "this is the event_time: ", event_time
 
-            # get and format the end date:
-
             # get the last date from the event list:
             last_item = result[-1]
             print "This is the LAST DATE datetime: ", last_item
+
             # now format it as a string:
             end_date = last_item.strftime("%A %B %d, %Y")
             end_date_label = "End Date:"
@@ -272,39 +174,14 @@ def index(request):
                         'end_event': {'end_date_label': end_date_label, 'end_date': end_date}
             }
 
-            # format a dictionary that looks like test_events but with my data:
-            test_events = {'events': [
-                {
-                    'title': 'event1',
-                    'start': '2015-01-09T12:30:00',
-                    'allDay': False
-                },
-                {
-                    'title': 'woot2',
-                    'start': '2015-01-10T12:30:00',
-                    'allDay': False
-                },
-                {
-                    'title': 'event3',
-                    'start': '2015-01-11T12:30:00',
-                    'allDay': False
-                }
-            ]
-                           # color: 'black',     # an option!
-                           # textColor: 'yellow' # an option!
-            }
-
+            # extract the save boolean set in the js to see if we need to save.
+            save_option = form.cleaned_data['save']
             # if it's save, save to database
             if save_option == "true":
                 timetable_id = save_timetable(form_data, request.user)
 
             print "This is cal_data", cal_data
 
-            date_strings = test_events  #[dt.strftime("%A %B %d, %Y") for dt in result]
-            #print date_strings
-            # now format the data to be passed to FullCalendar
-            #return HttpResponseRedirect("")
-            # return HttpResponse(dumps({'events': events, 'color': event_color}), content_type="application/json")
             return HttpResponse(dumps(cal_data), content_type="application/json")
         else:
             return HttpResponse('{"status": "invalid form!"}', content_type="application/json")
@@ -315,34 +192,19 @@ def index(request):
         # then use that to look up the saved
         if request.user.is_authenticated():
             timetable_list = TimeTable.objects.filter(user_id=request.user.id)
-            #print timetable_list
         else:
             timetable_list = []
+        #
+        # # I think this is where we delete it if they want to?
+        # if request.POST.get('delete'):
+        #     print "HERE IS WHERE THE TIMETABLE IS DELETED"
 
 
         form = TimeTableForm()
         return render(request, 'time_engine/index.html', {'timetables': timetable_list})
 
-    # else:
-    #
-    #     # Construct a dictionary to pass to the template engine as its context.
-    #     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
-    #     timetable_list = TimeTable.objects.all()
-    #     context_dict = {
-    #         'alltimetables': timetable_list,
-    #         #The following is for modelForms:
-    #         #'form': form
-    #     }
-    #
-    #     # Return a rendered response to send to the client.
-    #     # We make use of the shortcut function to make our lives easier.
-    #     # Note that the first parameter is the template we wish to use.
-    #     return render_to_response('time_engine/index.html', context_dict, context)
-    #     #return HttpResponse("Hello World! You're at the Time Engine Index! Woot!")
-
 
 # only save if logged in.
-# add decorator for this?
 @login_required
 def save_timetable(form_data, user):
     # take form_data and massage it and save to model.
@@ -401,25 +263,8 @@ def jsexample(request):
     return render(request, 'time_engine/jsexample.html')
 
 
-# a simple view that doesn't involve any data being passed along
-# for example an about page
-# def dom(request):
-#    return render(request, 'time_engine/dom.html')
 
 def options(request):
     return HttpResponse("This is the Preferences page.")
 
-
-def engine(request):
-    return HttpResponse("This is the Engine!")
-
-
-def results(request):
-    return HttpResponse("This is the results page.")
-
-
-def date_looping(request):
-    return render(request, 'time_engine/date_looping.html')
-
-# View for basic form:
 

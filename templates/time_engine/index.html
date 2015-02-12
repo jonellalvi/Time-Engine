@@ -36,339 +36,290 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            <!-- brand logo -->
             <a class="navbar-brand" href="#">Time Engine</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
+            <!-- list of nav bar items -->
             <ul class="nav navbar-nav">
+                <!-- About -->
                 <li>
                     <a href="#">About</a>
                 </li>
+                <!-- Help -->
                 <li>
-                    <!--<a href="#">Help</a>-->
-                    <!-- Help Modal -->
-                    <!-- Large modal -->
-                    <button type="button" class="btn btn-primary navbar-btn" data-toggle="modal" data-target=".modal-help">Help
+                    <!-- Help button -->
+                    <button type="button" class="btn btn-primary navbar-btn" data-toggle="modal"
+                            data-target=".modal-help">Help
                     </button>
-
+                    <!-- Help Modal -->
                     <div class="modal fade modal-help" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
                          aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
+                                    <!-- "x" to dismiss modal -->
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
+                                    <!-- Help modal header-->
                                     <h4 class="modal-title" id="myLargeModalLabel">Welcome to Time Engine Help!</h4>
                                 </div>
-                                <!--modal-header-->
+                                <!-- Help modal body -->
                                 <div class="modal-body">
                                     <p>Here is a discussion of Time Engine</p>
-                                </div>
-                                <!--modal-body-->
-                            </div>
-                            <!--modal-content-->
-                        </div>
-                        <!--modal-dialog-->
-                    </div>
+                                </div><!-- help modal-body -->
+                            </div><!-- help modal-content -->
+                        </div><!-- help modal-dialog -->
+                    </div><!-- help modal-fade -->
                 </li>
+                <!-- Sign In -->
                 <li>
                     <!-- Sign In Modal -->
                     <!-- IF USER IS NOT AUTHENTICATED, DISPLAY THE LOGIN BUTTON. -->
                     {% if not user.is_authenticated %}
-                        <button type="button" class="btn btn-primary navbar-btn" data-toggle="modal" data-target=".modal-signin">
+                        <button type="button" class="btn btn-primary navbar-btn" data-toggle="modal"
+                                data-target=".modal-signin">
                             Sign In
                         </button>
+                        <!-- Sign in Modal -->
                         <div class="modal fade modal-signin" tabindex="-1" role="dialog"
                              aria-labelledby="myLargeModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <!--  <div class="modal-header">
-
-                                          <!-- Form Name -->
-                                    <!--<legend>Sign In To the Time Engine</legend>
-                                </div><!--modal-header-->
-                                    <!-- modal for sign in-->
+                                    <!-- Sign in modal body -->
                                     <div class="modal-body" id="modal-signin">
-
-
+                                        <!-- "x" to dismiss sign in modal -->
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
+                                        <!-- Sign in modal header -->
                                         <h1 class="text-center login-title">Sign in to the Time Engine</h1>
                                         <hr>
-                                        <!--<div class="account-wall">-->
-
+                                        <!-- Sign in Form -->
                                         <form class="form-horizontal" method="post" action="/time_engine/login/">
                                             {% csrf_token %}
                                             <fieldset>
-
-                                                <!-- Username Email input-->
+                                                <!-- Sign in Username Email input-->
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label" for="email">Email:</label>
-
                                                     <div class="col-md-5">
                                                         <input id="username" name="username" type="text"
                                                                placeholder="Enter your Email"
                                                                class="form-control input-md" required="">
+                                                    </div><!-- Sign in col-md-5 -->
+                                                </div><!-- Sign in email form-group -->
 
-                                                    </div>
-                                                </div>
-
-                                                <!-- Password input-->
+                                                <!-- Sign in Password input-->
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label"
                                                            for="password">Password:</label>
-
                                                     <div class="col-md-5">
                                                         <input id="password" name="password" type="password"
                                                                placeholder="Enter your Password"
                                                                class="form-control input-md" required="">
 
                                                     </div>
-                                                </div>
+                                                </div><!-- Sign in password form-group -->
 
-                                                <!-- Button -->
+                                                <!-- Sign in button -->
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label" for="login"></label>
-
                                                     <div class="col-md-4">
                                                         <button id="login" name="login" class="btn btn-primary">Sign
                                                             In
                                                         </button>
-                                                    </div>
-                                                </div>
+                                                    </div><!-- Sign in col-md-4 -->
+                                                </div><!-- Sign in button form-group -->
                                                 <hr>
-                                                <!-- Register Link-->
+
+                                                <!-- Link to create an account -->
                                                 <div class="form-group">
                                                     <div class="col-md-12 text-center">
-                                                        <!--<a id="register-link" href="/time_engine/register/">Create an account </a>-->
                                                         <a href="#" id="register-link">Create an account </a>
-                                                    </div>
-                                                </div>
-
+                                                    </div><!-- create an account col-md-12 -->
+                                                </div><!-- create an account form-group -->
                                             </fieldset>
-                                        </form>
+                                        </form><!-- Sign in form -->
+                                    </div><!-- Sign in modal body-->
 
-
-                                        <!-- <form class="form-signin" method="post"  action="/time_engine/login/">
-
-                                             <input type="text" class="form-control" name="username" placeholder="Email"  required autofocus>
-                                             <input type="password" class="form-control" name="password" placeholder="Password" required>
-                                             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                                             <label class="checkbox pull-left">
-                                                 <input class="remember-me" type="checkbox" value="remember-me">
-                                                 Remember me
-                                             </label>
-                                             <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
-                                             </form>-->
-
-                                        <!--</div><!--account-wall-->
-                                    </div>
-                                    <!--modal-body-->
-
-
-                                    <!--modal for Registering-->
+                                    <!-- Register modal -->
                                     <div class="modal-body" id="modal-register">
-
-
+                                        <!-- "x" to dismiss register modal -->
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                         <h1 class="text-center login-title">Register for the Time Engine</h1>
                                         <hr>
-                                        <!--<div class="account-wall">-->
-
+                                        <!-- Register form -->
                                         <form id="register-form" class="form-horizontal" method="post"
                                               action="/time_engine/register/">
                                             {% csrf_token %}
                                             <fieldset>
-
-                                                <!-- Username Email input-->
+                                                <!-- Register Username Email input-->
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label" for="email">Email:</label>
-
                                                     <div class="col-md-5">
                                                         <input id="reg_username" name="username" type="text"
                                                                placeholder="Enter your Email"
                                                                class="form-control input-md" required="">
+                                                    </div><!-- register email col-md-5 -->
+                                                </div><!-- register email form-group -->
 
-                                                    </div>
-                                                </div>
-
-                                                <!-- Password input-->
+                                                <!-- Register Password input-->
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label"
                                                            for="password">Password:</label>
-
                                                     <div class="col-md-5">
                                                         <input id="reg_password" name="password" type="password"
                                                                placeholder="Enter your Password"
                                                                class="form-control input-md" required="">
+                                                    </div><!-- register password col-md-5 -->
+                                                </div><!-- register password form-group -->
 
-                                                    </div>
-                                                </div>
-
-                                                <!-- Button -->
+                                                <!-- Register Button -->
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label" for="login"></label>
-
                                                     <div class="col-md-5">
                                                         <button id="register-button" name="register"
                                                                 class="btn btn-danger">Register
                                                         </button>
-                                                        <a href="#" class="pull-right" id="signin-link">Back To Sign
-                                                            In </a>
-                                                    </div>
-                                                </div>
-
+                                                        <!-- return to sigin link -->
+                                                        <a href="#" class="pull-right" id="signin-link">Back To Sign In</a>
+                                                    </div><!-- register button col-md-5 -->
+                                                </div><!-- register button form-group -->
                                             </fieldset>
-                                        </form>
+                                        </form><!-- Register Form -->
+                                    </div><!-- Register modal-body -->
 
-
-                                        <!-- <form class="form-signin" method="post"  action="/time_engine/login/">
-
-                                             <input type="text" class="form-control" name="username" placeholder="Email"  required autofocus>
-                                             <input type="password" class="form-control" name="password" placeholder="Password" required>
-                                             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                                             <label class="checkbox pull-left">
-                                                 <input class="remember-me" type="checkbox" value="remember-me">
-                                                 Remember me
-                                             </label>
-                                             <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
-                                             </form>-->
-
-                                        <!--</div><!--account-wall-->
-                                    </div>
-                                    <!--modal-body-->
-
-
-                                </div>
-                                <!--modal-content-->
-                            </div>
-                            <!--modal-dialog-->
-                        </div>
+                                </div><!--modal-content-->
+                            </div><!--modal-dialog-->
+                        </div><!-- Main modal -->
+                    <!-- END if user is not authenticated -->
                     {% else %}
                         <!-- IF USER IS AUTHENTICATED-->
-
-                        <!--maybe make this a dropdown with options to visit profile page/modal or sign out?-->
-                        <!--<button type="button" class="btn btn-primary" data-target="/time_engine/logout/">Sign Out</button>-->
-                        <!--<a href="/time_engine/logout/">Logout</a><br/>-->
                         <!-- Bootstrap split button dropdown menu-->
                         <div class="btn-group">
-                            <button type="button" class="btn btn-default navbar-btn">Welcome {{ user.username }}!</button>
-                            <button type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <!-- Welcome button -->
+                            <button type="button" class="btn btn-default navbar-btn">Welcome {{ user.username }}!
+                            </button>
+                            <button type="button" class="btn btn-default navbar-btn dropdown-toggle"
+                                    data-toggle="dropdown" aria-expanded="false">
                                 <span class="caret"></span>
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
+                            <!-- User Dropdown menu -->
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuDivider">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>   View Profile</a>
-
+                                <!-- View Profile option -->
+                                <li role="presentation">
+                                    <!-- Link to Profile menu TODO: Add Profile modal -->
+                                    <a role="menuitem" tabindex="-1" href="#">
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                        View Profile
+                                    </a>
                                 </li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  Settings</a>
-
+                                <!-- View Settings -->
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#">
+                                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                                        Settings
+                                    </a>
                                 </li>
                                 <li role="presentation" class="divider"></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/time_engine/logout/">Sign
-                                    Out</a></li>
-                            </ul>
-                        </div><!--end btn-group-->
-                    {% endif %}
-                </li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container -->
+                                <!-- Sign Out link -->
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="/time_engine/logout/">
+                                        Sign Out
+                                    </a>
+                                </li>
+                            </ul><!-- User Dropdown menu -->
+                        </div><!-- end btn-group -->
+                    {% endif %}{# user authentication #}
+                </li><!-- Sign in nav item -->
+            </ul><!-- list of nav bar items -->
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container -->
 </nav>
 
 <!-- Page Content -->
 <div class="container">
-
-    <!--<div class="row">-->
     <div class="col-md-12">
         <div class="thumbnail">
-            <div class="row"><!--TITLE ROW -->
+            <!--TITLE ROW -->
+            <div class="row">
                 <h2 class="page-header"> Welcome to the Time Engine </h2>
             </div>
-            <div class="row"> <!-- CALENDAR ROW -->
+            <!-- CALENDAR ROW -->
+            <div class="row">
+                <!-- display jQuery Full Calendar -->
                 <div id="calendarContainer">
                 </div>
-            </div>
-            <!-- END Calendar row -->
-            <div class="row"> <!--  INSTRUCTIONS ROW -->
+            </div><!-- END Calendar row -->
+            <!--  Time Table ROW -->
+            <div class="row">
                 <div class="caption-full">
                     <div class="text-left">
-                        <!--<a class="btn btn-success" onclick="CC.ItemList.append();">+New</a>-->
-                        <!--<a class="btn btn-primary" data-toggle="modal" data-target="#myModal">+New</a>-->
+                        <!-- New Timetable Button -->
                         <button class="btn btn-primary" type="button" data-toggle="collapse"
-                                data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">New
-                            Timetable
+                                data-target="#collapseTimetable" aria-expanded="false" aria-controls="collapseTimetable">
+                            New Timetable
                         </button>
-                    </div>
-                </div>
+                    </div><!-- timetable button text-left -->
+                </div><!-- timetable button caption-full-->
+            </div><!-- END Timetable ROW -->
 
-
-
-
-                <!--this is the timetable list -->
-                <div>
-                    {% for tt in timetables %}
-                        {{ tt.name }} <br>
-                    {% endfor %}
-                </div>
-
-
-
-            </div>
-            <!-- END Instructions row -->
+            <!--Time Tables forms row-->
             <div class="row">
-
-                <div class="collapse" id="collapseExample">
+                <div class="collapse" id="collapseTimetable">
                     <div class="well">
-                        <!--FORM-->
+                        <!--New Timetable FORM-->
                         <form id="newForm" method="post" class="form-horizontal">
                             {% csrf_token %}
                             <h2 class="page-header">Create a new Timetable</h2>
+
                             <!--hidden input for indicating a save to db-->
                             <input class="save" id="id_save" name="save" type="hidden"/>
+
                             <!--Timetable Name field-->
                             <div class="form-group">
                                 <label class="control-label col-xs-3" for="name">Name:</label>
-
                                 <div class="col-xs-9">
                                     <input type="text" class="form-control" id="name" placeholder="Time table name"
                                            maxlength="100" name="name">
-                                </div>
-                            </div>
-                            <!--color choice radios-->
+                                </div><!-- timetable form name col-xs-9 -->
+                            </div><!-- timetable name form-group -->
+
+                            <!--Timetable Color choice radios-->
                             <div class="form-group">
                                 <label class="control-label col-xs-3">Color:</label>
-
+                                <!-- Blue -->
                                 <div class="col-xs-2">
                                     <label class="radio-inline">
                                         <input type="radio" name="color" value="blue"> Blue
                                     </label>
                                 </div>
+                                <!-- Green -->
                                 <div class="col-xs-2">
                                     <label class="radio-inline">
                                         <input type="radio" name="color" value="green"> Green
                                     </label>
                                 </div>
+                                <!-- Red -->
                                 <div class="col-xs-2">
                                     <label class="radio-inline">
                                         <input type="radio" name="color" value="red"> Red
                                     </label>
                                 </div>
+                                <!-- Purple -->
                                 <div class="col-xs-2">
                                     <label class="radio-inline">
                                         <input type="radio" name="color" value="purple"> Purple
                                     </label>
                                 </div>
+                            </div><!-- Timetable color choice radios form-group -->
 
-                            </div>
-                            <!--color choice form group-->
-                            <!--Start date form group widgets-->
+                            <!--Timetable Start date widget group-->
                             <div class="form-group">
                                 <label class="control-label col-xs-3">Start Date:</label>
                                 <!--Start month-->
@@ -438,12 +389,11 @@
                                         <option value="2020">2020</option>
                                     </select>
                                 </div>
-                            </div>
-                            <!--end start date form group-->
+                            </div><!--end start date form group-->
+
                             <!--Start time field-->
                             <div class="form-group">
                                 <label class="control-label col-xs-3">Start Time:</label>
-
                                 <div class="col-xs-3">
                                     <select class="form-control" name="start_time">
                                         <option selected="selected">Time</option>
@@ -497,92 +447,447 @@
                                         <option value="23:30">11:30pm</option>
                                     </select>
                                 </div>
-                            </div>
-                            <!--end start time-->
-                            <!--Total events field-->
+                            </div><!-- Timetable Start Time field -->
+
+                            <!--Timetable Total events field -->
                             <div class="form-group">
                                 <label class="control-label col-xs-3" for="event_count">Total events:</label>
-
                                 <div class="col-xs-3">
                                     <input name="event_count" type="number" class="form-control" id="event_count"
                                            placeholder="Enter a number...">
                                 </div>
-                            </div>
+                            </div><!-- Timetable total events field -->
+
                             <!--Available days form group-->
                             <div class="form-group">
                                 <label class="control-label col-xs-3">Available Days:</label>
-
+                                <!-- Sunday -->
                                 <div class="col-xs-1">
                                     <label class="checkbox-inline">
                                         <input type="checkbox" name="has_sunday"> Sun
                                     </label>
                                 </div>
+                                <!-- Monday -->
                                 <div class="col-xs-1">
                                     <label class="checkbox-inline">
                                         <input type="checkbox" name="has_monday"> Mon
                                     </label>
                                 </div>
+                                <!-- Tuesday -->
                                 <div class="col-xs-1">
                                     <label class="checkbox-inline">
                                         <input type="checkbox" name="has_tuesday"> Tues
                                     </label>
                                 </div>
+                                <!-- Wednesday -->
                                 <div class="col-xs-1">
                                     <label class="checkbox-inline">
                                         <input type="checkbox" name="has_wednesday"> Wed
                                     </label>
                                 </div>
+                                <!-- Thursday -->
                                 <div class="col-xs-1">
                                     <label class="checkbox-inline">
                                         <input type="checkbox" name="has_thursday"> Thurs
                                     </label>
                                 </div>
+                                <!-- Friday -->
                                 <div class="col-xs-1">
                                     <label class="checkbox-inline">
                                         <input type="checkbox" name="has_friday"> Fri
                                     </label>
                                 </div>
+                                <!-- Saturday -->
                                 <div class="col-xs-1">
                                     <label class="checkbox-inline">
                                         <input type="checkbox" name="has_saturday"> Sat
                                     </label>
                                 </div>
-                            </div>
-                            <!--end Available Days form group-->
-                            <!-- report back the end date here -->
+                            </div><!-- Timetable Available Days form group-->
+
+                            <!-- Timetable End date field -->
                             <div class="form-group">
                                 <label id="end_date_label" class="control-label col-xs-3" for="end_date"></label>
-
                                 <div class="col-xs-9" id="end_date_div">
-
                                     <span id="end_date"></span>
                                 </div>
-                            </div>
+                            </div><!-- End Date Field -->
 
                             <br>
-                            <!--form buttons-->
+                            <!--Timetable form buttons-->
                             <div class="form-group ">
                                 <hr>
                                 <div class="col-xs-offset-3 col-xs-9 ">
-
+                                    <!-- Reset button -->
                                     <input type="reset" class="btn btn-default" id='reset2' value="Reset">
+                                    <!-- Run button -->
                                     <input type="submit" class="btn btn-primary" id='run' value="Run">
+                                    <!-- If user isn't signed in, disable the save button -->
                                     {% if not user.is_authenticated %}
-                                        <input type="submit" class="btn btn-primary" title="Sign In to Save" disabled id='save'  value="Save">
+                                        <input type="submit" class="btn btn-primary" title="Sign In to Save" disabled
+                                               id='save' value="Save">
                                     {% else %}
                                         <input type="submit" class="btn btn-primary" id='save' value="Save">
                                     {% endif %}
                                 </div>
-                            </div>
+                            </div><!-- Timetable form buttons form-group -->
+
+                        </form><!-- New Timetable form -->
+                    </div><!--.well-->
+                </div><!--.collapse-->
 
 
-                        </form>
-
-
-                    </div>
-                    <!--.well-->
+                <!--this is the timetable list TODO: Remove this after testing -->
+                <div>
+                    {% for tt in timetables %}
+                        {{ tt.name }} <br>
+                    {% endfor %}
                 </div>
-                <!--.collapse-->
+
+                <!--Display the current user's saved timetables-->
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <!--code for each timetable starts here-->
+                    {% for tt in timetables %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <h4 class="panel-title">
+                                    <div class="form-group pull-left">
+                                         <h2>{{ tt.name }}</h2>
+                                    <!-- Display checkbox -->
+
+
+                                        <div class="checkbox">
+                                            <label>
+                                              <input type="checkbox" id="display-{{ tt.id }}"> Show on Calendar
+                                            </label>
+                                        </div>
+                                    </div><!-- title / check box form-group -->
+
+                                    <div class="form-group pull-right tt-buttons" >
+
+
+                                        <!--Edit timetable-->
+                                        <button class="btn btn-primary " id="btn-{{ tt.id }}" type="button" data-toggle="collapse"
+                                                data-parent="#accordion"  data-target="#{{ tt.name }}-coll" aria-expanded="true" data-ttid={{ tt.id }}
+                                                aria-controls="collapseOne">
+                                            <span class="glyphicon glyphicon-edit">     </span>
+                                            Edit
+                                        </button>
+
+                                        <!--Delete timetable-->
+                                        <button class="btn btn-default " id="delbtn-{{ tt.id }}" type="button" data-toggle="collapse"
+                                                data-parent="#accordion" name="delete" aria-expanded="true" data-ttid={{ tt.id }}
+                                                aria-controls="collapseOne">
+                                            <span class="glyphicon glyphicon-trash" aria-hidden="true">   </span>
+                                            Delete
+                                        </button>
+
+                                    </div><!-- Edit / Delete form-group -->
+
+                                    <br style="clear: both;">
+
+                                    <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">-->
+
+                                </h4>
+                            </div>
+                            <div id="{{ tt.name }}-coll" class="panel-collapse collapse " role="tabpanel"
+                                 aria-labelledby="headingOne">
+                                <div class="panel-body">
+                                    <!--FORM-->
+                                    <form id="newForm" method="post" class="form-horizontal">
+                                        {% csrf_token %}
+                                        <h2 class="page-header">Edit Timetable: {{ tt.name }}</h2>
+                                        <!--hidden input for indicating a save to db-->
+                                        <input class="save" id="id_save" name="save" type="hidden"/>
+                                        <!--Timetable Name field-->
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-3" for="name">Name:</label>
+
+                                            <div class="col-xs-9">
+                                                <input type="text" class="form-control" id="name"
+                                                       placeholder="Time table name"
+                                                       maxlength="100" name="name">
+                                            </div>
+                                        </div>
+                                        <!--color choice radios-->
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-3">Color:</label>
+
+                                            <div class="col-xs-2">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="color" value="blue"> Blue
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="color" value="green"> Green
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="color" value="red"> Red
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="color" value="purple"> Purple
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                        <!--color choice form group-->
+                                        <!--Start date form group widgets-->
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-3">Start Date:</label>
+                                            <!--Start month-->
+                                            <div class="col-xs-3">
+                                                <select class="form-control" name="start_date_month">
+                                                    <option selected="selected">Month</option>
+                                                    <option value="1">January</option>
+                                                    <option value="2">February</option>
+                                                    <option value="3">March</option>
+                                                    <option value="4">April</option>
+                                                    <option value="5">May</option>
+                                                    <option value="6">June</option>
+                                                    <option value="7">July</option>
+                                                    <option value="8">August</option>
+                                                    <option value="9">September</option>
+                                                    <option value="10">October</option>
+                                                    <option value="11">November</option>
+                                                    <option value="12">December</option>
+                                                </select>
+                                            </div>
+                                            <!--Start Date-->
+                                            <div class="col-xs-3">
+                                                <select class="form-control" name="start_date_day">
+                                                    <option selected="selected">Date</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                    <option value="12">12</option>
+                                                    <option value="13">13</option>
+                                                    <option value="14">14</option>
+                                                    <option value="15">15</option>
+                                                    <option value="16">16</option>
+                                                    <option value="17">17</option>
+                                                    <option value="18">18</option>
+                                                    <option value="19">19</option>
+                                                    <option value="20">20</option>
+                                                    <option value="21">21</option>
+                                                    <option value="22">22</option>
+                                                    <option value="23">23</option>
+                                                    <option value="24">24</option>
+                                                    <option value="25">25</option>
+                                                    <option value="26">26</option>
+                                                    <option value="27">27</option>
+                                                    <option value="28">28</option>
+                                                    <option value="29">29</option>
+                                                    <option value="30">30</option>
+                                                    <option value="31">31</option>
+                                                </select>
+                                            </div>
+                                            <!--start year-->
+                                            <div class="col-xs-3">
+                                                <select class="form-control" name="start_date_year">
+                                                    <option selected="selected">Year</option>
+                                                    <option value="2015">2015</option>
+                                                    <option value="2016">2016</option>
+                                                    <option value="2017">2017</option>
+                                                    <option value="2018">2018</option>
+                                                    <option value="2019">2019</option>
+                                                    <option value="2020">2020</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--end start date form group-->
+                                        <!--Start time field-->
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-3">Start Time:</label>
+
+                                            <div class="col-xs-3">
+                                                <select class="form-control" name="start_time">
+                                                    <option selected="selected">Time</option>
+                                                    <option value="12:00">12:00am</option>
+                                                    <option value="12:30">12:30am</option>
+                                                    <option value="1:00">1:00am</option>
+                                                    <option value="1:30">1:30am</option>
+                                                    <option value="2:00">2:00am</option>
+                                                    <option value="2:30">2:30am</option>
+                                                    <option value="3:00">3:00am</option>
+                                                    <option value="3:30">3:30am</option>
+                                                    <option value="4:00">4:00am</option>
+                                                    <option value="4:30">4:30am</option>
+                                                    <option value="5:00">5:00am</option>
+                                                    <option value="5:30">5:30am</option>
+                                                    <option value="6:00">6:00am</option>
+                                                    <option value="6:30">6:30am</option>
+                                                    <option value="7:00">7:00am</option>
+                                                    <option value="7:30">7:30am</option>
+                                                    <option value="8:00">8:00am</option>
+                                                    <option value="8:30">8:30am</option>
+                                                    <option value="9:00">9:00am</option>
+                                                    <option value="9:30">9:30am</option>
+                                                    <option value="10:00">10:00am</option>
+                                                    <option value="10:30">10:30am</option>
+                                                    <option value="11:00">11:00am</option>
+                                                    <option value="11:30">11:30am</option>
+                                                    <option value="12:00">12:00pm</option>
+                                                    <option value="12:30">12:30pm</option>
+                                                    <option value="13:00">1:00pm</option>
+                                                    <option value="13:30">1:30pm</option>
+                                                    <option value="14:00">2:00pm</option>
+                                                    <option value="14:30">2:30pm</option>
+                                                    <option value="15:00">3:00pm</option>
+                                                    <option value="15:30">3:30pm</option>
+                                                    <option value="16:00">4:00pm</option>
+                                                    <option value="16:30">4:30pm</option>
+                                                    <option value="17:00">5:00pm</option>
+                                                    <option value="17:30">5:30pm</option>
+                                                    <option value="18:00">6:00pm</option>
+                                                    <option value="18:30">6:30pm</option>
+                                                    <option value="19:00">7:00pm</option>
+                                                    <option value="19:30">7:30pm</option>
+                                                    <option value="20:00">8:00pm</option>
+                                                    <option value="20:30">8:30pm</option>
+                                                    <option value="21:00">9:00pm</option>
+                                                    <option value="21:30">9:30pm</option>
+                                                    <option value="22:00">10:00pm</option>
+                                                    <option value="22:30">10:30pm</option>
+                                                    <option value="23:00">11:00pm</option>
+                                                    <option value="23:30">11:30pm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--end start time-->
+                                        <!--Total events field-->
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-3" for="event_count">Total
+                                                events:</label>
+
+                                            <div class="col-xs-3">
+                                                <input name="event_count" type="number" class="form-control"
+                                                       id="event_count"
+                                                       placeholder="Enter a number...">
+                                            </div>
+                                        </div>
+                                        <!--Available days form group-->
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-3">Available Days:</label>
+
+                                            <div class="col-xs-1">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" name="has_sunday"> Sun
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" name="has_monday"> Mon
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" name="has_tuesday"> Tues
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" name="has_wednesday"> Wed
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" name="has_thursday"> Thurs
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" name="has_friday"> Fri
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" name="has_saturday"> Sat
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!--end Available Days form group-->
+                                        <!-- report back the end date here -->
+                                        <div class="form-group">
+                                            <label id="end_date_label" class="control-label col-xs-3"
+                                                   for="end_date"></label>
+
+                                            <div class="col-xs-9" id="end_date_div">
+
+                                                <span id="end_date"></span>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <!--form buttons-->
+                                        <div class="form-group ">
+                                            <hr>
+                                            <div class="col-xs-offset-3 col-xs-9 ">
+
+                                                <input type="reset" class="btn btn-default" id='reset2' value="Reset">
+                                                <input type="submit" class="btn btn-primary" id='run' value="Run">
+                                                {% if not user.is_authenticated %}
+                                                    <input type="submit" class="btn btn-primary" title="Sign In to Save"
+                                                           disabled
+                                                           id='save' value="Save">
+                                                {% else %}
+                                                    <input type="submit" class="btn btn-primary" id='save' value="Save">
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+
+                                    </form>
+
+
+                                </div>
+                            </div>
+                        </div><!-- end code-->
+                    {% endfor %}
+                    <!--<div class="panel panel-default">
+                      <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Collapsible Group Item #2
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body">
+                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel panel-default">
+                      <div class="panel-heading" role="tab" id="headingThree">
+                        <h4 class="panel-title">
+                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Collapsible Group Item #3
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                        <div class="panel-body">
+                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                      </div>
+                    </div>-->
+                </div>
+                <!--end panel-group-->
+
+
             </div>
             <!--row-->
             <div class="row" id="msg">
@@ -673,7 +978,7 @@
                 //console.log(data['end_event']['end_date_label']);
                 $("#end_date_label").html(data['end_event']['end_date_label']);
                 $("#end_date").html(data['end_event']['end_date']);
-                
+
             });
 
             return false;
@@ -736,8 +1041,6 @@
             var elSigninLink = document.getElementById('signin-link');
             elSigninLink.addEventListener('click', signinForm, false);
         {% endif %}
-
-
 
     }); // end document ready
 
