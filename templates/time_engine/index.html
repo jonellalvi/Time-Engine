@@ -605,8 +605,8 @@
 
                                             <div class="col-xs-9">
                                                 <input type="text" class="form-control" id="name"
-                                                       placeholder="Time table name"
-                                                       maxlength="100" name="name">
+                                                       placeholder="{{ tt.name }}"
+                                                       maxlength="100" name="name" value="{{ tt.name }}">
                                             </div>
                                         </div>
                                         <!--color choice radios-->
@@ -615,22 +615,22 @@
 
                                             <div class="col-xs-2">
                                                 <label class="radio-inline">
-                                                    <input type="radio" name="color" value="blue"> Blue
+                                                    <input type="radio" name="color" value="blue" {% if  tt.color  == "value" %} checked {% endif %}> Blue
                                                 </label>
                                             </div>
                                             <div class="col-xs-2">
                                                 <label class="radio-inline">
-                                                    <input type="radio" name="color" value="green"> Green
+                                                    <input type="radio" name="color" value="green" {% if  tt.color  == "value" %} checked {% endif %}> Green
                                                 </label>
                                             </div>
                                             <div class="col-xs-2">
                                                 <label class="radio-inline">
-                                                    <input type="radio" name="color" value="red"> Red
+                                                    <input type="radio" name="color" value="red" {% if  tt.color  == "value" %} checked {% endif %}> Red
                                                 </label>
                                             </div>
                                             <div class="col-xs-2">
                                                 <label class="radio-inline">
-                                                    <input type="radio" name="color" value="purple"> Purple
+                                                    <input type="radio" name="color" value="purple" {% if  tt.color  == "value" %} checked {% endif %}> Purple
                                                 </label>
                                             </div>
 
@@ -641,7 +641,7 @@
                                             <label class="control-label col-xs-3">Start Date:</label>
                                             <!--Start month-->
                                             <div class="col-xs-3">
-                                                <select class="form-control" name="start_date_month">
+                                                <select class="form-control" name="start_date_month" >
                                                     <option selected="selected">Month</option>
                                                     <option value="1">January</option>
                                                     <option value="2">February</option>

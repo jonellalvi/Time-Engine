@@ -180,10 +180,12 @@ def index(request):
             print "the user is: ", request.user
             if save_option == "true":
                 timetable_id = save_timetable(form_data, request.user)
-
+                response = {'cal': cal_data, 'form': request.POST, 'id': timetable_id}
+            else:
+                response = {'cal': cal_data, 'form': request.POST}
             print "This is cal_data", cal_data
 
-            response = {'cal': cal_data, 'form': request.POST, 'id': timetable_id}
+            #response = {'cal': cal_data, 'form': request.POST, 'id': timetable_id}
             return HttpResponse(dumps(response), content_type="application/json")
         else:
             return HttpResponse('{"status": "invalid form!"}', content_type="application/json")
