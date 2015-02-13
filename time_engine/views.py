@@ -177,12 +177,14 @@ def index(request):
             # extract the save boolean set in the js to see if we need to save.
             save_option = form.cleaned_data['save']
             # if it's save, save to database
+            print "the user is: ", request.user
             if save_option == "true":
                 timetable_id = save_timetable(form_data, request.user)
 
             print "This is cal_data", cal_data
 
-            return HttpResponse(dumps(cal_data), content_type="application/json")
+            response = {'cal': cal_data, 'form': request.POST, 'id': timetable_id}
+            return HttpResponse(dumps(response), content_type="application/json")
         else:
             return HttpResponse('{"status": "invalid form!"}', content_type="application/json")
 
@@ -192,6 +194,8 @@ def index(request):
         # then use that to look up the saved
         if request.user.is_authenticated():
             timetable_list = TimeTable.objects.filter(user_id=request.user.id)
+            timetable_list = list(timetable_list)
+            timetable_list.append(TimeTable())
         else:
             timetable_list = []
         #
@@ -205,7 +209,7 @@ def index(request):
 
 
 # only save if logged in.
-@login_required
+#@login_required
 def save_timetable(form_data, user):
     # take form_data and massage it and save to model.
     print "save to model !!!", form_data
@@ -225,6 +229,37 @@ def save_timetable(form_data, user):
     tt.user = user
     tt.save()
     return tt.id
+
+
+# only delete if logged in
+@login_required
+@csrf_exempt
+def delete_timetable(request):
+    # Get the timetable's id from the request data:
+    ttid  = request.POST['id']
+
+    # use the timetable's id to return the timetable:
+    deltt = TimeTable.objects.filter(pk=ttid)
+
+    # now axe that baby:
+    huh = deltt.delete()
+
+    # Now check to make sure it was deleted:
+    success = TimeTable.objects.filter(pk=ttid)
+
+    print "this is what I get: ", ttid
+    print "this is success: ", success
+
+    #TODO: implement a soft delete with a new column in the model "enabled" and
+    #TODO: to true by default, and set to false if deleted
+    #TODO: then check in the template and display based on enabled...
+    # for now just return a success message:
+
+    msg = "timetable deleted!"
+    print msg
+
+    return HttpResponse(dumps({'msg': msg, 'ttid': ttid}), content_type="application/json")
+
 
 
 @csrf_exempt

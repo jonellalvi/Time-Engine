@@ -13,6 +13,7 @@ class EventList(object):
         Return a Timetable object.
         '''
         # Initialize from any supplied form data
+        print "this is form_data in calc_events: ", form_data
         if form_data:
             self.name = form_data.get('name')
             self.display_color = form_data.get('color')
@@ -67,7 +68,9 @@ class EventList(object):
                 self.lesson_count -= 1
 
             # increment the date
+            print "This is a_day: ", a_day
             next_date += a_day
+
         date_strings = [dt.strftime("%A %B %d, %Y") for dt in timetable]
         print "this is date_strings: ", date_strings
         return timetable

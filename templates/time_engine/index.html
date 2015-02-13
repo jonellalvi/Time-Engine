@@ -548,8 +548,8 @@
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <!--code for each timetable starts here-->
                     {% for tt in timetables %}
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingOne">
+                        <div class="panel panel-default {% if forloop.last %} hide {% endif %}" >
+                            <div class="panel-heading tt-panel" role="tab" id="headingOne" data-ttname="{{ tt.name}}">
                                 <h4 class="panel-title">
                                     <div class="form-group pull-left">
                                          <h2>{{ tt.name }}</h2>
@@ -574,9 +574,9 @@
                                             Edit
                                         </button>
 
-                                        <!--Delete timetable-->
-                                        <button class="btn btn-default " id="delbtn-{{ tt.id }}" type="button" data-toggle="collapse"
-                                                data-parent="#accordion" name="delete" aria-expanded="true" data-ttid={{ tt.id }}
+                                        <!--Delete timetable button-->
+                                        <button class="btn btn-default delbtn" type="button" data-toggle="collapse"
+                                                data-parent="#accordion" name="delete" aria-expanded="true" data-ttid="{{ tt.id }}"
                                                 aria-controls="collapseOne">
                                             <span class="glyphicon glyphicon-trash" aria-hidden="true">   </span>
                                             Delete
@@ -955,7 +955,7 @@
             //options for fullCalendar go here.
         });
 
-        //setting up the event handler for time engine form submission
+        //setting up the event handler for New Timetable form submission
         $('#run, #save').on('click', function (e) {
             var form_stuff = $("#newForm").serialize();
             //console.log(form_stuff);
@@ -965,25 +965,76 @@
                 form_stuff += '&save=false';
             } else {
                 form_stuff += '&save=true';
+                //TODO: add panel to list of timetables
+
             }
 
             $.post("/time_engine/", form_stuff, function (data) {
                 console.log(data);
-
+                var data_cal = data.cal
                 //clear fullCalendar of existing events.
                 var cal = $('#calendarContainer');
                 cal.fullCalendar('removeEvents');
-                cal.fullCalendar('addEventSource', data['cal_events']);
+                cal.fullCalendar('addEventSource', data_cal['cal_events']);
                 //update the form with the end date:
                 //console.log(data['end_event']['end_date_label']);
-                $("#end_date_label").html(data['end_event']['end_date_label']);
-                $("#end_date").html(data['end_event']['end_date']);
+                $("#end_date_label").html(data_cal['end_event']['end_date_label']);
+                $("#end_date").html(data_cal['end_event']['end_date']);
+
+                if ($(data.target).attr("data-ttname") == "None") {
+                    var timetableToHide = $(e.target).attr("data-ttid");
+                    $(timetableToHide).addClass(hide);
+                }
+
+                //TODO: update the list of timetables to show the new timetable.
+                console.log("this is the form stuff: ", form_stuff);
+                // if form_stuff has &save=true
+                    //add it to the list of timetables
+                    //reset and collapse the new timetable form
+                //window.location.reload();
 
             });
 
             return false;
         });
 
+        // handle the reset button:
+        $('#reset2').on('click', function (e) {
+            var cal = $('#calendarContainer');
+            cal.fullCalendar('removeEvents');
+        }); //end handler reset
+
+
+
+        // Event handler for deleting an existing timetable
+        $('.delbtn').on('click', function (e) {
+            console.log("Holy crap it worked");
+            console.log(e.target);
+            console.log($(e.target).attr("data-ttid"));
+            //probably want to add a check here to make sure they want to delete it.
+            var timetableToDelete = $(e.target).attr("data-ttid");
+            //send the request.
+            $.post("/time_engine/delete_timetable/", {id: timetableToDelete}, function(delstuff){
+                console.log(delstuff['msg'], delstuff['ttid']);
+                //console.log($('e.target').closest('.panel'));
+                // now remove the tt record from the dom
+                console.log(e.target.parentElement.parentElement.parentElement.parentElement);
+                console.log($(e.target).closest('.panel'));
+                // TODO: figure out how to add a class "hide" here so I can keep it in the DOM.
+                //$(e.target.parentElement.parentElement.parentElement.parentElement).addClass('hide');
+                e.target.parentElement.parentElement.parentElement.parentElement.remove();
+
+
+                //console.log(timetableToDelete.parent);
+
+
+
+            }); // $.post call
+
+        }); //delete event handler
+
+
+        // User authentication stuff
         // setting up the event handler for registration form submission
         $('#register-button').on('click', function (e) {
             $.post("/time_engine/register/", $('#register-form').serialize(), function (data) {
@@ -999,13 +1050,6 @@
             });
             return false;
         });
-
-
-        // handle the reset button:
-        $('#reset2').on('click', function (e) {
-            var cal = $('#calendarContainer');
-            cal.fullCalendar('removeEvents');
-        }); //end handler reset
 
         // stuff to make the register modal appear
         //first get the element:

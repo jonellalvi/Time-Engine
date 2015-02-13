@@ -180,3 +180,7 @@ legend {
 .tt-buttons {
     margin-top: 50px;
 }
+/* hide the panels that are deleted */
+.hide {
+    display: none;
+}
