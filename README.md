@@ -1,6 +1,6 @@
 # Time-Engine
 
-Time Engine is my first web app. My goal with this project is to learn Python, Django, and JavaScript more deeply. 
+Time Engine is my first web app. My goal with this project is to learn Python, Django, and JavaScript more deeply, as well as explore calendering issues and basic web app concepts such as user authentication, accessing APIs, and understanding AJAX.
 
 Time Engine takes a series of events, an end date, and the available days, and determines the end date. 
 
