@@ -8,10 +8,11 @@ from django.template import RequestContext
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from json import dumps
+from django.core import serializers
 
 from calc_eventlist import EventList
 from time_engine.forms import TimeTableForm, UserForm, UserProfileForm
-from time_engine.models import TimeTable
+from time_engine.models import TimeTable, Result
 
 from django.shortcuts import render_to_response
 from django.contrib import auth
@@ -179,7 +180,7 @@ def index(request):
             # if it's save, save to database
             print "the user is: ", request.user
             if save_option == "true":
-                timetable_id = save_timetable(form_data, request.user)
+                timetable_id = save_timetable(form_data, request.user, result)
                 response = {'cal': cal_data, 'form': request.POST, 'id': timetable_id}
             else:
                 response = {'cal': cal_data, 'form': request.POST}
@@ -210,9 +211,7 @@ def index(request):
         return render(request, 'time_engine/index.html', {'timetables': timetable_list})
 
 
-# only save if logged in.
-#@login_required
-def save_timetable(form_data, user):
+def save_timetable(form_data, user, eventlist):
     # take form_data and massage it and save to model.
     print "save to model !!!", form_data
     tt = TimeTable()
@@ -228,9 +227,48 @@ def save_timetable(form_data, user):
     tt.has_thursday = form_data['has_thursday']
     tt.has_friday = form_data['has_friday']
     tt.has_sunday = form_data['has_sunday']
+    tt.end_date = eventlist[-1]
     tt.user = user
     tt.save()
+
+    for idx, event in enumerate(eventlist):
+        result = Result()
+        result.lesson_date = event
+        result.lesson_num = idx + 1
+        result.timetable = tt
+        result.save()
+
     return tt.id
+
+
+# get timetable view
+@login_required
+@csrf_exempt
+def get_timetable(request):
+
+    # Get the timetable's id from the request data:
+    ttid  = request.GET['id']
+    print "This is ttid: ", ttid
+
+    # use the timetable's id to return the list of dates
+    # from the Results model:
+    eventlist = Result.objects.filter(timetable_id=ttid)
+
+    # use the timetable's id to return the color
+    # from the TimeTable model:
+    eventcolor = TimeTable.objects.get(id=ttid).color
+    print "this is what I get for eventcolor:", eventcolor
+
+    # get  end date from TimeTable
+    eventend = TimeTable.objects.get(id=ttid).end_date
+    print "this is eventend: ", eventend
+
+    # now package it up to send back:
+    elist = serializers.serialize("json", eventlist)
+    data = {'elist': elist, 'eventcolor': eventcolor, 'eventend': str(eventend)}
+
+    #return HttpResponse(serializers.serialize("json", eventlist), content_type="application/json")
+    return HttpResponse(dumps(data), content_type="application/json")
 
 
 # only delete if logged in
@@ -245,12 +283,6 @@ def delete_timetable(request):
 
     # now axe that baby:
     huh = deltt.delete()
-
-    # Now check to make sure it was deleted:
-    success = TimeTable.objects.filter(pk=ttid)
-
-    print "this is what I get: ", ttid
-    print "this is success: ", success
 
     #TODO: implement a soft delete with a new column in the model "enabled" and
     #TODO: to true by default, and set to false if deleted

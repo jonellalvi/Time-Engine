@@ -20,6 +20,11 @@
     <link href="{% static 'time_engine/css/index.css' %}" rel="stylesheet">
     <link href="{% static 'time_engine/css/panels.css' %}" rel="stylesheet">
 
+    <!-- jQueryUI CSS -->
+    <link rel="stylesheet" href="{% static 'time_engine/css/jquery-ui.min.css' %}">
+    <!--<script src="external/jquery/jquery.js"></script>-->
+
+
 </head>
 
 <body>
@@ -319,6 +324,7 @@
                                 </div>
                             </div><!-- Timetable color choice radios form-group -->
 
+
                             <!--Timetable Start date widget group-->
                             <div class="form-group">
                                 <label class="control-label col-xs-3">Start Date:</label>
@@ -535,360 +541,64 @@
                         </form><!-- New Timetable form -->
                     </div><!--.well-->
                 </div><!--.collapse-->
+            </div><!--.row-->
 
 
-                <!--this is the timetable list TODO: Remove this after testing -->
-                <div>
-                    {% for tt in timetables %}
-                        {{ tt.name }} <br>
-                    {% endfor %}
-                </div>
+            <!--timetable cards-->
+            <div class="row">
 
-                <!--Display the current user's saved timetables-->
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <!--code for each timetable starts here-->
-                    {% for tt in timetables %}
-                        <div class="panel panel-default {% if forloop.last %} hide {% endif %}" >
-                            <div class="panel-heading tt-panel" role="tab" id="headingOne" data-ttname="{{ tt.name}}">
-                                <h4 class="panel-title">
-                                    <div class="form-group pull-left">
-                                         <h2>{{ tt.name }}</h2>
-                                    <!-- Display checkbox -->
+                {%  for timetable in timetables %}
+                <!--this is a single timetable-->
+                <div class="col-sm-4 col-md-4">
 
+                    <div class="thumbnail">
 
-                                        <div class="checkbox">
-                                            <label>
-                                              <input type="checkbox" id="display-{{ tt.id }}"> Show on Calendar
-                                            </label>
-                                        </div>
-                                    </div><!-- title / check box form-group -->
+                        <div class="caption">
 
-                                    <div class="form-group pull-right tt-buttons" >
+                            <h4>
+                                <div style="display: inline-block; width: 18px; height: 18px; background: {{ timetable.color }};"></div>
+                                {{ timetable.name }}
+                            </h4>
 
-
-                                        <!--Edit timetable-->
-                                        <button class="btn btn-primary " id="btn-{{ tt.id }}" type="button" data-toggle="collapse"
-                                                data-parent="#accordion"  data-target="#{{ tt.name }}-coll" aria-expanded="true" data-ttid={{ tt.id }}
-                                                aria-controls="collapseOne">
-                                            <span class="glyphicon glyphicon-edit">     </span>
-                                            Edit
-                                        </button>
-
-                                        <!--Delete timetable button-->
-                                        <button class="btn btn-default delbtn" type="button" data-toggle="collapse"
-                                                data-parent="#accordion" name="delete" aria-expanded="true" data-ttid="{{ tt.id }}"
-                                                aria-controls="collapseOne">
-                                            <span class="glyphicon glyphicon-trash" aria-hidden="true">   </span>
-                                            Delete
-                                        </button>
-
-                                    </div><!-- Edit / Delete form-group -->
-
-                                    <br style="clear: both;">
-
-                                    <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">-->
-
-                                </h4>
-                            </div>
-                            <div id="{{ tt.name }}-coll" class="panel-collapse collapse " role="tabpanel"
-                                 aria-labelledby="headingOne">
-                                <div class="panel-body">
-                                    <!--FORM-->
-                                    <form id="newForm" method="post" class="form-horizontal">
-                                        {% csrf_token %}
-                                        <h2 class="page-header">Edit Timetable: {{ tt.name }}</h2>
-                                        <!--hidden input for indicating a save to db-->
-                                        <input class="save" id="id_save" name="save" type="hidden"/>
-                                        <!--Timetable Name field-->
-                                        <div class="form-group">
-                                            <label class="control-label col-xs-3" for="name">Name:</label>
-
-                                            <div class="col-xs-9">
-                                                <input type="text" class="form-control" id="name"
-                                                       placeholder="{{ tt.name }}"
-                                                       maxlength="100" name="name" value="{{ tt.name }}">
-                                            </div>
-                                        </div>
-                                        <!--color choice radios-->
-                                        <div class="form-group">
-                                            <label class="control-label col-xs-3">Color:</label>
-
-                                            <div class="col-xs-2">
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="color" value="blue" {% if  tt.color  == "value" %} checked {% endif %}> Blue
-                                                </label>
-                                            </div>
-                                            <div class="col-xs-2">
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="color" value="green" {% if  tt.color  == "value" %} checked {% endif %}> Green
-                                                </label>
-                                            </div>
-                                            <div class="col-xs-2">
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="color" value="red" {% if  tt.color  == "value" %} checked {% endif %}> Red
-                                                </label>
-                                            </div>
-                                            <div class="col-xs-2">
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="color" value="purple" {% if  tt.color  == "value" %} checked {% endif %}> Purple
-                                                </label>
-                                            </div>
-
-                                        </div>
-                                        <!--color choice form group-->
-                                        <!--Start date form group widgets-->
-                                        <div class="form-group">
-                                            <label class="control-label col-xs-3">Start Date:</label>
-                                            <!--Start month-->
-                                            <div class="col-xs-3">
-                                                <select class="form-control" name="start_date_month" >
-                                                    <option selected="selected">Month</option>
-                                                    <option value="1">January</option>
-                                                    <option value="2">February</option>
-                                                    <option value="3">March</option>
-                                                    <option value="4">April</option>
-                                                    <option value="5">May</option>
-                                                    <option value="6">June</option>
-                                                    <option value="7">July</option>
-                                                    <option value="8">August</option>
-                                                    <option value="9">September</option>
-                                                    <option value="10">October</option>
-                                                    <option value="11">November</option>
-                                                    <option value="12">December</option>
-                                                </select>
-                                            </div>
-                                            <!--Start Date-->
-                                            <div class="col-xs-3">
-                                                <select class="form-control" name="start_date_day">
-                                                    <option selected="selected">Date</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
-                                                    <option value="7">7</option>
-                                                    <option value="8">8</option>
-                                                    <option value="9">9</option>
-                                                    <option value="10">10</option>
-                                                    <option value="11">11</option>
-                                                    <option value="12">12</option>
-                                                    <option value="13">13</option>
-                                                    <option value="14">14</option>
-                                                    <option value="15">15</option>
-                                                    <option value="16">16</option>
-                                                    <option value="17">17</option>
-                                                    <option value="18">18</option>
-                                                    <option value="19">19</option>
-                                                    <option value="20">20</option>
-                                                    <option value="21">21</option>
-                                                    <option value="22">22</option>
-                                                    <option value="23">23</option>
-                                                    <option value="24">24</option>
-                                                    <option value="25">25</option>
-                                                    <option value="26">26</option>
-                                                    <option value="27">27</option>
-                                                    <option value="28">28</option>
-                                                    <option value="29">29</option>
-                                                    <option value="30">30</option>
-                                                    <option value="31">31</option>
-                                                </select>
-                                            </div>
-                                            <!--start year-->
-                                            <div class="col-xs-3">
-                                                <select class="form-control" name="start_date_year">
-                                                    <option selected="selected">Year</option>
-                                                    <option value="2015">2015</option>
-                                                    <option value="2016">2016</option>
-                                                    <option value="2017">2017</option>
-                                                    <option value="2018">2018</option>
-                                                    <option value="2019">2019</option>
-                                                    <option value="2020">2020</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <!--end start date form group-->
-                                        <!--Start time field-->
-                                        <div class="form-group">
-                                            <label class="control-label col-xs-3">Start Time:</label>
-
-                                            <div class="col-xs-3">
-                                                <select class="form-control" name="start_time">
-                                                    <option selected="selected">Time</option>
-                                                    <option value="12:00">12:00am</option>
-                                                    <option value="12:30">12:30am</option>
-                                                    <option value="1:00">1:00am</option>
-                                                    <option value="1:30">1:30am</option>
-                                                    <option value="2:00">2:00am</option>
-                                                    <option value="2:30">2:30am</option>
-                                                    <option value="3:00">3:00am</option>
-                                                    <option value="3:30">3:30am</option>
-                                                    <option value="4:00">4:00am</option>
-                                                    <option value="4:30">4:30am</option>
-                                                    <option value="5:00">5:00am</option>
-                                                    <option value="5:30">5:30am</option>
-                                                    <option value="6:00">6:00am</option>
-                                                    <option value="6:30">6:30am</option>
-                                                    <option value="7:00">7:00am</option>
-                                                    <option value="7:30">7:30am</option>
-                                                    <option value="8:00">8:00am</option>
-                                                    <option value="8:30">8:30am</option>
-                                                    <option value="9:00">9:00am</option>
-                                                    <option value="9:30">9:30am</option>
-                                                    <option value="10:00">10:00am</option>
-                                                    <option value="10:30">10:30am</option>
-                                                    <option value="11:00">11:00am</option>
-                                                    <option value="11:30">11:30am</option>
-                                                    <option value="12:00">12:00pm</option>
-                                                    <option value="12:30">12:30pm</option>
-                                                    <option value="13:00">1:00pm</option>
-                                                    <option value="13:30">1:30pm</option>
-                                                    <option value="14:00">2:00pm</option>
-                                                    <option value="14:30">2:30pm</option>
-                                                    <option value="15:00">3:00pm</option>
-                                                    <option value="15:30">3:30pm</option>
-                                                    <option value="16:00">4:00pm</option>
-                                                    <option value="16:30">4:30pm</option>
-                                                    <option value="17:00">5:00pm</option>
-                                                    <option value="17:30">5:30pm</option>
-                                                    <option value="18:00">6:00pm</option>
-                                                    <option value="18:30">6:30pm</option>
-                                                    <option value="19:00">7:00pm</option>
-                                                    <option value="19:30">7:30pm</option>
-                                                    <option value="20:00">8:00pm</option>
-                                                    <option value="20:30">8:30pm</option>
-                                                    <option value="21:00">9:00pm</option>
-                                                    <option value="21:30">9:30pm</option>
-                                                    <option value="22:00">10:00pm</option>
-                                                    <option value="22:30">10:30pm</option>
-                                                    <option value="23:00">11:00pm</option>
-                                                    <option value="23:30">11:30pm</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <!--end start time-->
-                                        <!--Total events field-->
-                                        <div class="form-group">
-                                            <label class="control-label col-xs-3" for="event_count">Total
-                                                events:</label>
-
-                                            <div class="col-xs-3">
-                                                <input name="event_count" type="number" class="form-control"
-                                                       id="event_count"
-                                                       placeholder="Enter a number...">
-                                            </div>
-                                        </div>
-                                        <!--Available days form group-->
-                                        <div class="form-group">
-                                            <label class="control-label col-xs-3">Available Days:</label>
-
-                                            <div class="col-xs-1">
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="has_sunday"> Sun
-                                                </label>
-                                            </div>
-                                            <div class="col-xs-1">
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="has_monday"> Mon
-                                                </label>
-                                            </div>
-                                            <div class="col-xs-1">
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="has_tuesday"> Tues
-                                                </label>
-                                            </div>
-                                            <div class="col-xs-1">
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="has_wednesday"> Wed
-                                                </label>
-                                            </div>
-                                            <div class="col-xs-1">
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="has_thursday"> Thurs
-                                                </label>
-                                            </div>
-                                            <div class="col-xs-1">
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="has_friday"> Fri
-                                                </label>
-                                            </div>
-                                            <div class="col-xs-1">
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="has_saturday"> Sat
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <!--end Available Days form group-->
-                                        <!-- report back the end date here -->
-                                        <div class="form-group">
-                                            <label id="end_date_label" class="control-label col-xs-3"
-                                                   for="end_date"></label>
-
-                                            <div class="col-xs-9" id="end_date_div">
-
-                                                <span id="end_date"></span>
-                                            </div>
-                                        </div>
-
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <strong>Start Date:</strong> {{ timetable.start_date }}<br>
+                                    <strong>Time:</strong> {{ timetable.start_time }}<br>
+                                    <strong>Events:</strong> {{ timetable.event_count }}<br>
+                                    <strong>Days: </strong>
+                                        {% if timetable.has_monday %} M {% endif %}
+                                        {% if timetable.has_tuesday %} Tu {% endif %}
+                                        {% if timetable.has_wednesday %} W {% endif %}
+                                        {% if timetable.has_thursday %} Th {% endif %}
+                                        {% if timetable.has_friday %} F {% endif %}
+                                        {% if timetable.has_saturday %} Sa {% endif %}
+                                        {% if timetable.has_sunday %} Su {% endif %}
                                         <br>
-                                        <!--form buttons-->
-                                        <div class="form-group ">
-                                            <hr>
-                                            <div class="col-xs-offset-3 col-xs-9 ">
+                                    <strong>End: </strong> {{ timetable.end_date }}<br>
+                                    <br>
+                                </div>
+                            </div>
 
-                                                <input type="reset" class="btn btn-default" id='reset2' value="Reset">
-                                                <input type="submit" class="btn btn-primary" id='run' value="Run">
-                                                {% if not user.is_authenticated %}
-                                                    <input type="submit" class="btn btn-primary" title="Sign In to Save"
-                                                           disabled
-                                                           id='save' value="Save">
-                                                {% else %}
-                                                    <input type="submit" class="btn btn-primary" id='save' value="Save">
-                                                {% endif %}
-                                            </div>
-                                        </div>
-
-
-                                    </form>
-
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="checkbox" title="Check to show the timetable on the calendar"> Display
+                                    <!--<a href="#" class="btn btn-default btn-xs pull-right" role="button">Delete</a>-->
+                                    <button class="btn btn-default btn-xs pull-right delbtn" type="button" role="button" data-ttid="{{  timetable.id }}">Delete</button>
+                                    <a href="#" class="btn btn-primary btn-xs pull-right" style="margin-right: 4px;"
+                                       role="button">Edit</a>
 
                                 </div>
                             </div>
-                        </div><!-- end code-->
-                    {% endfor %}
-                    <!--<div class="panel panel-default">
-                      <div class="panel-heading" role="tab" id="headingTwo">
-                        <h4 class="panel-title">
-                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Collapsible Group Item #2
-                          </a>
-                        </h4>
-                      </div>
-                      <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                        <div class="panel-body">
-                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
                         </div>
-                      </div>
                     </div>
-                    <div class="panel panel-default">
-                      <div class="panel-heading" role="tab" id="headingThree">
-                        <h4 class="panel-title">
-                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            Collapsible Group Item #3
-                          </a>
-                        </h4>
-                      </div>
-                      <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                        <div class="panel-body">
-                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                        </div>
-                      </div>
-                    </div>-->
                 </div>
-                <!--end panel-group-->
-
-
+                {% endfor %}
             </div>
+
+
+
+
+
             <!--row-->
             <div class="row" id="msg">
                 <!--messages go here-->
@@ -929,10 +639,14 @@
 <!--my js-->
 <script src="{% static 'time_engine/js/formvalidation.js' %}" type="text/javascript"></script>
 
-<!--FullCalendar stylesheet and js files-->
+<!--FullCalendar js files-->
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.3/fullcalendar.min.js"></script>
+
+<!-- jQueryUI js -->
+<script src="{% static 'time_engine/js/jquery-ui.min.js' %}"></script>
+
 
 <!-- Bootstrap js -->
 <script src="{% static 'time_engine/js/bootstrap.min.js' %}"></script>
@@ -968,16 +682,13 @@
                 //TODO: add panel to list of timetables
 
             }
-
+            // ajax call for new timetable data
             $.post("/time_engine/", form_stuff, function (data) {
-                console.log(data);
-                var data_cal = data.cal
-                //clear fullCalendar of existing events.
-                var cal = $('#calendarContainer');
-                cal.fullCalendar('removeEvents');
-                cal.fullCalendar('addEventSource', data_cal['cal_events']);
-                //update the form with the end date:
-                //console.log(data['end_event']['end_date_label']);
+{#                console.log(data);#}
+                var data_cal = data.cal;
+
+
+                updateCalendar(data, true);
                 $("#end_date_label").html(data_cal['end_event']['end_date_label']);
                 $("#end_date").html(data_cal['end_event']['end_date']);
 
@@ -988,6 +699,10 @@
 
                 //TODO: update the list of timetables to show the new timetable.
                 console.log("this is the form stuff: ", form_stuff);
+                if (data['id']){
+                    window.location.reload();
+                    updateCalendar(data, true);
+                }
                 // if form_stuff has &save=true
                     //add it to the list of timetables
                     //reset and collapse the new timetable form
@@ -1033,6 +748,34 @@
 
         }); //delete event handler
 
+
+        // event handler to display existing timetables:
+        $('.displaytt').change(function(e){
+           if ($(this).is(':checked')){
+               // display the current stuff in the form
+               // crap how do I get the current stuff?
+               var timetableToDisplay = $(e.target).attr("data-ttid");
+               $.get('/time_engine/get_timetable/', {id: timetableToDisplay}, function(data){
+                   //this is the callback
+                   //now call the display cal
+                   data['elist'] = JSON.parse(data['elist']);
+
+                   console.log("this is data", data);
+{#                   for (var i = 0; i < data.length; i++){#}
+{#                      console.log("this is data in the loop:", data[i].fields);#}
+{#                   }#}
+{#                   console.log("this is data:", data[0].fields);#}
+                   updateCalendar(data, false);
+
+               } );
+{#               //updateCalendar(calJSON, false);#}
+{#               console.log('checked!');#}
+{#               var cal = $('#calendarContainer');#}
+{#                cal.fullCalendar('removeEvents');#}
+{#               console.log(cal, e);#}
+                //cal.fullCalendar('addEventSource', data_cal['cal_events']);
+           };
+         });// event handler for displaying existing timetables
 
         // User authentication stuff
         // setting up the event handler for registration form submission
@@ -1089,6 +832,24 @@
     }); // end document ready
 
 
+    function updateCalendar(calJSON, clearCal){
+        var data_cal = calJSON['cal']; //cal is what I want to extract from calJSON....
+        //clear fullCalendar of existing events.
+        var cal = $('#calendarContainer');
+        if (clearCal) {
+            cal.fullCalendar('removeEvents');
+        }
+        cal.fullCalendar('addEventSource', data_cal['cal_events']);
+    }
+
+</script>
+<script>
+  $(function() {
+    $( "#datepicker" ).datepicker({
+      altField: "#alternate",
+      altFormat: "DD, d MM, yy"
+    });
+  });
 </script>
 
 

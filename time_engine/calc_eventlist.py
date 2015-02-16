@@ -68,11 +68,11 @@ class EventList(object):
                 self.lesson_count -= 1
 
             # increment the date
-            print "This is a_day: ", a_day
+            print "This is next_date: ", next_date
             next_date += a_day
 
-        date_strings = [dt.strftime("%A %B %d, %Y") for dt in timetable]
-        print "this is date_strings: ", date_strings
+        #date_strings = [dt.strftime("%A %B %d, %Y") for dt in timetable]
+        #print "this is date_strings: ", date_strings
         return timetable
         # date_strings = [dt.strftime("%A %B %d, %Y") for dt in timetable]
         # return date_strings
