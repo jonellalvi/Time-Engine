@@ -263,28 +263,26 @@ def save_timetable(form_data, user, eventlist):
 def get_timetable(request):
 
     # Get the timetable's id from the request data:
-    ttid  = request.GET['id']
-    print "This is ttid: ", ttid
+    ttid = request.GET['ttid']
 
     # use the timetable's id to return the list of dates
     # from the Results model:
-    eventlist = Result.objects.filter(timetable_id=ttid)
+    #eventlist = Result.objects.filter(timetable_id=ttid)
 
     # use the timetable's id to return the color
     # from the TimeTable model:
-    eventcolor = TimeTable.objects.get(id=ttid).color
-    print "this is what I get for eventcolor:", eventcolor
+    ttObj = TimeTable.objects.get(id=ttid)
 
     # get  end date from TimeTable
-    eventend = TimeTable.objects.get(id=ttid).end_date
-    print "this is eventend: ", eventend
+    #eventend = TimeTable.objects.get(id=ttid).end_date
+    #print "this is eventend: ", eventend
 
     # now package it up to send back:
-    elist = serializers.serialize("json", eventlist)
-    data = {'elist': elist, 'eventcolor': eventcolor, 'eventend': str(eventend)}
+    #elist = serializers.serialize("json", ttObj)
+    #data = {'elist': elist}
 
     #return HttpResponse(serializers.serialize("json", eventlist), content_type="application/json")
-    return HttpResponse(dumps(data), content_type="application/json")
+    return HttpResponse(serializers.serialize("json", [ttObj]), content_type="application/json")
 
 
 # only delete if logged in
