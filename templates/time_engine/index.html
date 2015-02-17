@@ -249,39 +249,44 @@
 
 <!-- Page Content -->
 <div class="container">
-    <div class="col-md-12">
+    <!--<div class="col-md-12">-->
         <div class="thumbnail">
             <!--TITLE ROW -->
-            <div class="row">
-                <h2 class="page-header"> Welcome to the Time Engine </h2>
+            <div class="jumbotron">
+                <h2> Welcome to the Time Engine </h2>
+                <p>Use the Time Engine to figure out the end date for a series of events and display the results as a timetable on the calendar.</p>
+
+                <!-- New Timetable Button -->
+                <button type="button" class="btn btn-primary btn-lgt" data-toggle="modal" data-target="#myModal">
+                  <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>  Create a new timetable
+                </button>
             </div>
+
+
             <!-- CALENDAR ROW -->
             <div class="row">
                 <!-- display jQuery Full Calendar -->
                 <div id="calendarContainer">
                 </div>
-            </div><!-- END Calendar row -->
-            <!--  Time Table ROW -->
-            <div class="row">
-                <div class="caption-full">
-                    <div class="text-left">
-                        <!-- New Timetable Button -->
-                        <button class="btn btn-primary" type="button" data-toggle="collapse"
-                                data-target="#collapseTimetable" aria-expanded="false" aria-controls="collapseTimetable">
-                            New Timetable
-                        </button>
-                    </div><!-- timetable button text-left -->
-                </div><!-- timetable button caption-full-->
-            </div><!-- END Timetable ROW -->
+            </div>
+            <!-- END Calendar row -->
+
 
             <!--Time Tables forms row-->
             <div class="row">
-                <div class="collapse" id="collapseTimetable">
-                    <div class="well">
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Create a new Timetable</h4>
+                      </div>
+                      <div class="modal-body">
                         <!--New Timetable FORM-->
                         <form id="newForm" method="post" class="form-horizontal">
                             {% csrf_token %}
-                            <h2 class="page-header">Create a new Timetable</h2>
 
                             <!--hidden input for indicating a save to db-->
                             <input class="save" id="id_save" name="save" type="hidden"/>
@@ -521,78 +526,48 @@
 
                             <br>
                             <!--Timetable form buttons-->
-                            <div class="form-group ">
-                                <hr>
+                            <div class="form-group  modal-footer">
+
                                 <div class="col-xs-offset-3 col-xs-9 ">
                                     <!-- Reset button -->
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                     <input type="reset" class="btn btn-default" id='reset2' value="Reset">
                                     <!-- Run button -->
                                     <input type="submit" class="btn btn-primary" id='run' value="Run">
                                     <!-- If user isn't signed in, disable the save button -->
-                                    {% if not user.is_authenticated %}
-                                        <input type="submit" class="btn btn-primary" title="Sign In to Save" disabled
-                                               id='save' value="Save">
-                                    {% else %}
-                                        <input type="submit" class="btn btn-primary" id='save' value="Save">
-                                    {% endif %}
+{#                                    {% if not user.is_authenticated %}#}
+{#                                        <input type="submit" class="btn btn-primary" title="Sign In to Save" disabled#}
+{#                                               id='save' value="Save">#}
+{#                                    {% else %}#}
+{#                                        <input type="submit" class="btn btn-primary" id='save' value="Save">#}
+{#S#}
                                 </div>
                             </div><!-- Timetable form buttons form-group -->
-
                         </form><!-- New Timetable form -->
-                    </div><!--.well-->
-                </div><!--.collapse-->
+                      </div><!--modal-body-->
+                    </div><!--modal-content-->
+                  </div><!--modal-dialog-->
+                </div><!--THE modal-->
+
+
+
+
+
             </div><!--.row-->
 
 
             <!--timetable cards-->
             <div class="row">
 
-                {%  for timetable in timetables %}
-                <!--this is a single timetable-->
-                <div class="col-sm-4 col-md-4">
-
-                    <div class="thumbnail">
-
-                        <div class="caption">
-
-                            <h4>
-                                <div style="display: inline-block; width: 18px; height: 18px; background: {{ timetable.color }};"></div>
-                                {{ timetable.name }}
-                            </h4>
-
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <strong>Start Date:</strong> {{ timetable.start_date }}<br>
-                                    <strong>Time:</strong> {{ timetable.start_time }}<br>
-                                    <strong>Events:</strong> {{ timetable.event_count }}<br>
-                                    <strong>Days: </strong>
-                                        {% if timetable.has_monday %} M {% endif %}
-                                        {% if timetable.has_tuesday %} Tu {% endif %}
-                                        {% if timetable.has_wednesday %} W {% endif %}
-                                        {% if timetable.has_thursday %} Th {% endif %}
-                                        {% if timetable.has_friday %} F {% endif %}
-                                        {% if timetable.has_saturday %} Sa {% endif %}
-                                        {% if timetable.has_sunday %} Su {% endif %}
-                                        <br>
-                                    <strong>End: </strong> {{ timetable.end_date }}<br>
-                                    <br>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <input type="checkbox" title="Check to show the timetable on the calendar"> Display
-                                    <!--<a href="#" class="btn btn-default btn-xs pull-right" role="button">Delete</a>-->
-                                    <button class="btn btn-default btn-xs pull-right delbtn" type="button" role="button" data-ttid="{{  timetable.id }}">Delete</button>
-                                    <a href="#" class="btn btn-primary btn-xs pull-right" style="margin-right: 4px;"
-                                       role="button">Edit</a>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="page-header">
+                    <h4>Existing Timetables:</h4>
                 </div>
-                {% endfor %}
+                <div id="saved_cards">
+                    {%  for timetable in timetables %}
+                        <!--this is a single timetable-->
+                        {% include 'time_engine/ttcard.html' with timetable=timetable %}
+                    {% endfor %}
+                </div>
             </div>
 
 
@@ -684,29 +659,17 @@
             }
             // ajax call for new timetable data
             $.post("/time_engine/", form_stuff, function (data) {
-{#                console.log(data);#}
+                //console.log(data);
                 var data_cal = data.cal;
-
-
                 updateCalendar(data, true);
+                //put the end date on the form
                 $("#end_date_label").html(data_cal['end_event']['end_date_label']);
                 $("#end_date").html(data_cal['end_event']['end_date']);
 
-                if ($(data.target).attr("data-ttname") == "None") {
-                    var timetableToHide = $(e.target).attr("data-ttid");
-                    $(timetableToHide).addClass(hide);
-                }
+                //console.log(data.cardhtml);
 
-                //TODO: update the list of timetables to show the new timetable.
-                console.log("this is the form stuff: ", form_stuff);
-                if (data['id']){
-                    window.location.reload();
-                    updateCalendar(data, true);
-                }
-                // if form_stuff has &save=true
-                    //add it to the list of timetables
-                    //reset and collapse the new timetable form
-                //window.location.reload();
+                //append the html to the div
+                $('#saved_cards').append(data.cardhtml);
 
             });
 
@@ -739,11 +702,6 @@
                 //$(e.target.parentElement.parentElement.parentElement.parentElement).addClass('hide');
                 e.target.parentElement.parentElement.parentElement.parentElement.remove();
 
-
-                //console.log(timetableToDelete.parent);
-
-
-
             }); // $.post call
 
         }); //delete event handler
@@ -761,10 +719,6 @@
                    data['elist'] = JSON.parse(data['elist']);
 
                    console.log("this is data", data);
-{#                   for (var i = 0; i < data.length; i++){#}
-{#                      console.log("this is data in the loop:", data[i].fields);#}
-{#                   }#}
-{#                   console.log("this is data:", data[0].fields);#}
                    updateCalendar(data, false);
 
                } );

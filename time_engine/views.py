@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from json import dumps
 from django.core import serializers
+from django.template.loader import render_to_string
 
 from calc_eventlist import EventList
 from time_engine.forms import TimeTableForm, UserForm, UserProfileForm
@@ -179,12 +180,23 @@ def index(request):
             save_option = form.cleaned_data['save']
             # if it's save, save to database
             print "the user is: ", request.user
+
+            # if logged in, set save_option to true.
+            if request.user.is_authenticated:
+                save_option = "true"
+
             if save_option == "true":
+                # if we're logged in then call save_timetable to save
                 timetable_id = save_timetable(form_data, request.user, result)
                 response = {'cal': cal_data, 'form': request.POST, 'id': timetable_id}
             else:
                 response = {'cal': cal_data, 'form': request.POST}
             print "This is cal_data", cal_data
+
+            # render the card and send it back.
+            temptt = create_timetable(form_data, request.user, result)
+            ttcardhtml = render_to_string('time_engine/ttcard.html', {'timetable': temptt})
+            response['cardhtml'] = ttcardhtml
 
             #response = {'cal': cal_data, 'form': request.POST, 'id': timetable_id}
             return HttpResponse(dumps(response), content_type="application/json")
@@ -197,23 +209,16 @@ def index(request):
         # then use that to look up the saved
         if request.user.is_authenticated():
             timetable_list = TimeTable.objects.filter(user_id=request.user.id)
-            timetable_list = list(timetable_list)
-            timetable_list.append(TimeTable())
         else:
             timetable_list = []
-        #
-        # # I think this is where we delete it if they want to?
-        # if request.POST.get('delete'):
-        #     print "HERE IS WHERE THE TIMETABLE IS DELETED"
 
-
-        form = TimeTableForm()
         return render(request, 'time_engine/index.html', {'timetables': timetable_list})
 
 
-def save_timetable(form_data, user, eventlist):
+
+def create_timetable(form_data, user=None, eventlist=None):
     # take form_data and massage it and save to model.
-    print "save to model !!!", form_data
+
     tt = TimeTable()
     tt.name = form_data['name']
     tt.color = form_data['color']
@@ -227,8 +232,19 @@ def save_timetable(form_data, user, eventlist):
     tt.has_thursday = form_data['has_thursday']
     tt.has_friday = form_data['has_friday']
     tt.has_sunday = form_data['has_sunday']
-    tt.end_date = eventlist[-1]
-    tt.user = user
+
+    if eventlist:
+        tt.end_date = eventlist[-1]
+
+    if user:
+        tt.user = user
+
+    return tt
+
+
+def save_timetable(form_data, user, eventlist):
+    # take form_data and massage it and save to model.
+    tt = create_timetable(form_data, user)
     tt.save()
 
     for idx, event in enumerate(eventlist):

@@ -1,0 +1,42 @@
+<div class="col-sm-4 col-md-4">
+
+    <div class="thumbnail">
+
+        <div class="caption">
+
+            <h4>
+                <div style="display: inline-block; width: 18px; height: 18px; background: {{ timetable.color }};"></div>
+                {{ timetable.name }}
+            </h4>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <strong>Start Date:</strong> {{ timetable.start_date }}<br>
+                    <strong>Time:</strong> {{ timetable.start_time }}<br>
+                    <strong>Events:</strong> {{ timetable.event_count }}<br>
+                    <strong>Days: </strong>
+                        {% if timetable.has_monday %} M {% endif %}
+                        {% if timetable.has_tuesday %} Tu {% endif %}
+                        {% if timetable.has_wednesday %} W {% endif %}
+                        {% if timetable.has_thursday %} Th {% endif %}
+                        {% if timetable.has_friday %} F {% endif %}
+                        {% if timetable.has_saturday %} Sa {% endif %}
+                        {% if timetable.has_sunday %} Su {% endif %}
+                        <br>
+                    <strong>End: </strong> {{ timetable.end_date }}<br>
+                    <br>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <input type="checkbox" title="Check to show the timetable on the calendar"> Display
+                    <!--<a href="#" class="btn btn-default btn-xs pull-right" role="button">Delete</a>-->
+                    <button class="btn btn-default btn-xs pull-right delbtn" type="button" role="button" data-ttid="{{ timetable.id }}">Delete</button>
+                    <button class="btn btn-primary btn-xs pull-right" type="button" role="button" data-toggle="modal" target="#myModal" style="margin-right: 4px;">Edit</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
