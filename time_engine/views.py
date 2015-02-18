@@ -193,8 +193,13 @@ def index(request):
                 response = {'cal': cal_data, 'form': request.POST}
             print "This is cal_data", cal_data
 
+
             # render the card and send it back.
             temptt = create_timetable(form_data, request.user, result)
+
+            #temptt['id'] = timetable_id
+            setattr(temptt, 'id', timetable_id)
+
             ttcardhtml = render_to_string('time_engine/ttcard.html', {'timetable': temptt})
             response['cardhtml'] = ttcardhtml
 

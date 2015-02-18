@@ -630,7 +630,7 @@
                                 <label class="control-label col-xs-3">Start Date:</label>
                                 <!--Start month-->
                                 <div class="col-xs-3">
-                                    <select class="form-control" name="start_date_month">
+                                    <select class="form-control" id="month" name="start_date_month">
                                         <option selected="selected">Month</option>
                                         <option value="1">January</option>
                                         <option value="2">February</option>
@@ -648,7 +648,7 @@
                                 </div>
                                 <!--Start Date-->
                                 <div class="col-xs-3">
-                                    <select class="form-control" name="start_date_day">
+                                    <select class="form-control" id="day" name="start_date_day">
                                         <option selected="selected">Date</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -685,7 +685,7 @@
                                 </div>
                                 <!--start year-->
                                 <div class="col-xs-3">
-                                    <select class="form-control" name="start_date_year">
+                                    <select class="form-control" id="year" name="start_date_year">
                                         <option selected="selected">Year</option>
                                         <option value="2015">2015</option>
                                         <option value="2016">2016</option>
@@ -701,28 +701,28 @@
                             <div class="form-group">
                                 <label class="control-label col-xs-3">Start Time:</label>
                                 <div class="col-xs-3">
-                                    <select class="form-control" name="start_time">
+                                    <select class="form-control" id="time" name="start_time">
                                         <option selected="selected">Time</option>
                                         <option value="12:00">12:00am</option>
                                         <option value="12:30">12:30am</option>
-                                        <option value="1:00">1:00am</option>
-                                        <option value="1:30">1:30am</option>
-                                        <option value="2:00">2:00am</option>
-                                        <option value="2:30">2:30am</option>
-                                        <option value="3:00">3:00am</option>
-                                        <option value="3:30">3:30am</option>
-                                        <option value="4:00">4:00am</option>
-                                        <option value="4:30">4:30am</option>
-                                        <option value="5:00">5:00am</option>
-                                        <option value="5:30">5:30am</option>
-                                        <option value="6:00">6:00am</option>
-                                        <option value="6:30">6:30am</option>
-                                        <option value="7:00">7:00am</option>
-                                        <option value="7:30">7:30am</option>
-                                        <option value="8:00">8:00am</option>
-                                        <option value="8:30">8:30am</option>
-                                        <option value="9:00">9:00am</option>
-                                        <option value="9:30">9:30am</option>
+                                        <option value="01:00">1:00am</option>
+                                        <option value="01:30">1:30am</option>
+                                        <option value="02:00">2:00am</option>
+                                        <option value="02:30">2:30am</option>
+                                        <option value="03:00">3:00am</option>
+                                        <option value="03:30">3:30am</option>
+                                        <option value="04:00">4:00am</option>
+                                        <option value="04:30">4:30am</option>
+                                        <option value="05:00">5:00am</option>
+                                        <option value="05:30">5:30am</option>
+                                        <option value="06:00">6:00am</option>
+                                        <option value="06:30">6:30am</option>
+                                        <option value="07:00">7:00am</option>
+                                        <option value="07:30">7:30am</option>
+                                        <option value="08:00">8:00am</option>
+                                        <option value="08:30">8:30am</option>
+                                        <option value="09:00">9:00am</option>
+                                        <option value="09:30">9:30am</option>
                                         <option value="10:00">10:00am</option>
                                         <option value="10:30">10:30am</option>
                                         <option value="11:00">11:00am</option>
@@ -759,8 +759,7 @@
                             <div class="form-group">
                                 <label class="control-label col-xs-3" for="event_count">Total events:</label>
                                 <div class="col-xs-3">
-                                    <input name="event_count" type="number" class="form-control" id="event_count"
-                                           placeholder="Enter a number...">
+                                    <input name="event_count" type="text" class="form-control" id="event_cnt" placeholder="Enter a number...">
                                 </div>
                             </div><!-- Timetable total events field -->
 
@@ -776,7 +775,7 @@
                                 <!-- Monday -->
                                 <div class="col-xs-1">
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="has_monday"> Mon
+                                        <input type="checkbox" name="has_monday" id="has_monday"> Mon
                                     </label>
                                 </div>
                                 <!-- Tuesday -->
@@ -937,7 +936,7 @@
             }
             // ajax call for new timetable data
             $.post("/time_engine/", form_stuff, function (data) {
-                //console.log(data);
+                console.log(data);
                 var data_cal = data.cal;
                 updateCalendar(data, true);
                 //put the end date on the form
@@ -963,7 +962,7 @@
 
 
         // Event handler for deleting an existing timetable
-        $('.delbtn').on('click', function (e) {
+        $(document.body).on('click', '.delbtn', function (e) {
             console.log("Holy crap it worked");
             console.log(e.target);
             console.log($(e.target).attr("data-ttid"));
@@ -984,8 +983,23 @@
 
         }); //delete event handler
 
+        // funciton clickhand(e) {
+        //        if e.target.attr(data-tt)
+        // e.target.class contains 'delbtn'
+        // var action = 'delete'
+        // elif if contains 'editbtn
+        // var action = 'edit'
+        // elif contains 'dispcheck'
+        // var action = 'display'
+        // THEN check which ttid timetable to act on
+        // then run code to do the action
+        // which is a function which takes parameters representing which code
+
+
+
+
         //Event handler for editing an existing timetable
-        $('.editbtn').on('click', function (e) {
+        $(document.body).on('click', '.editbtn', function (e) {
             var timetableToEdit = $(e.target).attr("data-ttid");
             console.log(timetableToEdit);
             $.get("/time_engine/get_timetable/", {ttid: timetableToEdit}, function(editData){
@@ -1006,10 +1020,46 @@
             modal.find('#editTitle').text('Edit timetable:  ' + ttData['name']);
             modal.find('#name').val(ttData['name']);
             modal.find("input[value='" + ttData['color'] + "']").prop('checked', true);
-            //continue this
 
+            modal.find($('#month').val(parseInt(ttData['start_date'].split('-')[1])));
+            modal.find($('#day').val(parseInt(ttData['start_date'].split('-')[2])));
+            modal.find($('#year').val(parseInt(ttData['start_date'].split('-')[0])));
 
-        });
+            tempStr = ttData['start_time'];
+            var time = tempStr.substr(0, tempStr.length-3);
+            modal.find($('#time').val(time));
+
+            modal.find($('#event_cnt').val(ttData['event_count']));
+
+            if (ttData['has_monday']) {
+                $('input[name=has_monday]').attr('checked', true);
+            }
+
+            if (ttData['has_tuesday']) {
+                $('input[name=has_tuesday]').attr('checked', true);
+            }
+
+            if (ttData['has_wednesday']) {
+                $('input[name=has_wednesday]').attr('checked', true);
+            }
+
+            if (ttData['has_thursday']) {
+                $('input[name=has_thursday]').attr('checked', true);
+            }
+
+            if (ttData['has_friday']) {
+                $('input[name=has_friday]').attr('checked', true);
+            }
+
+            if (ttData['has_saturday']) {
+                $('input[name=has_saturday]').attr('checked', true);
+            }
+
+            if (ttData['has_sunday']) {
+                $('input[name=has_sunday]').attr('checked', true);
+            }
+
+        }); //#existing modal stuff
 
 
 
