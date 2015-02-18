@@ -181,13 +181,27 @@ def index(request):
             # if it's save, save to database
             print "the user is: ", request.user
 
+
+            #check if this is a new timetable or an existing one:
+            if 'edit_id' in request.POST:
+                tt_update_id = request.POST['edit_id']
+            else:
+                tt_update_id = None
+
+            # then we're doing an edit
+            # update the db iwth the new values (save)
+            # pass back the new values to update the card.
+            # pass a flag to save timetable to do an update instead.
+
+
+
             # if logged in, set save_option to true.
             if request.user.is_authenticated:
                 save_option = "true"
 
             if save_option == "true":
                 # if we're logged in then call save_timetable to save
-                timetable_id = save_timetable(form_data, request.user, result)
+                timetable_id = save_timetable(form_data, request.user, result, tt_update_id)
                 response = {'cal': cal_data, 'form': request.POST, 'id': timetable_id}
             else:
                 response = {'cal': cal_data, 'form': request.POST}
@@ -247,17 +261,43 @@ def create_timetable(form_data, user=None, eventlist=None):
     return tt
 
 
-def save_timetable(form_data, user, eventlist):
+def save_timetable(form_data, user, eventlist, update_id):
     # take form_data and massage it and save to model.
-    tt = create_timetable(form_data, user)
-    tt.save()
+    if not update_id:
+        tt = create_timetable(form_data, user)
+        tt.save()
 
-    for idx, event in enumerate(eventlist):
-        result = Result()
-        result.lesson_date = event
-        result.lesson_num = idx + 1
-        result.timetable = tt
-        result.save()
+        for idx, event in enumerate(eventlist):
+            result = Result()
+            result.lesson_date = event
+            result.lesson_num = idx + 1
+            result.timetable = tt
+            result.save()
+    else:
+        # doing an update:
+        tt = TimeTable.objects.get(id=update_id)
+        tt.name = form_data['name']
+        tt.color = form_data['color']
+        tt.start_date = form_data['start_date']
+        tt.start_time = form_data['start_time']
+        tt.event_count = form_data['event_count']
+        tt.has_saturday = form_data['has_saturday']
+        tt.has_monday = form_data['has_monday']
+        tt.has_tuesday = form_data['has_tuesday']
+        tt.has_wednesday = form_data['has_wednesday']
+        tt.has_thursday = form_data['has_thursday']
+        tt.has_friday = form_data['has_friday']
+        tt.has_sunday = form_data['has_sunday']
+        tt.end_date = eventlist[-1]
+        tt.save()
+
+        Result.objects.filter(id=update_id).delete()
+        for idx, event in enumerate(eventlist):
+            result = Result()
+            result.lesson_date = event
+            result.lesson_num = idx + 1
+            result.timetable = tt
+            result.save()
 
     return tt.id
 
@@ -279,8 +319,12 @@ def get_timetable(request):
     ttObj = TimeTable.objects.get(id=ttid)
 
     # get  end date from TimeTable
-    #eventend = TimeTable.objects.get(id=ttid).end_date
-    #print "this is eventend: ", eventend
+    temp_eventend = TimeTable.objects.get(id=ttid).end_date
+    print "this is tem_eventend: ", temp_eventend
+    eventend = temp_eventend.strftime("%A %B %d, %Y")
+    print "this is eventend: ", eventend
+
+    setattr(ttObj, 'eventend', eventend)
 
     # now package it up to send back:
     #elist = serializers.serialize("json", ttObj)

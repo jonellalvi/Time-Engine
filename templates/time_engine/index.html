@@ -585,6 +585,7 @@
 
                             <!--hidden input for indicating a save to db-->
                             <input class="save" id="id_save" name="save" type="hidden"/>
+                            <input class="edit_id" id="edit_id" name="edit_id" type="hidden" value="{{ timetable.id }}"/>
 
                             <!--Timetable Name field-->
                             <div class="form-group">
@@ -812,9 +813,9 @@
 
                             <!-- Timetable End date field -->
                             <div class="form-group">
-                                <label id="end_date_label" class="control-label col-xs-3" for="end_date"></label>
-                                <div class="col-xs-9" id="end_date_div">
-                                    <span id="end_date"></span>
+                                <label id="end_edit_label" class="control-label col-xs-3" for="end_edit"></label>
+                                <div class="col-xs-9" id="end_edit_div">
+                                    <span id="end_edit"></span>
                                 </div>
                             </div><!-- End Date Field -->
 
@@ -826,8 +827,8 @@
                                     <!-- Reset button -->
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                     <input type="reset" class="btn btn-default" id='reset2' value="Reset">
-                                    <!-- Run button -->
-                                    <input type="submit" class="btn btn-primary" id='run' value="Run">
+                                    <!-- savechanges button for edits -->
+                                    <button type="button" class="btn btn-primary" id='savechanges'>Save Changes</button>
                                     <!-- If user isn't signed in, disable the save button -->
 {#                                    {% if not user.is_authenticated %}#}
 {#                                        <input type="submit" class="btn btn-primary" title="Sign In to Save" disabled#}
@@ -1004,6 +1005,7 @@
             console.log(timetableToEdit);
             $.get("/time_engine/get_timetable/", {ttid: timetableToEdit}, function(editData){
                 // in here will be the data to fill in the edit timetable form.
+                console.log("$.get is happening here")
                 appState.ttEditData = editData;
                 //show the modal
                 $('#existingttModal').modal('show');
@@ -1011,12 +1013,14 @@
             }); //$.post
         }); // edit button event handler
 
-
+        // this populates the edit modal with values of existing timetables
         $('#existingttModal').on('show.bs.modal', function (e){
             console.log(appState.ttEditData);
             //now update the form!!!!
             var modal = $(this);
             var ttData = appState.ttEditData[0]['fields'];
+            console.log(appState.ttEditData[0]['pk']);
+            modal.find('#edit_id').val(appState.ttEditData[0]['pk']);
             modal.find('#editTitle').text('Edit timetable:  ' + ttData['name']);
             modal.find('#name').val(ttData['name']);
             modal.find("input[value='" + ttData['color'] + "']").prop('checked', true);
@@ -1059,7 +1063,56 @@
                 $('input[name=has_sunday]').attr('checked', true);
             }
 
+            //add in the end date:
+            // "2015-04-12"
+            modal.find('#end_edit_label').text('End Date:');
+            modal.find('#end_edit').text(ttData['eventend']);
+
         }); //#existing modal stuff
+
+
+        // event handler to manage edits to existing timetables
+        // this stuff happens with 'save changes' is clicked
+        $(document.body).on('click', '#savechanges', function (e) {
+            console.log('hey this is the save changes stuff');
+
+            var form_stuff = $("#existingForm").serialize();
+            console.log(form_stuff);
+
+            // check whether it is a run or a save
+            // and set a toggle to handle in the view.
+            form_stuff += '&save=true';
+
+            // ajax call for existing timetable data
+            $.post("/time_engine/", form_stuff, function (data) {
+                //this is the stuff that happens when "edit" is clicked
+                console.log('this is data:', data);
+                //redraw the calendar
+                var data_cal = data.cal;
+                updateCalendar(data, true);
+                //update the end date:
+                console.log(data_cal);
+                console.log(data_cal['end_event']['end_date']);
+                $("#end_edit_label").html(data_cal['end_event']['end_date_label']);
+                $("#end_edit").html(data_cal['end_event']['end_date']);
+                //update the card data:
+                // delete the old card adn stick in the new one
+
+                var tt_edit_id = appState.ttEditData[0]['pk'];
+                //console.log(tt_edit_id);
+                //for some reason this returns a dom element, not a jquery object. 
+                var edit_button = $("button.editbtn[data-ttid='" + tt_edit_id + "']");
+                console.log(edit_button);
+                var tt_card = $(edit_button.parent().parent().parent().parent().parent());  //
+                tt_card.replaceWith(data.cardhtml);
+
+
+            });
+
+        }); //event handler to manage edits
+
+
+
 
 
 
