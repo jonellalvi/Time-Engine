@@ -265,7 +265,9 @@ def save_timetable(form_data, user, eventlist, update_id):
     # take form_data and massage it and save to model.
     if not update_id:
         tt = create_timetable(form_data, user)
+        tt.end_date = eventlist[-1]
         tt.save()
+        print tt.end_date
 
         for idx, event in enumerate(eventlist):
             result = Result()
@@ -309,6 +311,9 @@ def get_timetable(request):
 
     # Get the timetable's id from the request data:
     ttid = request.GET['ttid']
+    wantresults = 'op' in request.GET and request.GET['op'] == "results"
+
+
 
     # use the timetable's id to return the list of dates
     # from the Results model:
@@ -318,20 +323,65 @@ def get_timetable(request):
     # from the TimeTable model:
     ttObj = TimeTable.objects.get(id=ttid)
 
-    # get  end date from TimeTable
-    temp_eventend = TimeTable.objects.get(id=ttid).end_date
-    print "this is tem_eventend: ", temp_eventend
-    eventend = temp_eventend.strftime("%A %B %d, %Y")
-    print "this is eventend: ", eventend
+    events = []
+    if wantresults:
+        eventlist = Result.objects.filter(timetable_id=ttid)
+        for i, r in enumerate(eventlist):
+            evt = {'title': 'event: ' + str(i + 1),
+                   'start': r.lesson_date.isoformat() + 'T' + str(ttObj.start_time),
+                   'allDay': False
+            }
+            #print r
+            events.append(evt)
 
-    setattr(ttObj, 'eventend', eventend)
+
+    # get  end date from TimeTable
+    # temp_eventend = TimeTable.objects.get(id=ttid).end_date
+    # print "this is tem_eventend: ", temp_eventend
+    # eventend = temp_eventend.strftime("%A %B %d, %Y")
+    # print "this is eventend: ", eventend
+
+    # setattr(ttObj, 'eventend', eventend)
 
     # now package it up to send back:
     #elist = serializers.serialize("json", ttObj)
     #data = {'elist': elist}
 
+
+    result_data = {
+        "tt": {
+            'pk': ttid,
+            'color': ttObj.color,
+            'end_date': ttObj.end_date.isoformat(),
+            'event_count': ttObj.event_count,
+            'has_friday': ttObj.has_friday,
+            'has_monday': ttObj.has_monday,
+            'has_tuesday': ttObj.has_tuesday,
+            'has_wednesday': ttObj.has_wednesday,
+            'has_thursday': ttObj.has_thursday,
+            'has_saturday': ttObj.has_saturday,
+            'has_sunday': ttObj.has_sunday,
+            'name': ttObj.name,
+            'start_date': ttObj.start_date.isoformat(),
+            'start_time': ttObj.start_time.isoformat()
+        },
+        "result_dates": {
+            'cal': {
+                'cal_events': {
+                    'events': events,
+                    'color': ttObj.color,
+                    'id': ttid
+                }
+            }
+        }
+    }
+
     #return HttpResponse(serializers.serialize("json", eventlist), content_type="application/json")
-    return HttpResponse(serializers.serialize("json", [ttObj]), content_type="application/json")
+    # return HttpResponse(serializers.serialize("json", [ttObj]), content_type="application/json")
+    return HttpResponse(dumps(result_data), content_type="application/json")
+
+
+
 
 
 # only delete if logged in

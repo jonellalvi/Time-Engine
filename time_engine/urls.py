@@ -14,5 +14,5 @@ urlpatterns = patterns('',
         # dom
         url(r'dom/', views.dom, name='dom'),
         url(r'jsexample/', views.jsexample, name='jsexample'),
-        url(r'^get_timetable/', views.get_timetable, name="get_timetable"),
+        url(r'^get_timetable', views.get_timetable, name="get_timetable"),
         )

@@ -30,7 +30,7 @@
 
             <div class="row">
                 <div class="col-sm-12">
-                    <input type="checkbox" title="Check to show the timetable on the calendar"> Display
+                    <input type="checkbox" class="displaytt" data-ttid="{{ timetable.id }}" title="Check to show the timetable on the calendar"> Display
                     <!--<a href="#" class="btn btn-default btn-xs pull-right" role="button">Delete</a>-->
                     <button class="btn btn-default btn-xs pull-right delbtn" type="button" role="button" data-ttid="{{ timetable.id }}">Delete</button>
                     <button class="btn btn-primary btn-xs pull-right editbtn" type="button" role="button" data-toggle="modal" target="#existingttModal" data-ttid="{{ timetable.id }}" style="margin-right: 4px;" >Edit</button>
