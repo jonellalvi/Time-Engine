@@ -285,7 +285,7 @@
 <!-- Page Content -->
 <div class="container">
     <!--<div class="col-md-12">-->
-    <div class="thumbnail">
+    <div class="thumbnail contentContainer">
         <!--TITLE ROW -->
         <div class="jumbotron">
             <h2> Welcome to the Time Engine </h2>
@@ -614,10 +614,10 @@
 
         <!--timetable cards-->
         <div class="row">
-
             <div class="page-header">
-                <h4>Existing Timetables:</h4>
+                <h2 id="ttheader">Timetables:</h2>
             </div>
+
             <div id="saved_cards">
                 {% for timetable in timetables %}
                     <!--this is a single timetable-->
@@ -945,7 +945,7 @@
 
 <div class="container">
 
-    <hr>
+
 
     <!-- Footer -->
     <footer>
@@ -1058,18 +1058,6 @@
             }); // $.post call
 
         }); //delete event handler
-
-        // funciton clickhand(e) {
-        //        if e.target.attr(data-tt)
-        // e.target.class contains 'delbtn'
-        // var action = 'delete'
-        // elif if contains 'editbtn
-        // var action = 'edit'
-        // elif contains 'dispcheck'
-        // var action = 'display'
-        // THEN check which ttid timetable to act on
-        // then run code to do the action
-        // which is a function which takes parameters representing which code
 
 
         //Event handler for editing an existing timetable
