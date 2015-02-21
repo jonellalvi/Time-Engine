@@ -1,0 +1,52 @@
+Purpose:
+
+To play around with times 
+To understand OO programing better
+To practice using git and github to manage a project
+
+Some things to try for the quiz:
+1. Change so it takes a number of questions to generate
+2. Make sure the user can specify the range they want the numbers to come from
+3. Add in some further stats that tell you how long it took to answer each question.
+4. Add subtraction questions
+5. Allow the user to practice specific operators
+
+FINISHED TASKS:
+1. Solved scoring bug
+2. Added subtraction
+3. Allow user to determine number of qustions
+------
+
+1/9/2015
+-noticed it's scoring everything out of 0. 
+-fix this bug!
+-discovered the problem:
+	- I was using input instead of raw_input
+	- to get answers from the user.
+	- The original code was written for Python 3.x, but now using 2.x
+	- Once I changed it to raw_input, worked like a charm. 
+
+* I wonder if it's possible to test for the version of Python,
+then use the correct function: input if it's 3.x and raw_input if 3.x. 
+
+-----
+-decided to work on adding Subtraction questions. 
+-okay it was easier than I thought.
+-done.
+
+----
+
+-working on letting the user pick the number of questions
+thoughts:
+-can I do it in the __init__?  CAN, but better to do it outside the class, 
+before calling the Quiz().
+-should I make it a separate method or not? NO
+-DONE.
+
+----
+
+-working on further stats for timing each answer, rather than the whole quiz
+-DONE
+
+----
+

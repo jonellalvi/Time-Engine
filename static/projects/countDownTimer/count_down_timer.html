@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            padding: 40px 0;
+        }
+
+        #myBox {
+            padding: 20px 40px 20px 40px;
+            width: 40%;
+            margin: 0 auto;
+            text-align: center;
+            background: lightblue;
+            border: 2px solid darkgray;
+        }
+
+        .text {
+            font-family: Montserrat, sans-serif;
+        }
+
+        #title1 {
+            text-align: center;
+            color: darkblue;
+        }
+
+        .done {
+            background: red;
+        }
+
+    </style>
+</head>
+<body>
+<div id="myBox">
+    <h1 class="text" id="title1">Count Down Timer</h1>
+
+    <p>
+        <label class="text" for="minutes"> minutes : seconds</label>
+    </p>
+
+    <p>
+        <input id="minutes"  size="4" maxlength="2" >
+        <span id="colon">:</span>
+        <input id="seconds"  size="4" maxlength="2" >
+    </p>
+
+    <p>
+        <button id="start" class="text btn" >Start</button>
+        <button id="pause" class="text btn" >Pause</button>
+        <button id="resume" class="text btn">Resume</button>
+    </p>
+    <p>
+        <button id="reset" class="text btn">Reset</button>
+    </p>
+    <div id="timerDisplay">
+        <span id="display"></span>
+        <p>
+            <span id="messages"></span>
+        </p>
+    </div>
+
+    <div id="audio"></div>
+
+</div>
+<script>
+    ////////////////////////////////////////////////////////////////////
+    //Create a web page that allows the user to set a count down timer value
+    // e.g. 1 minute that plays a sound and flashes the screen when it counts down to zero
+    // and indicates progress as the timer counts down.
+    // Bonus points for creativity.
+    // This is deliberately vague and open to interpretation.
+    // This is the way we get most assignments from business users.
+    //////////////////////////////////////////////////////////////////////
+    // Requirements:
+    // 1. User sets time
+    // 2. Timer counts down to zero
+    // 3. Progress of timer indicated by sound and flash of screen
+    // 4. Be Creative
+    // 5. It's on a web page
+    ////////////////////////////////////////////////////////////////////
+
+
+    var countDown = {};
+    countDown.clock = function() {
+        var COUNTDOWN_INTERVAL = 1000;
+
+        var secondsInput = document.getElementById("seconds");
+        var minutesInput = document.getElementById("minutes");
+
+
+        var timerDisplay = document.getElementById("display");
+        var displayMessages = document.getElementById("messages");
+
+        var startButton = document.getElementById("start");
+        var pauseButton = document.getElementById("pause");
+        var resumeButton = document.getElementById("resume");
+        var resetButton = document.getElementById("reset");
+
+        var bigBox = document.getElementById("myBox");
+        var displayBox = document.getElementById("timerDisplay")
+
+        var secs = 0;
+        var mins = 0;
+        var timer = 0;
+        var totalSeconds = 0;
+
+
+        function startTimer() {
+            console.log("You clicked start...");
+            //get the seconds and minutes:
+            secs = parseInt(secondsInput.value);
+            mins = parseInt(minutesInput.value);
+            if (!validateInput()) {
+                return;
+            }
+            console.log(mins, secs);
+            convertToSeconds();
+            //call the clock
+            timer = setInterval(tickTock, COUNTDOWN_INTERVAL);
+        }
+
+        startButton.addEventListener("click", startTimer);
+
+        function convertToSeconds() {
+            totalSeconds = mins * 60 + secs;
+        }
+
+        function tickTock() {
+            totalSeconds--;
+            displayTime();
+            if (totalSeconds == 0){
+                displayZero();
+                alarmZero();
+                resetTimer();
+            }
+        }
+
+        function displayTime(){
+            //build display string
+            var m = Math.floor(totalSeconds / 60);
+            var s = totalSeconds % 60;
+            //add a leading 0
+            if (m < 10) m = "0" + m;
+            if (s < 10) s = "0" + s;
+            timerDisplay.innerHTML = m + ":" + s;
+        }
+
+        function validateInput() {
+            //check if there's any input.
+            console.log("here's the times: ", mins, secs);
+            console.log(isNaN(mins), isNaN(secs));
+            displayMessages.innerHTML = "";
+            //if no input:
+            if (isNaN(mins) && (isNaN(secs))) {
+                console.log("No mins and secs");
+                displayMessages.innerHTML = "Please enter minutes and/or seconds";
+                return false;
+            }
+            //if seconds and minutes
+            if (!isNaN(mins) && !isNaN(secs)) {
+                console.log("secs and mins");
+                //check if mins is greater than 60
+                if (mins > 60) {
+                    displayMessages.innerHTML = "This timer can't handle hours (yet)";
+                }
+                // check if secs is greater than 60
+                if (secs > 60) {
+                    //figure out minutes
+                    mins = mins + (secs / 60);
+                    // check for extra secs
+                    if (secs % 60 !=0) {
+                        secs = (secs % 60);
+                    }
+                }
+            }
+            //if minutes but no seconds
+            if (!isNaN(mins) && isNaN(secs)) {
+                console.log("mins but no secs");
+                //mins is okay but set secs to 0
+                secs = 0;
+                console.log(mins, secs);
+            }
+            //if seconds but no minutes
+            if (isNaN(mins) && !isNaN(secs)) {
+                console.log("secs but no mins");
+                //check if secs is greater than 60
+                mins = 0;
+                if (secs > 60) {
+                    //figure out minutes
+                    mins = Math.floor(secs / 60);
+                    //check for remainder for secs
+                    if (secs % 60 != 0){
+                        secs = (secs % 60);
+                    }
+                }
+            }
+            //everything validated!
+            return true;
+
+        }
+
+        function pauseTimer() {
+            console.log("paused....");
+            displayMessages.innerHTML = "Paused...";
+            clearInterval(timer);
+        }
+
+        pauseButton.addEventListener("click", pauseTimer);
+
+        function resumeTimer() {
+            console.log("resuming...");
+            displayMessages.innerHTML = "";
+            timer = setInterval(tickTock, 1000);
+        }
+
+        resumeButton.addEventListener("click", resumeTimer);
+
+        function resetTimer() {
+            console.log("reseting....");
+            clearInterval(timer);
+            secs = 0;
+            mins = 0;
+            timerDisplay.innerHTML = "";
+            displayMessages.innerHTML = "";
+            secondsInput.value = "";
+            minutesInput.value = "";
+            bigBox.style.backgroundColor = "lightblue";
+        }
+
+        resetButton.addEventListener("click", resetTimer);
+
+        function alarmZero() {
+            //displays the alarm when hit 00:00
+            displayMessages.innerHTML = "All Done";
+            alert("Beep!")
+        }
+
+        function displayZero() {
+            //stuff that happens at 00:00
+            bigBox.className = bigBox.className + "done";
+            bigBox.style.backgroundColor = "red";
+        }
+    }();
+
+
+</script>
+</body>
+
+</html>

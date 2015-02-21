@@ -1,0 +1,112 @@
+//Create a web page that allows the user to set a count down timer value 
+e.g. 1 minute that plays a sound and flashes the screen when it counts down 
+to zero and indicates progress as the timer counts down.
+Bonus points for creativity. 
+This is deliberately vague and open to interpretation. 
+This is the way we get most assignments from business users.
+
+--------
+//investigate SetTimeout (uses millisecs)
+//investigate Set Interval (repeats)
+
+// Requirements:
+        // 1. User sets time
+        // 2. Timer counts down to zero
+        // 3. Progress of timer indicated by sound and flash of screen
+        // 4. Be Creative
+        // 5. It's on a web page
+---------------------------------
+
+Start by getting a timer to work
+-Completed
+---------------------------------
+
+Get user to set the start time
+-Completed
+-------------------------------
+
+Make it stop at 0
+-Completed
+--------------------------------
+
+Indicate count with flash of screen
+-Completed
+-----------------------------------
+
+Make a sound when counter hits 0
+-Completed
+---------------------------------
+
+Fun stuff/improvements:
+-change so it takes minutes and seconds.
+-add a pause button
+-improve the interface
+-make the flashes more meaningful
+-----------------------------------
+
+Change so it takes minutes and seconds.
+-Completed
+
+------------------------------------
+Made the interface prettier
+-work in progress!
+----------------------------
+
+BUG:
+when you don't enter minutes, it returns NaN.
+- the problem was when minutes were an empty string
+- added a test to make sure it wasn't empty
+- fixed
+----------------------------
+
+Put the whole thing in a funciton and made it IIFE
+-Completed
+--------------------------------
+
+Add pause button and resume button
+-Completed
+-------------------------------
+
+Add reset button
+-completed
+---------------------------
+
+Error checking to make sure they entered something
+
+-encountered a bug when entering a digit
+it doesn't enable buttons properly -- investigate.
+----------------------------------
+
+onKeyPress not working; tried onchange but that only works 
+when focus is removed--I think that's the trouble.
+-changed to using onkeyup and that seems to have resolved it.
+
+--------------------------------
+
+-work on the display bit
+-and cleaning up the code
+------------------
+
+-decided to completely refactor and start over.
+-wrote out all the functions I think I'll need.
+------------------
+
+-first worked on validation
+-complete
+--------------------
+-make it count down
+-completed
+--------------------
+
+-got most things working
+-need to work on styles and adding and subtracting styles
+--------
+
+-added a red flash when done
+-fixed validation problem
+
+------
+
+would like to add more stylish buttons and improve the display
+-also clean up the code a bit.
+

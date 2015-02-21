@@ -196,26 +196,27 @@ def index(request):
 
 
             # if logged in, set save_option to true.
-            if request.user.is_authenticated:
+            if request.user.is_authenticated():
                 save_option = "true"
 
             if save_option == "true":
                 # if we're logged in then call save_timetable to save
                 timetable_id = save_timetable(form_data, request.user, result, tt_update_id)
                 response = {'cal': cal_data, 'form': request.POST, 'id': timetable_id}
+                 # render the card and send it back.
+                temptt = create_timetable(form_data, request.user, result)
+
+                #temptt['id'] = timetable_id
+                setattr(temptt, 'id', timetable_id)
+
+                ttcardhtml = render_to_string('time_engine/ttcard.html', {'timetable': temptt})
+                response['cardhtml'] = ttcardhtml
             else:
-                response = {'cal': cal_data, 'form': request.POST}
+                response = {'cal': cal_data, 'form': request.POST, 'id': 0}
             print "This is cal_data", cal_data
 
 
-            # render the card and send it back.
-            temptt = create_timetable(form_data, request.user, result)
 
-            #temptt['id'] = timetable_id
-            setattr(temptt, 'id', timetable_id)
-
-            ttcardhtml = render_to_string('time_engine/ttcard.html', {'timetable': temptt})
-            response['cardhtml'] = ttcardhtml
 
             #response = {'cal': cal_data, 'form': request.POST, 'id': timetable_id}
             return HttpResponse(dumps(response), content_type="application/json")
@@ -293,6 +294,7 @@ def save_timetable(form_data, user, eventlist, update_id):
         tt.end_date = eventlist[-1]
         tt.save()
 
+        print "now we are silently deleting. Please."
         Result.objects.filter(id=update_id).delete()
         for idx, event in enumerate(eventlist):
             result = Result()
@@ -325,6 +327,7 @@ def get_timetable(request):
 
     events = []
     if wantresults:
+
         eventlist = Result.objects.filter(timetable_id=ttid)
         for i, r in enumerate(eventlist):
             evt = {'title': 'event: ' + str(i + 1),

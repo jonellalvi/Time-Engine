@@ -27,6 +27,10 @@ div.thumbnail.contentContainer{
     background: #e3e3e3;
 }
 
+#signin-msg {
+    font-size: 75%;
+}
+
 #calendarContainer {
     padding: 1.5em 2.25em;
     margin: 0 15px;
@@ -87,7 +91,7 @@ fieldset[disabled] .btn-primary.active {
 
 /** cancel the default error messages **/
 ul.errorlist {
-    display: none;
+    /*display: none;*/
 }
 
 /* for error messages */
@@ -100,17 +104,20 @@ h2.page-header {
     margin-top: 10px;
 }
 
-/* hide the save */
-.save {
-    display: none;
-}
+
 
 /* checkboxes! */
-
 
 div.checkboxes {
     display: inline-block;
 }
+
+.displaytt, .days {
+    width: 17px;
+    height: 17px;
+}
+
+
 
 #id_color {
     list-style: none;

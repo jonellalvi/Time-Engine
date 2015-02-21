@@ -297,6 +297,14 @@
             <button type="button" class="btn btn-primary btn-lgt" data-toggle="modal" data-target="#myModal">
                 <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Create a new timetable
             </button>
+            {% if not user.is_authenticated %}
+                <p id="signin-msg">Note: If you'd like to save your timetables, please
+                    <button type="button" class="btn btn-default navbar-btn btn-xs " data-toggle="modal" data-target=".modal-signin">
+                            Sign In
+                    </button>
+                </p>
+            {% endif %}
+
         </div>
 
 
@@ -521,45 +529,45 @@
                                 <div class="form-group">
                                     <label class="control-label col-xs-3">Available Days:</label>
                                     <!-- Sunday -->
-                                    <div class="col-xs-1">
+                                    <div class="col-xs-9">
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" name="has_sunday"> Sun
+                                            <input type="checkbox" name="has_sunday" class="days" id="has_sunday"> Sun
                                         </label>
-                                    </div>
+
                                     <!-- Monday -->
-                                    <div class="col-xs-1">
+
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" name="has_monday"> Mon
+                                            <input type="checkbox" name="has_monday" class="days" id="has_monday"> Mon
                                         </label>
-                                    </div>
+
                                     <!-- Tuesday -->
-                                    <div class="col-xs-1">
+
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" name="has_tuesday"> Tues
+                                            <input type="checkbox" name="has_tuesday" class="days" id="has_tuesday"> Tue
                                         </label>
-                                    </div>
+
                                     <!-- Wednesday -->
-                                    <div class="col-xs-1">
+
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" name="has_wednesday"> Wed
+                                            <input type="checkbox" name="has_wednesday" class="days" id="has_wednesday"> Wed
                                         </label>
-                                    </div>
+
                                     <!-- Thursday -->
-                                    <div class="col-xs-1">
+
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" name="has_thursday"> Thurs
+                                            <input type="checkbox" name="has_thursday" class="days" id="has_thursday"> Thu
                                         </label>
-                                    </div>
+
                                     <!-- Friday -->
-                                    <div class="col-xs-1">
+
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" name="has_friday"> Fri
+                                            <input type="checkbox" name="has_friday" class="days" id="has_friday"> Fri
                                         </label>
-                                    </div>
+
                                     <!-- Saturday -->
-                                    <div class="col-xs-1">
+
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" name="has_saturday"> Sat
+                                            <input type="checkbox" name="has_saturday" class="days" id="has_saturday"> Sat
                                         </label>
                                     </div>
                                 </div>
@@ -837,43 +845,43 @@
                             <div class="form-group">
                                 <label class="control-label col-xs-3">Available Days:</label>
                                 <!-- Sunday -->
-                                <div class="col-xs-1">
+                                <div class="col-xs-9">
                                     <label class="checkbox-inline">
                                         <input type="checkbox" name="has_sunday" class="days" id="has_sunday"> Sun
                                     </label>
-                                </div>
+
                                 <!-- Monday -->
-                                <div class="col-xs-1">
+
                                     <label class="checkbox-inline">
                                         <input type="checkbox" name="has_monday" class="days" id="has_monday"> Mon
                                     </label>
-                                </div>
+
                                 <!-- Tuesday -->
-                                <div class="col-xs-1">
+
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="has_tuesday" class="days" id="has_tuesday"> Tues
+                                        <input type="checkbox" name="has_tuesday" class="days" id="has_tuesday"> Tue
                                     </label>
-                                </div>
+
                                 <!-- Wednesday -->
-                                <div class="col-xs-1">
+
                                     <label class="checkbox-inline">
                                         <input type="checkbox" name="has_wednesday" class="days" id="has_wednesday"> Wed
                                     </label>
-                                </div>
+
                                 <!-- Thursday -->
-                                <div class="col-xs-1">
+
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="has_thursday" class="days" id="has_thursday"> Thurs
+                                        <input type="checkbox" name="has_thursday" class="days" id="has_thursday"> Thu
                                     </label>
-                                </div>
+
                                 <!-- Friday -->
-                                <div class="col-xs-1">
+
                                     <label class="checkbox-inline">
                                         <input type="checkbox" name="has_friday" class="days" id="has_friday"> Fri
                                     </label>
-                                </div>
+
                                 <!-- Saturday -->
-                                <div class="col-xs-1">
+
                                     <label class="checkbox-inline">
                                         <input type="checkbox" name="has_saturday" class="days" id="has_saturday"> Sat
                                     </label>
@@ -1180,8 +1188,8 @@
                 $("#end_edit").html(data_cal['end_event']['end_date']);
                 //update the card data:
                 // delete the old card adn stick in the new one
-
-                var tt_edit_id = appState.ttEditData[0]['pk'];
+                console.log(appState.ttEditData);
+                var tt_edit_id = appState.ttEditData['tt']['pk'];
                 //console.log(tt_edit_id);
                 //for some reason this returns a dom element, not a jquery object.
                 var edit_button = $("button.editbtn[data-ttid='" + tt_edit_id + "']");
@@ -1221,6 +1229,7 @@
                 //cal.fullCalendar('addEventSource', data_cal['cal_events']);
             } else {
                 //clear the calendar
+                // update this just to clear the current calendar.
                 console.log("clear the calendar: " + timetableToDisplay);
                 var cal = $('#calendarContainer');
                 cal.fullCalendar('removeEvents');
