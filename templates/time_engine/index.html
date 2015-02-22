@@ -1032,6 +1032,8 @@
 
                 //append the html to the div
                 $('#saved_cards').append(data.cardhtml);
+                //check the display box on the new card.
+
 
             });
 
@@ -1169,7 +1171,6 @@
 
             var form_stuff = $("#existingForm").serialize();
             console.log(form_stuff);
-
             // check whether it is a run or a save
             // and set a toggle to handle in the view.
             form_stuff += '&save=true';
@@ -1239,9 +1240,10 @@
 
         function updateCalendar(calJSON, clearCal) {
             var data_cal = calJSON['cal']; //cal is what I want to extract from calJSON....
-            console.log(data_cal);
+            console.log( "this is data_cal from updateCalendar: " + data_cal['cal_events'] + calJSON['cal']);
             //clear fullCalendar of existing events.
             var cal = $('#calendarContainer');
+
             if (clearCal) {
                 cal.fullCalendar('removeEvents');
             }

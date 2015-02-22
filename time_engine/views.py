@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from json import dumps
 from django.core import serializers
 from django.template.loader import render_to_string
+from django.db import connection
 
 from calc_eventlist import EventList
 from time_engine.forms import TimeTableForm, UserForm, UserProfileForm
@@ -138,20 +139,16 @@ def index(request):
             eventlist = EventList(form_data)
             # Get the list of events
             result = eventlist.get_eventlist()
-            print "this is result: ", result
 
             # get the event time:
             event_time = form_data['start_time']
-            print "this is the event_time: ", event_time
 
             # get the last date from the event list:
             last_item = result[-1]
-            print "This is the LAST DATE datetime: ", last_item
 
             # now format it as a string:
             end_date = last_item.strftime("%A %B %d, %Y")
             end_date_label = "End Date:"
-            print "This is the LAST DATE formated", end_date, type(end_date)
 
             # now format the datetimes to send to full Calendar
             # and package up to send
@@ -162,14 +159,12 @@ def index(request):
                        'start': r.isoformat() + 'T' + str(event_time),
                        'allDay': False
                 }
-                print r
                 events.append(evt)
 
             #now append the options:
             # color:
             event_color = form_data['color']
             options = 'color: ' + form_data['color']
-            print "these are the options: ", options
 
             # package it up to send:
             cal_data = {'cal_events': {'events': events, 'color': event_color},
@@ -187,7 +182,7 @@ def index(request):
                 tt_update_id = request.POST['edit_id']
             else:
                 tt_update_id = None
-
+            print "this is the tt update id: ", tt_update_id
             # then we're doing an edit
             # update the db iwth the new values (save)
             # pass back the new values to update the card.
@@ -209,11 +204,10 @@ def index(request):
                 #temptt['id'] = timetable_id
                 setattr(temptt, 'id', timetable_id)
 
-                ttcardhtml = render_to_string('time_engine/ttcard.html', {'timetable': temptt})
+                ttcardhtml = render_to_string('time_engine/ttcard.html', {'timetable': temptt, 'checked': 'checked'})
                 response['cardhtml'] = ttcardhtml
             else:
                 response = {'cal': cal_data, 'form': request.POST, 'id': 0}
-            print "This is cal_data", cal_data
 
 
 
@@ -294,8 +288,14 @@ def save_timetable(form_data, user, eventlist, update_id):
         tt.end_date = eventlist[-1]
         tt.save()
 
-        print "now we are silently deleting. Please."
-        Result.objects.filter(id=update_id).delete()
+
+        Result.objects.filter(timetable_id=update_id).delete()
+
+
+        # cursor = connection.cursor()
+        # cursor.execute("DELETE from time_engine_result WHERE id = %s", [update_id])
+
+
         for idx, event in enumerate(eventlist):
             result = Result()
             result.lesson_date = event
@@ -329,6 +329,7 @@ def get_timetable(request):
     if wantresults:
 
         eventlist = Result.objects.filter(timetable_id=ttid)
+        #print "this is eventlist: ", eventlist
         for i, r in enumerate(eventlist):
             evt = {'title': 'event: ' + str(i + 1),
                    'start': r.lesson_date.isoformat() + 'T' + str(ttObj.start_time),
@@ -337,6 +338,7 @@ def get_timetable(request):
             #print r
             events.append(evt)
 
+        #print "This is events: ", events
 
     # get  end date from TimeTable
     # temp_eventend = TimeTable.objects.get(id=ttid).end_date
