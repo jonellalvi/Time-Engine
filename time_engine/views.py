@@ -204,6 +204,10 @@ def index(request):
                 #temptt['id'] = timetable_id
                 setattr(temptt, 'id', timetable_id)
 
+                # add in ids for each event
+                for e in cal_data['cal_events']['events']:
+                    e['id'] = timetable_id
+
                 ttcardhtml = render_to_string('time_engine/ttcard.html', {'timetable': temptt, 'checked': 'checked'})
                 response['cardhtml'] = ttcardhtml
             else:
@@ -333,7 +337,8 @@ def get_timetable(request):
         for i, r in enumerate(eventlist):
             evt = {'title': 'event: ' + str(i + 1),
                    'start': r.lesson_date.isoformat() + 'T' + str(ttObj.start_time),
-                   'allDay': False
+                   'allDay': False,
+                   'id': ttid
             }
             #print r
             events.append(evt)

@@ -1206,12 +1206,17 @@
 
         // event handler to display existing timetables:
         $(document.body).on('change', '.displaytt', function (e) {
+
+            // Get the timetable id of this card
             var timetableToDisplay = $(e.target).attr("data-ttid");
+
             if ($(this).is(':checked')) {
                 console.log("checked!");
                 // display the current stuff in the form
                 // crap how do I get the current stuff?
                 console.log("this is the tt to display: ", timetableToDisplay);
+
+                // Fetch the events for this timetable
                 $.get('/time_engine/get_timetable', {ttid: timetableToDisplay, op: "results"}, function (data) {
                     //this is the callback
                     //now call the display cal
@@ -1229,23 +1234,25 @@
                 {#               console.log(cal, e);#}
                 //cal.fullCalendar('addEventSource', data_cal['cal_events']);
             } else {
-                //clear the calendar
-                // update this just to clear the current calendar.
-                console.log("clear the calendar: " + timetableToDisplay);
+
+                // The card was unchecked; remove all events from this timetable
+                // from the calendar
                 var cal = $('#calendarContainer');
-                cal.fullCalendar('removeEvents');
+                cal.fullCalendar('removeEvents', timetableToDisplay);
             }
         });// event handler for displaying existing timetables
 
 
         function updateCalendar(calJSON, clearCal) {
+            //check which cards are checked and draw all of them
+
             var data_cal = calJSON['cal']; //cal is what I want to extract from calJSON....
-            console.log( "this is data_cal from updateCalendar: " + data_cal['cal_events'] + calJSON['cal']);
+            console.log(data_cal['cal_events']);
             //clear fullCalendar of existing events.
             var cal = $('#calendarContainer');
-
+            console.log("This is the celendar events ids" + data_cal['cal_events']['id']);
             if (clearCal) {
-                cal.fullCalendar('removeEvents');
+                cal.fullCalendar('removeEvents', data_cal['cal_events']['id']);
             }
             cal.fullCalendar('addEventSource', data_cal['cal_events']);
         }
