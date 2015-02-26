@@ -594,13 +594,6 @@
                                         <input type="reset" class="btn btn-default" id='reset2' value="Reset">
                                         <!-- Run button -->
                                         <input type="submit" class="btn btn-primary" id='run' value="Run">
-                                        <!-- If user isn't signed in, disable the save button -->
-                                        {#                                    {% if not user.is_authenticated %}#}
-                                        {#                                        <input type="submit" class="btn btn-primary" title="Sign In to Save" disabled#}
-                                        {#                                               id='save' value="Save">#}
-                                        {#                                    {% else %}#}
-                                        {#                                        <input type="submit" class="btn btn-primary" id='save' value="Save">#}
-                                        {#S#}
                                     </div>
                                 </div>
                                 <!-- Timetable form buttons form-group -->
@@ -909,13 +902,6 @@
                                     <input type="reset" class="btn btn-default" id='reset2' value="Reset">
                                     <!-- savechanges button for edits -->
                                     <button type="button" class="btn btn-primary" id='savechanges'>Save Changes</button>
-                                    <!-- If user isn't signed in, disable the save button -->
-                                    {#                                    {% if not user.is_authenticated %}#}
-                                    {#                                        <input type="submit" class="btn btn-primary" title="Sign In to Save" disabled#}
-                                    {#                                               id='save' value="Save">#}
-                                    {#                                    {% else %}#}
-                                    {#                                        <input type="submit" class="btn btn-primary" id='save' value="Save">#}
-                                    {#S#}
                                 </div>
                             </div>
                             <!-- Timetable form buttons form-group -->
@@ -1034,7 +1020,6 @@
                 $('#saved_cards').append(data.cardhtml);
                 //check the display box on the new card.
 
-
             });
 
             return false;
@@ -1109,10 +1094,6 @@
 
             modal.find($('#event_cnt').val(ttData['event_count']));
 
-            //maybe turn them all off first?
-            //$('.days').attr('checked', false);
-            // then turn them on if they are in the data....
-            //e.stopImmediatePropagation();
 
             if (ttData['has_monday']) {
                 modal.find($('#has_monday').attr('checked', true));
@@ -1220,19 +1201,11 @@
                 $.get('/time_engine/get_timetable', {ttid: timetableToDisplay, op: "results"}, function (data) {
                     //this is the callback
                     //now call the display cal
-                    //data['elist'] = JSON.parse(data['elist']);
-
                     console.log("this is data", data);
                     updateCalendar(data.result_dates, false);
 
 
                 });
-                {#               //updateCalendar(calJSON, false);#}
-                {#               console.log('checked!');#}
-                {#               var cal = $('#calendarContainer');#}
-                {#                cal.fullCalendar('removeEvents');#}
-                {#               console.log(cal, e);#}
-                //cal.fullCalendar('addEventSource', data_cal['cal_events']);
             } else {
 
                 // The card was unchecked; remove all events from this timetable
@@ -1258,10 +1231,6 @@
         }
 
 
-
-
-
-
         // User authentication stuff
         // setting up the event handler for registration form submission
         $('#register-button').on('click', function (e) {
@@ -1274,13 +1243,9 @@
                     alert("you are now registered");
                     signinForm();
                 }
-
             });
             return false;
         });
-
-        // stuff to make the register modal appear
-        //first get the element:
 
         // function to display the register form
         function regForm() {
