@@ -55,7 +55,7 @@
                 <!-- Help -->
                 <li>
                     <!-- Help button -->
-                    <button type="button" class="btn btn-primary navbar-btn" data-toggle="modal"
+                    <button type="button" class="btn btn-primary navbar-btn help-btn" data-toggle="modal"
                             data-target=".modal-help">Help
                     </button>
                     <!-- Help Modal -->
@@ -88,7 +88,7 @@
                     <!-- Sign In Modal -->
                     <!-- IF USER IS NOT AUTHENTICATED, DISPLAY THE LOGIN BUTTON. -->
                     {% if not user.is_authenticated %}
-                        <button type="button" class="btn btn-primary navbar-btn" data-toggle="modal"
+                        <button type="button" class="btn btn-primary navbar-btn login-btn" data-toggle="modal"
                                 data-target=".modal-signin">
                             Sign In
                         </button>
