@@ -55,3 +55,6 @@ target/
 
 # PyCharm
 .idea/
+
+mykeyaws.pem
+mykeyaws.ppk
