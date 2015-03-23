@@ -11,6 +11,7 @@ from json import dumps
 from django.core import serializers
 from django.template.loader import render_to_string
 from django.db import connection
+from django.views.decorators.http import require_http_methods
 
 from calc_eventlist import EventList
 from time_engine.forms import TimeTableForm, UserForm, UserProfileForm
@@ -28,63 +29,50 @@ from utilities import getGravatarImage
 # of the page we're sending to the client requesting the view
 
 
-
 # User registration
 # This is based on http://www.tangowithdjango.com/book17/chapters/login.html
+
+# csrf = cross site request forgery
 @csrf_exempt
+@require_http_methods(["POST"])
 def register(request):
 
-    # If it's a HTTP POST, we're interested in processing form data.
-    if request.method == "POST":
+    # Get form fields
+    try:
+        email = request.POST['username']
+        password = request.POST['password']
+    except KeyError:
+        # Invalid form data
+        return HttpResponseBadRequest('Malformed form')
 
-        # Get form fields
-        try:
-            email = request.POST['username']
-            password = request.POST['password']
-        except KeyError:
-            # Invalid form data
-            return HttpResponseBadRequest('Malformed form')
-
-        # Look up user
-        try:
-            User.objects.get(username=email)
-        except ObjectDoesNotExist:
-            # Create new user with this name & password
-            User.objects.create_user(email, email, password)
-            return HttpResponse(dumps({'result': True}), content_type="application/json")
-        else:
-            print "User already exists"
-            return HttpResponse(dumps({'result': False, 'msg': 'User already exists'}), content_type="application/json")
-
-    # Not a HTTP POST, so we render our form using two ModelForm instances.
-    # These forms will be blank, ready for user input.
+    # Look up user
+    try:
+        User.objects.get(username=email)
+    except ObjectDoesNotExist:
+        # Create new user with this name & password
+        User.objects.create_user(email, email, password)
+        return HttpResponse(dumps({'result': True}), content_type="application/json")
     else:
-        user_form = UserForm()
-        #profile_form = UserProfileForm()
+        print "User already exists"
+        return HttpResponse(dumps({'result': False, 'msg': 'User already exists'}), content_type="application/json")
 
 
 # User login
 # This is based on http://www.tangowithdjango.com/book17/chapters/login.html
 def user_login(request):
 
-    # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == "POST":
-        # Gather the username and password provided by the user.
-        # This information is obtained from the login form.
+        # Gather the username and password from the sign in form
         username = request.POST['username']
         password = request.POST['password']
 
-        # USe Django's machinery to attempt to see if the username/password
-        # combo is valid - a User object is returned if it is.
+        # Check if the username/password combo is valid
         user = authenticate(username=username, password=password)
 
-        # If we have a User object, the details are correct.
-        # If None (Python's way of representing the absence of a value), no user
-        # with matching credentials was found.
         if user:
             # Is the account active? It could have been disabled.
             if user.is_active:
-                # If the account is valid and active, we can log the user in.
+                # If the account is valid and active, log the user in.
                 login(request, user)
                 # Then send the user back to the homepage.
                 return HttpResponseRedirect('/time_engine/')
@@ -97,10 +85,10 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied.")
 
     # The request is not a HTTP POST, so display the login form.
-    # This scenario would most likely be a HTTP GET.
     else:
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
+        # TODO: fix to send to modal instead of template
         return render(request, 'time_engine/login.html', {})
 
 
@@ -117,91 +105,99 @@ def user_logout(request):
 def index(request):
     # Request the context of the request.
     # The context contains information such as the client's machine details, for example.
-    context = RequestContext(request)
+    # context = RequestContext(request)
 
-    # if this is a POST request we need to process the form data:
+    # if this is a POST request we need to process the timetable form data:
     # this is an ajax request:
     if request.method == "POST":
+        # sanity checks:
         print request.POST['name']
         # User is saving / updating a timetable
         print "POST method called"
-        # create a form instance and populate it with data from the request:
+        # create a form instance and populate it with data from the request.
         # This is called binding the data to the form
         form = TimeTableForm(request.POST)
 
-        # check if it's vaild:
+        # check if it's valid:
         if form.is_valid():
 
             # extract the cleaned data from the form
             form_data = form.cleaned_data
 
             # Create the EventList object
+            # This class is called from the calc_eventlist module
+            # EventList takes the data from the form as a parameter.
             eventlist = EventList(form_data)
-            # Get the list of events
+
+            # Use the eventlist instance to get the list of events
+            # using the get_eventlist method within EventList
             result = eventlist.get_eventlist()
 
-            # get the event time:
+            # get the event time
             event_time = form_data['start_time']
 
             # get the last date from the event list:
             last_item = result[-1]
 
-            # now format it as a string:
+            # now format it as a string
+            # so it can be displayed
             end_date = last_item.strftime("%A %B %d, %Y")
+            # also create a label to pass back to the form
+            # for when we update it with the end date.
             end_date_label = "End Date:"
 
             # now format the datetimes to send to full Calendar
             # and package up to send
+            # create a new empty list
             events = []
 
+            # Create a list that formats each event so it
+            # can be displayed in Full Calendar
             for i, r in enumerate(result):
                 evt = {'title': 'event: ' + str(i + 1),
                        'start': r.isoformat() + 'T' + str(event_time),
                        'allDay': False
-                }
+                       }
+
+                # append the event to the events list:
                 events.append(evt)
 
-            #now append the options:
+            # now append the options:
             # color:
             event_color = form_data['color']
-            options = 'color: ' + form_data['color']
+            # options = 'color: ' + form_data['color']
 
             # package it up to send:
             cal_data = {'cal_events': {'events': events, 'color': event_color},
                         'end_event': {'end_date_label': end_date_label, 'end_date': end_date}
-            }
+                        }
 
-            # extract the save boolean set in the js to see if we need to save.
+            # extract the save boolean set in the javascript to see if we need to save.
             save_option = form.cleaned_data['save']
-            # if it's save, save to database
-            print "the user is: ", request.user
 
-
-            #check if this is a new timetable or an existing one:
+            # check if this is a new timetable or an existing one:
             if 'edit_id' in request.POST:
                 tt_update_id = request.POST['edit_id']
             else:
                 tt_update_id = None
             print "this is the tt update id: ", tt_update_id
             # then we're doing an edit
-            # update the db iwth the new values (save)
+            # update the db with the new values (save)
             # pass back the new values to update the card.
             # pass a flag to save timetable to do an update instead.
-
-
 
             # if logged in, set save_option to true.
             if request.user.is_authenticated():
                 save_option = "true"
 
             if save_option == "true":
-                # if we're logged in then call save_timetable to save
+                # if we're logged in then call save_timetable function to save
                 timetable_id = save_timetable(form_data, request.user, result, tt_update_id)
                 response = {'cal': cal_data, 'form': request.POST, 'id': timetable_id}
-                 # render the card and send it back.
+                # render the card and send it back.
                 temptt = create_timetable(form_data, request.user, result)
 
-                #temptt['id'] = timetable_id
+                # temptt['id'] = timetable_id
                 setattr(temptt, 'id', timetable_id)
 
                 # add in ids for each event
@@ -216,7 +212,8 @@ def index(request):
 
 
 
-            #response = {'cal': cal_data, 'form': request.POST, 'id': timetable_id}
+            # response = {'cal': cal_data, 'form': request.POST, 'id': timetable_id}
+
             return HttpResponse(dumps(response), content_type="application/json")
         else:
             return HttpResponse('{"status": "invalid form!"}', content_type="application/json")
