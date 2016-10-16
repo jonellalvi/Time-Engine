@@ -23,12 +23,13 @@ import os
 #
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-print BASE_DIR
+print(BASE_DIR)
 
 PROJECT_PATH = os.path.join(BASE_DIR, os.pardir)
 #PROJECT_PATH = os.path.join(PROJECT_PATH)
 DATABASE_PATH = os.path.join(PROJECT_PATH, 'tigen_project', 'db.sqlite3')
-TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'tigen_project', 'templates')
+# TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'tigen_project', 'templates')
+TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates', 'time_engine')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -114,7 +115,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = ''
 
-STATIC_PATH = 'c:/Jonell/Projects/apps/djangotest/tigen_project/static' #os.path.join(PROJECT_PATH, 'static')
+STATIC_PATH = os.path.join(BASE_DIR, 'static') #'c:/Jonell/Projects/apps/djangotest/tigen_project/static' #os.path.join(PROJECT_PATH, 'static')
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
@@ -137,12 +138,32 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    TEMPLATE_PATH,
-)
+
+# TEMPLATE_DIRS is depricated!!!
+# TEMPLATE_DIRS = (
+#     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+#     # Always use forward slashes, even on Windows.
+#     # Don't forget to use absolute paths, not relative paths.
+#     TEMPLATE_PATH,
+# )
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [TEMPLATE_PATH],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            # some options here
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
