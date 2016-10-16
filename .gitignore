@@ -7,7 +7,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-env/
+venv/
 build/
 develop-eggs/
 dist/
@@ -57,3 +57,11 @@ target/
 .idea/
 
 keys/
+
+# other
+static/projects
+*.sqlite3
+jstemplates
+jquery-ui-1.11.3.custom
+todo
+*.pyc

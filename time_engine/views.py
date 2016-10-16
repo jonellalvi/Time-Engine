@@ -13,14 +13,16 @@ from django.template.loader import render_to_string
 from django.db import connection
 from django.views.decorators.http import require_http_methods
 
-from calc_eventlist import EventList
+from .calc_eventlist import EventList
 from time_engine.forms import TimeTableForm, UserForm, UserProfileForm
 from time_engine.models import TimeTable, Result
 
 from django.shortcuts import render_to_response
 from django.contrib import auth
 from django.shortcuts import redirect
-from utilities import getGravatarImage
+from .utilities import getGravatarImage
+
+from django.conf import settings
 
 # Each view is it's own function.
 # Each view takes at least one arg: HttpRequest object
@@ -53,7 +55,7 @@ def register(request):
         User.objects.create_user(email, email, password)
         return HttpResponse(dumps({'result': True}), content_type="application/json")
     else:
-        print "User already exists"
+        print("User already exists")
         return HttpResponse(dumps({'result': False, 'msg': 'User already exists'}), content_type="application/json")
 
 
@@ -81,7 +83,7 @@ def user_login(request):
                 return HttpResponse("Your Time Engine account is disabled.")
         else:
             # Bad login details were provided. So we can't log the user in.
-            print "Invalid login details: {0}, {1}".format(username, password)
+            print("Invalid login details: {0}, {1}".format(username, password))
             return HttpResponse("Invalid login details supplied.")
 
     # The request is not a HTTP POST, so display the login form.
@@ -111,9 +113,9 @@ def index(request):
     # this is an ajax request:
     if request.method == "POST":
         # sanity checks:
-        print request.POST['name']
+        print(request.POST['name'])
         # User is saving / updating a timetable
-        print "POST method called"
+        print("POST method called")
         # create a form instance and populate it with data from the request.
         # This is called binding the data to the form
         form = TimeTableForm(request.POST)
@@ -180,7 +182,7 @@ def index(request):
                 tt_update_id = request.POST['edit_id']
             else:
                 tt_update_id = None
-            print "this is the tt update id: ", tt_update_id
+            print("this is the tt update id: "), tt_update_id
             # then we're doing an edit
             # update the db with the new values (save)
             # pass back the new values to update the card.
@@ -204,7 +206,7 @@ def index(request):
                 for e in cal_data['cal_events']['events']:
                     e['id'] = timetable_id
 
-                ttcardhtml = render_to_string('time_engine/ttcard.html', {'timetable': temptt, 'checked': 'checked'})
+                ttcardhtml = render_to_string('ttcard.html', {'timetable': temptt, 'checked': 'checked'})
                 response['cardhtml'] = ttcardhtml
             else:
                 response = {'cal': cal_data, 'form': request.POST, 'id': 0}
@@ -227,7 +229,11 @@ def index(request):
         else:
             timetable_list = []
 
-        return render(request, 'time_engine/index.html', {'timetables': timetable_list})
+        print("The BASE_DIR is: ", settings.BASE_DIR)
+        print(settings.TEMPLATE_PATH)
+        # print(settings.PROJECT_PATH)
+        # return render(request, 'time_engine/index.html', {'timetables': timetable_list})
+        return render(request, 'index.html', {'timetables': timetable_list})
 
 
 
@@ -263,7 +269,7 @@ def save_timetable(form_data, user, eventlist, update_id):
         tt = create_timetable(form_data, user)
         tt.end_date = eventlist[-1]
         tt.save()
-        print tt.end_date
+        print(tt.end_date)
 
         for idx, event in enumerate(eventlist):
             result = Result()
@@ -330,23 +336,23 @@ def get_timetable(request):
     if wantresults:
 
         eventlist = Result.objects.filter(timetable_id=ttid)
-        #print "this is eventlist: ", eventlist
+        #print("this is eventlist: "), eventlist
         for i, r in enumerate(eventlist):
             evt = {'title': 'event: ' + str(i + 1),
                    'start': r.lesson_date.isoformat() + 'T' + str(ttObj.start_time),
                    'allDay': False,
                    'id': ttid
             }
-            #print r
+            #print(r)
             events.append(evt)
 
-        #print "This is events: ", events
+        #print("This is events: "), events
 
     # get  end date from TimeTable
     # temp_eventend = TimeTable.objects.get(id=ttid).end_date
-    # print "this is tem_eventend: ", temp_eventend
+    # print("this is tem_eventend: "), temp_eventend
     # eventend = temp_eventend.strftime("%A %B %d, %Y")
-    # print "this is eventend: ", eventend
+    # print("this is eventend: "), eventend
 
     # setattr(ttObj, 'eventend', eventend)
 
@@ -410,7 +416,7 @@ def delete_timetable(request):
     # for now just return a success message:
 
     msg = "timetable deleted!"
-    print msg
+    print(msg)
 
     return HttpResponse(dumps({'msg': msg, 'ttid': ttid}), content_type="application/json")
 
@@ -444,7 +450,7 @@ def ajax(request):
 
 def dom(request):
     if request.method == "POST":
-        print request.POST
+        print(request.POST)
     return render(request, 'time_engine/dom.html')
 
 
